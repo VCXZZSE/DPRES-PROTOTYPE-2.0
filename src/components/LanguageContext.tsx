@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
-export type Language = 'en' | 'hi' | 'bn';
+export type Language = 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'mr' | 'gu' | 'kn' | 'ml' | 'or' | 'pa' | 'as' | 'ur';
 
 interface LanguageContextType {
   language: Language;
@@ -39,8 +39,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 // Translation function
 const getTranslation = (key: string, lang: Language): string => {
   const translations = getTranslations();
-  const langTranslations = translations[lang] || translations['en'];
-  return (langTranslations as any)[key] || key;
+  const langTranslations = translations[lang as keyof typeof translations];
+  const enTranslations = translations['en'];
+  return (langTranslations?.[key as keyof typeof enTranslations] as string) || (enTranslations[key as keyof typeof enTranslations] as string) || key;
 };
 
 // Translation data
@@ -181,7 +182,6 @@ const getTranslations = () => {
       'dashboard.modulesCompleted': 'Modules Completed',
       'dashboard.vrTrainingsCompleted': 'VR Trainings Completed',
       'dashboard.latestQuizScore': 'Latest Quiz Score',
-      'dashboard.recentActivityDesc': 'Your latest learning updates',
       'dashboard.keepProgress': 'Great job! Keep up the progress',
       'dashboard.hoursAgo': 'hour ago',
       'dashboard.heavyRainfall': 'Heavy Rainfall',
@@ -511,7 +511,6 @@ const getTranslations = () => {
       'dashboard.modulesCompleted': 'पूर्ण मॉड्यूल',
       'dashboard.vrTrainingsCompleted': 'पूर्ण वीआर प्रशिक्षण',
       'dashboard.latestQuizScore': 'नवीनतम क्विज़ स्कोर',
-      'dashboard.recentActivityDesc': 'आपके नवीनतम शिक्षण अपडेट',
       'dashboard.keepProgress': 'बढ़िया काम! प्रगति जारी रखें',
       'dashboard.hoursAgo': 'घंटे पहले',
       'dashboard.heavyRainfall': 'भारी बारिश',
@@ -841,7 +840,6 @@ const getTranslations = () => {
       'dashboard.modulesCompleted': 'সম্পন্ন মডিউল',
       'dashboard.vrTrainingsCompleted': 'সম্পন্ন ভিআর প্রশিক্ষণ',
       'dashboard.latestQuizScore': 'সর্বশেষ কুইজ স্কোর',
-      'dashboard.recentActivityDesc': 'আপনার সর্বশেষ শেখার আপডেট',
       'dashboard.keepProgress': 'চমৎকার কাজ! অগ্রগতি বজায় রাখুন',
       'dashboard.hoursAgo': 'ঘন্টা আগে',
       'dashboard.heavyRainfall': 'প্রবল বৃষ্টিপাত',

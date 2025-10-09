@@ -565,10 +565,10 @@ export function LoginPage({ onLogin, onAdminLogin }: LoginPageProps) {
                         className="w-full sm:flex-1 h-10 sm:h-12 bg-gradient-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group text-sm sm:text-base"
                       >
                         <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                        <span className="relative z-10 flex items-center justify-center space-x-1 sm:space-x-2 font-medium">
-                          <span className="break-words">{t('login.enterHub')}</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        <span className="relative z-10 flex items-center justify-center space-x-2">
                           <Shield className="w-4 h-4 flex-shrink-0" />
+                          <span className="break-words">{t('login.startTraining')}</span>
                         </span>
                       </Button>
                     </div>
@@ -576,125 +576,121 @@ export function LoginPage({ onLogin, onAdminLogin }: LoginPageProps) {
                 )}
               </form>
             )}
-
-            <div className="mt-6 sm:mt-8 text-center">
-              <p className="text-xs text-gray-500 mb-2 break-words">
-                {t('login.buildingSafety')}
-              </p>
-              <div className="flex items-center justify-center space-x-1 text-xs text-gray-400 flex-wrap">
-                <span>{t('login.poweredBy')}</span>
-                <span className="font-medium text-orange-600">NDMA</span>
-                <span>•</span>
-                <span className="font-medium text-indigo-600">Sendai Framework</span>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Admin Login Modal */}
       {showAdminLogin && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <Card className="w-full max-w-md bg-white/95 backdrop-blur-md border-0 shadow-2xl">
-            <CardHeader className="text-center space-y-4">
-              <div className="flex justify-between items-center">
-                <div></div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setShowAdminLogin(false);
-                    setAdminCredentials({ email: '', password: '' });
-                    setAdminError('');
-                  }}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              
-              <div className="mx-auto w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Shield className="w-6 h-6 text-white" />
-              </div>
-              
-              <div>
-                <CardTitle className="text-xl text-red-600">SDMA Admin Access</CardTitle>
-                <CardDescription className="text-gray-600">
-                  Authorized personnel only
-                </CardDescription>
-              </div>
-            </CardHeader>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in duration-300">
+            <button
+              onClick={() => {
+                setShowAdminLogin(false);
+                setAdminCredentials({ email: '', password: '' });
+                setAdminError('');
+              }}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
 
-            <CardContent className="space-y-4">
+            <div className="text-center space-y-3">
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center shadow-lg">
+                <Lock className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800">SDMA Admin Portal</h2>
+              <p className="text-sm text-gray-600">Enter your credentials to access the admin dashboard</p>
+            </div>
+
+            <form onSubmit={handleAdminSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="admin-email" className="text-gray-700 font-medium">Email Address</Label>
+                <Input
+                  id="admin-email"
+                  type="email"
+                  placeholder="Enter your registered email"
+                  value={adminCredentials.email}
+                  onChange={(e) => handleAdminCredentialChange('email', e.target.value)}
+                  required
+                  className="bg-white border-gray-200 focus:border-red-400 focus:ring-red-400/20 h-11"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="admin-password" className="text-gray-700 font-medium">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="admin-password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Enter your password"
+                    value={adminCredentials.password}
+                    onChange={(e) => handleAdminCredentialChange('password', e.target.value)}
+                    required
+                    className="bg-white border-gray-200 focus:border-red-400 focus:ring-red-400/20 h-11 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+
               {adminError && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 break-words">
-                  {adminError}
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-600 break-words">{adminError}</p>
                 </div>
               )}
-              
-              <form onSubmit={handleAdminSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="admin-email" className="text-gray-700 font-medium">Email (sih@gmail.com)</Label>
-                  <Input
-                    id="admin-email"
-                    type="email"
-                    placeholder="Enter admin email"
-                    value={adminCredentials.email}
-                    onChange={(e) => handleAdminCredentialChange('email', e.target.value)}
-                    required
-                    className="bg-white border-gray-200 focus:border-red-400 focus:ring-red-400/20"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="admin-password" className="text-gray-700 font-medium">Password (9999)</Label>
-                  <div className="relative">
-                    <Input
-                      id="admin-password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter admin password"
-                      value={adminCredentials.password}
-                      onChange={(e) => handleAdminCredentialChange('password', e.target.value)}
-                      required
-                      className="bg-white border-gray-200 focus:border-red-400 focus:ring-red-400/20 pr-10"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-gray-600"
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </Button>
-                  </div>
-                </div>
 
-                <div className="flex space-x-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      setShowAdminLogin(false);
-                      setAdminCredentials({ email: '', password: '' });
-                      setAdminError('');
-                    }}
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
-                  >
-                    Login
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+              <Button
+                type="submit"
+                className="w-full h-12 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <span className="flex items-center justify-center space-x-2">
+                  <Lock className="w-4 h-4" />
+                  <span>Access Admin Dashboard</span>
+                </span>
+              </Button>
+            </form>
+          </div>
         </div>
       )}
+
+      {/* CSS for animations */}
+      <style>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 30s linear infinite;
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .delay-300 {
+          animation-delay: 300ms;
+        }
+        .delay-450 {
+          animation-delay: 450ms;
+        }
+        .delay-600 {
+          animation-delay: 600ms;
+        }
+        .delay-750 {
+          animation-delay: 750ms;
+        }
+        .delay-900 {
+          animation-delay: 900ms;
+        }
+      `}</style>
     </div>
   );
 }

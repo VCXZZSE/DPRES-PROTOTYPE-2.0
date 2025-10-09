@@ -42,7 +42,7 @@ export interface ContactInfo {
   name: string;
   phone: string;
   email?: string;
-  language: 'en' | 'hi' | 'ta' | 'te' | 'mr' | 'bn';
+  language: 'en' | 'hi' | 'ta' | 'te' | 'mr';
   type: 'student' | 'parent' | 'teacher' | 'admin' | 'emergency';
   verified: boolean;
   lastContactDate?: string;
@@ -1147,7 +1147,7 @@ export interface SMSIVRLog {
   alertType: 'emergency' | 'evacuation' | 'weather' | 'drill' | 'general';
   title: string;
   message: string;
-  language: 'en' | 'hi' | 'ta' | 'te' | 'mr' | 'bn';
+  language: 'en' | 'hi' | 'ta' | 'te' | 'mr';
   recipients: {
     students: number;
     parents: number;

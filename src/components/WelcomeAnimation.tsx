@@ -207,8 +207,6 @@ export function WelcomeAnimation({ studentName, schoolName, onComplete }: Welcom
         </svg>
       </motion.div>
 
-
-
       {/* Enhanced tricolor accent */}
       <motion.div
         className="absolute top-0 left-0 right-0 h-2 opacity-80 shadow-lg"

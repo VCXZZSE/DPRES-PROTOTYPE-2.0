@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -14,7 +15,8 @@ import {
   Users,
   CheckCircle,
   Lock,
-  TrendingUp
+  TrendingUp,
+  ChevronRight
 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 
@@ -23,7 +25,7 @@ interface UserData {
   schoolCode: string;
   studentName: string;
   age: string;
-  institutionType: 'school' | 'college'; // Add institutionType
+  institutionType: 'school' | 'college';
 }
 
 interface ModulesPageProps {
@@ -57,13 +59,6 @@ export function ModulesPage({ userData }: ModulesPageProps) {
   };
 
   const selectedFriendData = progressData.friends.find(f => f.name === selectedFriend);
-
-  // Generate encouraging messages based on progress
-  const getProgressEmoji = (score: number) => {
-    if (score >= 80) return '🔥';
-    if (score >= 60) return '🌱';
-    return '🛠';
-  };
 
   const getProgressMessage = (studentScore: number, schoolAverage: number) => {
     if (studentScore > schoolAverage) {
@@ -146,152 +141,124 @@ export function ModulesPage({ userData }: ModulesPageProps) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400';
-      case 'in-progress': return 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400';
-      case 'locked': return 'bg-gray-100 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400';
-      default: return 'bg-gray-100 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400';
+      case 'completed': return 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300';
+      case 'in-progress': return 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300';
+      case 'locked': return 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400';
+      default: return 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle className="h-4 w-4" />;
-      case 'in-progress': return <Play className="h-4 w-4" />;
-      case 'locked': return <Lock className="h-4 w-4" />;
-      default: return <BookOpen className="h-4 w-4" />;
+      case 'completed': return <CheckCircle className="h-3.5 w-3.5" />;
+      case 'in-progress': return <Zap className="h-3.5 w-3.5" />;
+      case 'locked': return <Lock className="h-3.5 w-3.5" />;
+      default: return <BookOpen className="h-3.5 w-3.5" />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background py-8 transition-colors duration-200">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground dark:text-foreground mb-2 break-words leading-tight">{t('modules.title')}</h1>
-          <p className="text-muted-foreground dark:text-muted-foreground break-words">{t('modules.subtitle')}</p>
+        {/* Header */}
+        <div className="mb-8 animate-fadeInUp">
+          <h1 className="text-3xl sm:text-4xl mb-2 bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
+            {t('modules.title')}
+          </h1>
+          <p className="text-muted-foreground">{t('modules.subtitle')}</p>
         </div>
 
-        {/* Progress Comparison Section */}
-        <div className="mb-8 space-y-6">
-          <Card className="bg-gradient-to-r from-orange-50 dark:from-orange-950/30 to-indigo-50 dark:to-indigo-950/30 border-orange-200 dark:border-orange-800">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2 text-foreground dark:text-foreground">
-                <TrendingUp className="h-5 w-5 text-orange-500 dark:text-orange-400" />
-                <span className="break-words">{t('modules.journey')}</span>
-              </CardTitle>
-              <CardDescription className="text-muted-foreground dark:text-muted-foreground break-words">
-                {getProgressMessage(progressData.student.overall, progressData.schoolAverage.overall)}
-              </CardDescription>
+        {/* Progress Dashboard */}
+        <div className="mb-8 animate-fadeInUp delay-100">
+          <Card className="bg-gradient-to-br from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-blue-950/20 dark:to-slate-900 border border-blue-100 dark:border-blue-900/30 shadow-lg hover:shadow-xl transition-all duration-300">
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg shadow-md">
+                  <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">{t('modules.journey')}</CardTitle>
+                  <CardDescription className="text-sm">
+                    {getProgressMessage(progressData.student.overall, progressData.schoolAverage.overall)}
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Your Progress */}
-                <div className="bg-card dark:bg-card p-4 rounded-lg border border-border dark:border-border">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-card-foreground dark:text-card-foreground break-words">{t('modules.yourProgress')}</h3>
-                    <span className="text-2xl">{getProgressEmoji(progressData.student.overall)}</span>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-medium text-sm text-gray-700 dark:text-gray-300">
+                      {t('modules.yourProgress')}
+                    </h3>
+                    <span className="text-2xl">{progressData.student.overall}%</span>
                   </div>
-                  <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.overall')}</span>
-                        <span className="font-medium text-foreground dark:text-foreground">{progressData.student.overall}%</span>
-                      </div>
-                      <Progress value={progressData.student.overall} className="h-2" />
+                  <Progress value={progressData.student.overall} className="h-2" />
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                      <div className="text-muted-foreground text-xs mb-1">{t('modules.modules')}</div>
+                      <div className="font-medium">{progressData.student.modules}/{progressData.student.totalModules}</div>
                     </div>
-                    <div className="text-sm space-y-1">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.modules')}:</span>
-                        <span className="font-medium text-foreground dark:text-foreground">{progressData.student.modules}/{progressData.student.totalModules}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.vrTrainings')}:</span>
-                        <span className="font-medium text-foreground dark:text-foreground">{progressData.student.vrTrainings}/{progressData.student.totalVrTrainings}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.quizAverage')}:</span>
-                        <span className="font-medium text-foreground dark:text-foreground">{progressData.student.averageQuiz}%</span>
-                      </div>
+                    <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                      <div className="text-muted-foreground text-xs mb-1">{t('modules.quizAverage')}</div>
+                      <div className="font-medium">{progressData.student.averageQuiz}%</div>
                     </div>
                   </div>
                 </div>
 
                 {/* School/College Average */}
-                <div className="bg-card dark:bg-card p-4 rounded-lg border border-border dark:border-border">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-card-foreground dark:text-card-foreground break-words">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-medium text-sm text-gray-700 dark:text-gray-300">
                       {userData?.institutionType === 'college' ? t('modules.collegeAverage') : t('modules.schoolAverage')}
                     </h3>
-                    <span className="text-2xl">{getProgressEmoji(progressData.schoolAverage.overall)}</span>
+                    <span className="text-2xl">{progressData.schoolAverage.overall}%</span>
                   </div>
-                  <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.overall')}</span>
-                        <span className="font-medium text-foreground dark:text-foreground">{progressData.schoolAverage.overall}%</span>
-                      </div>
-                      <Progress value={progressData.schoolAverage.overall} className="h-2" />
+                  <Progress value={progressData.schoolAverage.overall} className="h-2" />
+                  <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                    <div className="text-muted-foreground text-xs mb-1">
+                      {userData?.institutionType === 'college' ? t('modules.college') : t('modules.school')}
                     </div>
-                    <div className="text-sm space-y-1">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground dark:text-muted-foreground">
-                          {userData?.institutionType === 'college' ? t('modules.college') : t('modules.school')}:
-                        </span>
-                        <span className="font-medium text-foreground dark:text-foreground">{userData?.schoolName || (userData?.institutionType === 'college' ? 'Your College' : 'Your School')}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.quizAverage')}:</span>
-                        <span className="font-medium text-foreground dark:text-foreground">{progressData.schoolAverage.averageQuiz}%</span>
-                      </div>
+                    <div className="font-medium text-sm truncate">
+                      {userData?.schoolName || (userData?.institutionType === 'college' ? 'Your College' : 'Your School')}
                     </div>
                   </div>
                 </div>
 
                 {/* Friend Comparison */}
-                <div className="bg-card dark:bg-card p-4 rounded-lg border border-border dark:border-border">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-card-foreground dark:text-card-foreground break-words">{t('modules.friendComparison')}</h3>
-                    {selectedFriendData && (
-                      <span className="text-2xl">{getProgressEmoji(selectedFriendData.overall)}</span>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <Select value={selectedFriend} onValueChange={setSelectedFriend}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t('modules.selectFriend')} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {progressData.friends.map((friend) => (
-                          <SelectItem key={friend.name} value={friend.name}>
-                            {friend.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    
-                    {selectedFriendData && (
-                      <div className="space-y-3">
-                        <div>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.overall')}</span>
-                            <span className="font-medium text-foreground dark:text-foreground">{selectedFriendData.overall}%</span>
-                          </div>
-                          <Progress value={selectedFriendData.overall} className="h-2" />
-                        </div>
-                        <div className="text-sm space-y-1">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.quizAverage')}:</span>
-                            <span className="font-medium text-foreground dark:text-foreground">{selectedFriendData.averageQuiz}%</span>
-                          </div>
-                          <div className="text-xs text-muted-foreground dark:text-muted-foreground mt-2">
-                            {progressData.student.overall > selectedFriendData.overall 
-                              ? t('modules.aheadOfFriend').replace('{percent}', (progressData.student.overall - selectedFriendData.overall).toString())
-                              : t('modules.behindFriend').replace('{percent}', (selectedFriendData.overall - progressData.student.overall).toString())
-                            }
-                          </div>
-                        </div>
+                <div className="space-y-4">
+                  <h3 className="font-medium text-sm text-gray-700 dark:text-gray-300">
+                    {t('modules.friendComparison')}
+                  </h3>
+                  <Select value={selectedFriend} onValueChange={setSelectedFriend}>
+                    <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <SelectValue placeholder={t('modules.selectFriend')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {progressData.friends.map((friend) => (
+                        <SelectItem key={friend.name} value={friend.name}>
+                          {friend.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  
+                  {selectedFriendData && (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground text-sm">{t('modules.overall')}</span>
+                        <span className="font-medium">{selectedFriendData.overall}%</span>
                       </div>
-                    )}
-                  </div>
+                      <Progress value={selectedFriendData.overall} className="h-2" />
+                      <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg text-xs text-muted-foreground">
+                        {progressData.student.overall > selectedFriendData.overall 
+                          ? `${t('modules.aheadOfFriend').replace('{percent}', (progressData.student.overall - selectedFriendData.overall).toString())} ahead`
+                          : `${t('modules.behindFriend').replace('{percent}', (selectedFriendData.overall - progressData.student.overall).toString())} behind`
+                        }
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -299,19 +266,36 @@ export function ModulesPage({ userData }: ModulesPageProps) {
         </div>
 
         {/* Modules Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {modules.map((module) => (
-            <Card key={module.id} className="hover:shadow-lg transition-shadow bg-card dark:bg-card border-border dark:border-border">
-              <CardHeader>
-                <div className="flex items-start justify-between">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {modules.map((module, index) => (
+            <Card 
+              key={module.id}
+              className="bg-gradient-to-br from-white via-gray-50/50 to-white dark:from-slate-900 dark:via-slate-800/30 dark:to-slate-900 border border-gray-200 dark:border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] animate-fadeInUp"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <CardHeader className="pb-4">
+                <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <CardTitle className="text-lg mb-2 text-card-foreground dark:text-card-foreground break-words">{module.title}</CardTitle>
-                    <CardDescription className="mb-4 text-muted-foreground dark:text-muted-foreground break-words">{module.description}</CardDescription>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg text-sm font-medium shadow-sm text-blue-700 dark:text-blue-300">
+                        {module.id}
+                      </div>
+                      <Badge className={`${getStatusColor(module.status)} border-0 text-xs`}>
+                        {getStatusIcon(module.status)}
+                        <span className="ml-1.5 capitalize">
+                          {module.status === 'in-progress' ? t('modules.inProgress') : 
+                           module.status === 'completed' ? t('modules.completed') : 
+                           t('modules.locked')}
+                        </span>
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-lg mb-2 leading-tight">
+                      {module.title}
+                    </CardTitle>
+                    <CardDescription className="text-sm leading-relaxed">
+                      {module.description}
+                    </CardDescription>
                   </div>
-                  <Badge className={`${getStatusColor(module.status)} border-0`}>
-                    {getStatusIcon(module.status)}
-                    <span className="ml-1 capitalize">{module.status === 'in-progress' ? t('modules.inProgress') : module.status === 'completed' ? t('modules.completed') : t('modules.locked')}</span>
-                  </Badge>
                 </div>
               </CardHeader>
               
@@ -319,42 +303,50 @@ export function ModulesPage({ userData }: ModulesPageProps) {
                 {/* Progress Bar */}
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-muted-foreground dark:text-muted-foreground">{t('modules.progress')}</span>
-                    <span className="text-foreground dark:text-foreground">{module.progress}%</span>
+                    <span className="text-muted-foreground">{t('modules.progress')}</span>
+                    <span className="font-medium">{module.progress}%</span>
                   </div>
-                  <Progress value={module.progress} className="w-full h-2" />
+                  <Progress value={module.progress} className="h-2" />
                 </div>
 
                 {/* Module Stats */}
-                <div className="flex items-center justify-between text-sm text-muted-foreground dark:text-muted-foreground">
-                  <div className="flex items-center space-x-4">
-                    <span className="flex items-center">
-                      <Clock className="h-4 w-4 mr-1" />
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg text-center">
+                    <Clock className="h-4 w-4 mx-auto mb-1 text-gray-500 dark:text-gray-400" />
+                    <div className="text-xs font-medium text-gray-700 dark:text-gray-300">
                       {module.duration.replace('min', t('modules.minutesShort'))}
-                    </span>
-                    <span className="flex items-center">
-                      <Users className="h-4 w-4 mr-1" />
-                      {module.students} {t('modules.students')}
-                    </span>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    {module.type === 'video' && <FileText className="h-4 w-4" />}
-                    {module.type === 'interactive' && <Zap className="h-4 w-4" />}
-                    {module.type === 'mixed' && <BookOpen className="h-4 w-4" />}
-                    {module.type === 'simulation' && <Shield className="h-4 w-4" />}
-                    <span className="capitalize">{module.type === 'video' ? t('modules.video') : 
-                                                      module.type === 'interactive' ? t('modules.interactive') : 
-                                                      module.type === 'mixed' ? t('modules.mixed') : 
-                                                      module.type === 'simulation' ? t('modules.simulation') : module.type}</span>
+                  <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg text-center">
+                    <Users className="h-4 w-4 mx-auto mb-1 text-gray-500 dark:text-gray-400" />
+                    <div className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                      {module.students}
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg text-center">
+                    {module.type === 'video' && <FileText className="h-4 w-4 mx-auto mb-1 text-gray-500 dark:text-gray-400" />}
+                    {module.type === 'interactive' && <Zap className="h-4 w-4 mx-auto mb-1 text-gray-500 dark:text-gray-400" />}
+                    {module.type === 'mixed' && <BookOpen className="h-4 w-4 mx-auto mb-1 text-gray-500 dark:text-gray-400" />}
+                    {module.type === 'simulation' && <Shield className="h-4 w-4 mx-auto mb-1 text-gray-500 dark:text-gray-400" />}
+                    <div className="text-xs font-medium text-gray-700 dark:text-gray-300 capitalize">
+                      {module.type === 'video' ? t('modules.video') : 
+                       module.type === 'interactive' ? t('modules.interactive') : 
+                       module.type === 'mixed' ? t('modules.mixed') : 
+                       module.type === 'simulation' ? t('modules.simulation') : module.type}
+                    </div>
                   </div>
                 </div>
 
                 {/* Topics */}
                 <div>
-                  <div className="text-sm font-medium mb-2 text-foreground dark:text-foreground">{t('modules.keyTopics')}:</div>
+                  <div className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">{t('modules.keyTopics')}:</div>
                   <div className="flex flex-wrap gap-2">
-                    {module.topics.map((topic, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
+                    {module.topics.map((topic, idx) => (
+                      <Badge 
+                        key={idx}
+                        variant="outline" 
+                        className="text-xs bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                      >
                         {topic}
                       </Badge>
                     ))}
@@ -364,17 +356,28 @@ export function ModulesPage({ userData }: ModulesPageProps) {
                 {/* Action Button */}
                 <div className="pt-2">
                   {module.status === 'completed' ? (
-                    <Button variant="outline" className="w-full">
+                    <Button 
+                      variant="outline" 
+                      className="w-full group/btn border-green-200 dark:border-green-800 bg-gradient-to-r from-green-50 to-green-100/50 dark:from-green-950/30 dark:to-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 text-green-700 dark:text-green-300 shadow-md hover:shadow-lg transition-all duration-300"
+                    >
                       <CheckCircle className="h-4 w-4 mr-2" />
                       {t('modules.reviewModule')}
+                      <ChevronRight className="h-4 w-4 ml-auto group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   ) : module.status === 'in-progress' ? (
-                    <Button className="w-full bg-gradient-to-r from-orange-500 to-indigo-600 hover:from-orange-600 hover:to-indigo-700">
+                    <Button 
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 group/btn animate-subtleGlow"
+                    >
                       <Play className="h-4 w-4 mr-2" />
                       {t('modules.continueLearning')}
+                      <ChevronRight className="h-4 w-4 ml-auto group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   ) : (
-                    <Button variant="outline" className="w-full" disabled>
+                    <Button 
+                      variant="outline" 
+                      className="w-full opacity-50 cursor-not-allowed border-gray-200 dark:border-gray-700"
+                      disabled
+                    >
                       <Lock className="h-4 w-4 mr-2" />
                       {t('modules.completePrevious')}
                     </Button>
@@ -386,28 +389,44 @@ export function ModulesPage({ userData }: ModulesPageProps) {
         </div>
 
         {/* Additional Resources */}
-        <Card className="mt-8 bg-card dark:bg-card border-border dark:border-border">
-          <CardHeader>
-            <CardTitle className="text-card-foreground dark:text-card-foreground">{t('modules.additionalResources')}</CardTitle>
-            <CardDescription className="text-muted-foreground dark:text-muted-foreground">{t('modules.resourcesDesc')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button variant="outline" className="h-16 flex flex-col items-center space-y-2">
-                <FileText className="h-6 w-6" />
-                <span>{t('modules.resourceLibrary')}</span>
-              </Button>
-              <Button variant="outline" className="h-16 flex flex-col items-center space-y-2">
-                <BookOpen className="h-6 w-6" />
-                <span>{t('modules.bestPractices')}</span>
-              </Button>
-              <Button variant="outline" className="h-16 flex flex-col items-center space-y-2">
-                <Shield className="h-6 w-6" />
-                <span>{t('modules.caseStudies')}</span>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="mt-8 animate-fadeInUp delay-400">
+          <Card className="bg-gradient-to-br from-white via-orange-50/30 to-white dark:from-slate-900 dark:via-orange-950/10 dark:to-slate-900 border border-orange-100 dark:border-orange-900/30 shadow-lg hover:shadow-xl transition-all duration-300">
+            <CardHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 rounded-lg shadow-md">
+                  <BookOpen className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                </div>
+                <CardTitle className="text-xl">
+                  {t('modules.additionalResources')}
+                </CardTitle>
+              </div>
+              <CardDescription>{t('modules.resourcesDesc')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  { icon: FileText, label: t('modules.resourceLibrary'), color: 'blue' },
+                  { icon: BookOpen, label: t('modules.bestPractices'), color: 'orange' },
+                  { icon: Shield, label: t('modules.caseStudies'), color: 'purple' }
+                ].map((resource, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Button 
+                      variant="outline" 
+                      className={`h-20 flex flex-col items-center justify-center gap-2 border-${resource.color}-200 dark:border-${resource.color}-800 bg-gradient-to-br from-${resource.color}-50 to-${resource.color}-100/50 dark:from-${resource.color}-950/30 dark:to-${resource.color}-900/20 hover:bg-${resource.color}-100 dark:hover:bg-${resource.color}-900/40 shadow-md hover:shadow-lg transition-all duration-300 w-full`}
+                    >
+                      <resource.icon className={`h-6 w-6 text-${resource.color}-600 dark:text-${resource.color}-400`} />
+                      <span className={`font-medium text-sm text-${resource.color}-700 dark:text-${resource.color}-300`}>{resource.label}</span>
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { ImageWithFallback } from './designAssets/ImageWithFallback';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 import { 
   Smartphone, 
   Play, 
   Users, 
   Clock, 
+  Zap,
+  Shield,
   Flame,
   Mountain,
   Waves,

@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -25,7 +26,9 @@ import {
   Info,
   BookOpen,
   Award,
-  Target
+  Target,
+  TrendingUp,
+  Bell
 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { useAlerts } from './shared/AlertContext';
@@ -41,23 +44,14 @@ interface DashboardProps {
   } | null;
 }
 
-// Type for alert mapping
-type AlertType = 'fire' | 'earthquake' | 'medical' | 'other';
-type AlertSeverity = 'high' | 'medium' | 'low';
-
 export function Dashboard({ userData }: DashboardProps) {
   const { t } = useLanguage();
   const { addAlert } = useAlerts();
   
-  // Refs for cleanup
-  const sosTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const incidentTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Lazy initialization for alerts - only compute once
-  const alerts = useMemo(() => [
+  const [alerts] = useState([
     {
       id: 1,
-      type: 'warning' as const,
+      type: 'warning',
       title: t('dashboard.alerts.heavyRainfall'),
       description: t('dashboard.alerts.rainfallDesc'),
       time: t('dashboard.alerts.timeAgo2h'),
@@ -65,31 +59,23 @@ export function Dashboard({ userData }: DashboardProps) {
     },
     {
       id: 2,
-      type: 'warning' as const,
+      type: 'warning',
       title: t('dashboard.alerts.earthquakeTremors'),
       description: t('dashboard.alerts.seismicDesc'),
       time: t('dashboard.alerts.timeAgo6h'),
       region: t('TamilNadu Region')
     }
-  ], [t]);
+  ]);
 
-  // Student's learning progress data - memoized
-  const studentProgress = useMemo(() => ({
+  // Student's learning progress data
+  const [studentProgress] = useState({
     overallProgress: 72,
     modulesCompleted: 4,
     totalModules: 6,
     vrTrainingsCompleted: 2,
     totalVrTrainings: 3,
     latestQuizScore: 85
-  }), []);
-
-  // Emergency contacts data - memoized
-  const emergencyContacts = useMemo(() => [
-    { id: 'fire', name: t('dashboard.emergencyContacts.fire'), number: '101', icon: '🔥' },
-    { id: 'police', name: t('dashboard.emergencyContacts.police'), number: '100', icon: '👮' },
-    { id: 'medical', name: t('dashboard.emergencyContacts.medical'), number: '108', icon: '🚑' },
-    { id: 'disaster', name: t('dashboard.emergencyContacts.disaster'), number: '1070', icon: '🌊' }
-  ], [t]);
+  });
 
   // Modal and panel states
   const [contactsSheetOpen, setContactsSheetOpen] = useState(false);
@@ -104,29 +90,16 @@ export function Dashboard({ userData }: DashboardProps) {
     description: ''
   });
 
-  // Cleanup timeouts on unmount
-  useEffect(() => {
-    return () => {
-      if (sosTimeoutRef.current) clearTimeout(sosTimeoutRef.current);
-      if (incidentTimeoutRef.current) clearTimeout(incidentTimeoutRef.current);
-    };
-  }, []);
+  // Emergency contacts data
+  const emergencyContacts = [
+    { name: t('dashboard.emergencyContacts.fire'), number: '101', icon: '🔥' },
+    { name: t('dashboard.emergencyContacts.police'), number: '100', icon: '👮' },
+    { name: t('dashboard.emergencyContacts.medical'), number: '108', icon: '🚑' },
+    { name: t('dashboard.emergencyContacts.disaster'), number: '1070', icon: '🌊' }
+  ];
 
-  // Memoized alert type mapping with proper types
-  const alertTypeMap = useMemo(() => ({
-    fire: 'Fire Alert' as const,
-    earthquake: 'Earthquake Alert' as const,
-    medical: 'Medical Emergency' as const,
-    other: 'General Emergency' as const
-  }), []);
-
-  // Optimized SOS handler with proper cleanup
-  const handleSosConfirm = useCallback(() => {
-    // Clear any existing timeout
-    if (sosTimeoutRef.current) {
-      clearTimeout(sosTimeoutRef.current);
-    }
-
+  const handleSosConfirm = () => {
+    // Find the institution details
     const institution = getInstitutionById(userData?.schoolCode || '');
     
     if (institution && userData) {
@@ -140,35 +113,31 @@ export function Dashboard({ userData }: DashboardProps) {
         type: 'General Emergency',
         status: 'active',
         location: 'Student Dashboard',
-        severity: 'high' as AlertSeverity,
+        severity: 'high',
         description: `Emergency SOS alert triggered by student ${userData.studentName}`,
         coordinates: institution.coordinates
       });
     }
     
     setSosConfirmed(true);
-    
-    // Reset after 3 seconds with proper cleanup
-    sosTimeoutRef.current = setTimeout(() => {
-      setSosConfirmed(false);
-      sosTimeoutRef.current = null;
-    }, 3000);
-  }, [userData, addAlert]);
+    // Reset after 3 seconds
+    setTimeout(() => setSosConfirmed(false), 3000);
+  };
 
-  // Optimized incident submit handler
-  const handleIncidentSubmit = useCallback((e: React.FormEvent) => {
+  const handleIncidentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Clear any existing timeout
-    if (incidentTimeoutRef.current) {
-      clearTimeout(incidentTimeoutRef.current);
-    }
-
+    // Find the institution details
     const institution = getInstitutionById(userData?.schoolCode || '');
     
     if (institution && userData && incidentForm.type && incidentForm.location && incidentForm.description) {
-      const incidentType = incidentForm.type as AlertType;
-      const severity: AlertSeverity = (incidentType === 'fire' || incidentType === 'medical') ? 'high' : 'medium';
+      // Map incident types to alert types
+      const alertTypeMap: Record<string, any> = {
+        'fire': 'Fire Alert',
+        'earthquake': 'Earthquake Alert',
+        'medical': 'Medical Emergency',
+        'other': 'General Emergency'
+      };
       
       // Add incident report as alert to AlertContext
       addAlert({
@@ -177,10 +146,10 @@ export function Dashboard({ userData }: DashboardProps) {
         district: institution.district,
         state: institution.state,
         studentName: userData.studentName,
-        type: alertTypeMap[incidentType] || 'General Emergency',
+        type: alertTypeMap[incidentForm.type] || 'General Emergency',
         status: 'pending',
         location: incidentForm.location,
-        severity,
+        severity: incidentForm.type === 'fire' || incidentForm.type === 'medical' ? 'high' : 'medium',
         description: incidentForm.description,
         coordinates: institution.coordinates
       });
@@ -189,346 +158,449 @@ export function Dashboard({ userData }: DashboardProps) {
     setIncidentSubmitted(true);
     setIncidentModalOpen(false);
     setIncidentForm({ type: '', location: '', description: '' });
-    
-    // Reset after 3 seconds with proper cleanup
-    incidentTimeoutRef.current = setTimeout(() => {
-      setIncidentSubmitted(false);
-      incidentTimeoutRef.current = null;
-    }, 3000);
-  }, [userData, incidentForm, addAlert, alertTypeMap]);
+    // Reset after 3 seconds
+    setTimeout(() => setIncidentSubmitted(false), 3000);
+  };
 
-  // Optimized call handler
-  const handleCall = useCallback((number: string) => {
+  const handleCall = (number: string) => {
     // In a real app, this would trigger the device's call functionality
-    window.open(`tel:${number}`, '_self');
-  }, []);
-
-  // Optimized form field updaters
-  const handleIncidentTypeChange = useCallback((value: string) => {
-    setIncidentForm(prev => ({ ...prev, type: value }));
-  }, []);
-
-  const handleLocationChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setIncidentForm(prev => ({ ...prev, location: e.target.value }));
-  }, []);
-
-  const handleDescriptionChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setIncidentForm(prev => ({ ...prev, description: e.target.value }));
-  }, []);
+    window.open(`tel:${number}`);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 transition-colors duration-200">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 lg:py-12 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 break-words">{t('dashboard.welcome')}</h1>
-          <p className="text-gray-600 dark:text-gray-400 break-words">{t('dashboard.overview')}</p>
-        </div>
+        {/* Refined Header */}
+        <motion.div 
+          className="mb-10 lg:mb-12 animate-fadeInUp"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="mb-2 break-words bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent text-[40px] font-bold">
+            {t('dashboard.welcome')}
+          </h1>
+          <p className="text-muted-foreground max-w-2xl break-words text-[20px]">{t('dashboard.overview')}</p>
+        </motion.div>
 
-        {/* Emergency Tools - Optimized with smooth transitions */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
+        {/* Emergency Actions - Clean & Professional */}
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 lg:mb-12 animate-fadeInUp delay-100"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <EmergencySOS onConfirm={handleSosConfirm} variant="dashboard">
-            <Button 
-              className="h-16 sm:h-20 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white flex flex-col items-center justify-center space-y-1 sm:space-y-2 shadow-lg w-full transition-all duration-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
-              aria-label="Emergency SOS Alert"
-            >
-              <Zap className="h-6 w-6 sm:h-8 sm:w-8" />
-              <span className="font-semibold text-sm sm:text-base">{t('landing.sos')}</span>
-            </Button>
+            <motion.div whileHover={{ y: -4, scale: 1.02 }} transition={{ duration: 0.2 }}>
+              <Button 
+                className="h-20 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 w-full"
+              >
+                <Zap className="h-6 w-6 animate-pulse" />
+                <span>{t('landing.sos')}</span>
+              </Button>
+            </motion.div>
           </EmergencySOS>
           
-          <Button 
-            onClick={() => setContactsSheetOpen(true)}
-            variant="outline" 
-            className="h-16 sm:h-20 border-orange-200 dark:border-orange-800 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 flex flex-col items-center justify-center space-y-1 sm:space-y-2 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
-            aria-label="Quick Emergency Contacts"
-          >
-            <Phone className="h-6 w-6 sm:h-8 sm:w-8" />
-            <span className="font-semibold text-sm sm:text-base">{t('landing.contacts')}</span>
-          </Button>
+          <motion.div whileHover={{ y: -4, scale: 1.02 }} transition={{ duration: 0.2 }}>
+            <Button 
+              onClick={() => setContactsSheetOpen(true)}
+              variant="outline"
+              className="h-20 border-2 border-blue-200 dark:border-blue-900 hover:border-blue-500 dark:hover:border-blue-600 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-950/40 flex flex-col items-center justify-center gap-2 w-full shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <Phone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              <span className="text-blue-700 dark:text-blue-300">{t('landing.contacts')}</span>
+            </Button>
+          </motion.div>
           
-          <Button 
-            onClick={() => setIncidentModalOpen(true)}
-            variant="outline" 
-            className="h-16 sm:h-20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 flex flex-col items-center justify-center space-y-1 sm:space-y-2 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
-            aria-label="Report Incident"
-          >
-            <FileText className="h-6 w-6 sm:h-8 sm:w-8" />
-            <span className="font-semibold text-sm sm:text-base">{t('landing.report')}</span>
-          </Button>
-        </div>
+          <motion.div whileHover={{ y: -4, scale: 1.02 }} transition={{ duration: 0.2 }}>
+            <Button 
+              onClick={() => setIncidentModalOpen(true)}
+              variant="outline"
+              className="h-20 border-2 border-orange-200 dark:border-orange-900 hover:border-orange-500 dark:hover:border-orange-600 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/30 dark:to-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-950/40 flex flex-col items-center justify-center gap-2 w-full shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <FileText className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              <span className="text-orange-700 dark:text-orange-300">{t('landing.report')}</span>
+            </Button>
+          </motion.div>
+        </motion.div>
 
-        {/* Success Messages with smooth animations */}
+        {/* Success Messages */}
         {sosConfirmed && (
-          <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-300">
-            <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 shadow-sm">
-              <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-              <AlertDescription className="text-green-800 dark:text-green-200 font-medium">
-                ✅ {t('dashboard.sos.success')}
+          <motion.div 
+            className="mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <Alert className="border-green-500 bg-green-50 dark:bg-green-950/20">
+              <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-500" />
+              <AlertDescription className="text-green-800 dark:text-green-200">
+                {t('dashboard.sos.success')}
               </AlertDescription>
             </Alert>
-          </div>
+          </motion.div>
         )}
 
         {incidentSubmitted && (
-          <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-300">
-            <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 shadow-sm">
-              <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-              <AlertDescription className="text-green-800 dark:text-green-200 font-medium">
-                ✅ {t('dashboard.incident.success')}
+          <motion.div 
+            className="mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <Alert className="border-green-500 bg-green-50 dark:bg-green-950/20">
+              <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-500" />
+              <AlertDescription className="text-green-800 dark:text-green-200">
+                {t('dashboard.incident.success')}
               </AlertDescription>
             </Alert>
-          </div>
+          </motion.div>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Real-time Alerts - Optimized rendering */}
-            <Card className="bg-card dark:bg-card border-border dark:border-border transition-shadow hover:shadow-md">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2 text-card-foreground dark:text-card-foreground">
-                  <AlertTriangle className="h-5 w-5 text-orange-500 dark:text-orange-400" />
-                  <span className="break-words">{t('dashboard.alerts.title')}</span>
-                </CardTitle>
-                <CardDescription className="text-muted-foreground dark:text-muted-foreground break-words">
-                  {t('dashboard.alerts.description')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {alerts.map((alert) => {
-                  const isWarning = alert.type === 'warning';
-                  return (
-                    <Alert 
-                      key={alert.id} 
-                      className={`transition-all duration-200 hover:shadow-sm ${
-                        isWarning 
-                          ? 'border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/20' 
-                          : 'border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20'
-                      }`}
+            {/* Real-time Alerts - Clean Design */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="animate-fadeInUp delay-200"
+            >
+              <Card className="shadow-lg border-orange-100 dark:border-orange-900/30 bg-gradient-to-br from-white via-orange-50/30 to-white dark:from-slate-900 dark:via-orange-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 rounded-lg shadow-md">
+                      <Bell className="h-5 w-5 text-orange-600 dark:text-orange-400 animate-pulse" />
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-foreground break-words">
+                        {t('dashboard.alerts.title')}
+                      </CardTitle>
+                      <CardDescription className="text-muted-foreground break-words">
+                        {t('dashboard.alerts.description')}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {alerts.map((alert, index) => (
+                    <motion.div
+                      key={alert.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 * index }}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      className="animate-fadeIn"
+                      style={{ animationDelay: `${index * 100}ms` }}
                     >
-                      <div className="flex items-start space-x-3">
-                        {isWarning ? (
-                          <AlertCircle className="h-5 w-5 text-orange-500 dark:text-orange-400 mt-0.5 flex-shrink-0" />
-                        ) : (
-                          <Info className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2 mb-1">
-                            <h4 className="font-semibold text-foreground dark:text-foreground break-words flex-1">{alert.title}</h4>
-                            <Badge variant="outline" className="text-xs shrink-0 whitespace-nowrap">
-                              <MapPin className="h-3 w-3 mr-1" />
-                              {alert.region}
-                            </Badge>
+                      <div className="p-4 rounded-lg border border-orange-100 dark:border-orange-900/30 bg-gradient-to-r from-white to-orange-50/30 dark:from-slate-900 dark:to-orange-950/10 shadow-sm hover:shadow-md transition-all duration-300">
+                        <div className="flex items-start gap-3">
+                          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 flex-shrink-0 shadow-sm">
+                            <AlertCircle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                           </div>
-                          <AlertDescription className="text-sm text-muted-foreground dark:text-muted-foreground break-words">{alert.description}</AlertDescription>
-                          <div className="flex items-center text-xs text-muted-foreground dark:text-muted-foreground mt-2">
-                            <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
-                            <span>{alert.time}</span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
+                              <h4 className="text-foreground break-words">{alert.title}</h4>
+                              <Badge variant="secondary" className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-0">
+                                <MapPin className="h-3 w-3 mr-1" />
+                                {alert.region}
+                              </Badge>
+                            </div>
+                            <p className="text-muted-foreground text-sm break-words mb-2">
+                              {alert.description}
+                            </p>
+                            <div className="flex items-center text-xs text-muted-foreground">
+                              <Clock className="h-3 w-3 mr-1" />
+                              {alert.time}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </Alert>
-                  );
-                })}
-              </CardContent>
-            </Card>
+                    </motion.div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            {/* Quick Access - Optimized with smooth interactions */}
-            <Card className="transition-shadow hover:shadow-md">
-              <CardHeader>
-                <CardTitle>{t('dashboard.quickAccess.title')}</CardTitle>
-                <CardDescription>{t('dashboard.quickAccess.description')}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4">
-                  <Button 
-                    variant="outline" 
-                    className="h-16 flex flex-col items-center space-y-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
-                    aria-label="Safety Protocols"
-                  >
-                    <Shield className="h-6 w-6" />
-                    <span className="text-xs sm:text-sm text-center">{t('dashboard.quickAccess.safetyProtocols')}</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="h-16 flex flex-col items-center space-y-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
-                    aria-label="Evacuation Routes"
-                  >
-                    <MapPin className="h-6 w-6" />
-                    <span className="text-xs sm:text-sm text-center">{t('dashboard.quickAccess.evacuationRoutes')}</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="h-16 flex flex-col items-center space-y-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
-                    aria-label="Emergency Directory"
-                  >
-                    <Users className="h-6 w-6" />
-                    <span className="text-xs sm:text-sm text-center">{t('dashboard.quickAccess.emergencyDirectory')}</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="h-16 flex flex-col items-center space-y-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
-                    aria-label="Incident Reports"
-                  >
-                    <FileText className="h-6 w-6" />
-                    <span className="text-xs sm:text-sm text-center">{t('dashboard.quickAccess.incidentReports')}</span>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Quick Access - Minimalist */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="animate-fadeInUp delay-300"
+            >
+              <Card className="shadow-lg border-blue-100 dark:border-blue-900/30 bg-gradient-to-br from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-blue-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg shadow-md">
+                      <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-foreground">
+                        {t('dashboard.quickAccess.title')}
+                      </CardTitle>
+                      <CardDescription>
+                        {t('dashboard.quickAccess.description')}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { icon: Shield, label: t('dashboard.quickAccess.safetyProtocols'), color: 'blue' },
+                      { icon: MapPin, label: t('dashboard.quickAccess.evacuationRoutes'), color: 'green' },
+                      { icon: Users, label: t('dashboard.quickAccess.emergencyDirectory'), color: 'purple' },
+                      { icon: FileText, label: t('dashboard.quickAccess.incidentReports'), color: 'orange' }
+                    ].map((item, index) => (
+                      <motion.div
+                        key={index}
+                        whileHover={{ y: -2 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Button 
+                          variant="outline" 
+                          className="h-20 flex flex-col items-center justify-center gap-2 border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 w-full"
+                        >
+                          <item.icon className={`h-5 w-5 text-${item.color}-600 dark:text-${item.color}-500`} />
+                          <span className="text-xs text-center text-muted-foreground">{item.label}</span>
+                        </Button>
+                      </motion.div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
 
           {/* Right Column */}
           <div className="space-y-6">
-            {/* Student's Learning Progress - Optimized */}
-            <Card className="transition-shadow hover:shadow-md">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <BookOpen className="h-5 w-5 text-blue-500" />
-                  <span>{t('dashboard.learningProgress')}</span>
-                </CardTitle>
-                <CardDescription>{t('dashboard.progressDesc')}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center mb-4">
-                  <div className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2 tabular-nums">
-                    {studentProgress.overallProgress}%
+            {/* Student's Learning Progress - Elegant */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="animate-fadeInUp delay-200"
+            >
+              <Card className="shadow-lg border-purple-100 dark:border-purple-900/30 bg-gradient-to-br from-white via-purple-50/20 to-white dark:from-slate-900 dark:via-purple-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-950/50 dark:to-purple-900/30 rounded-lg shadow-md">
+                      <BookOpen className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-foreground">
+                        {t('dashboard.learningProgress')}
+                      </CardTitle>
+                      <CardDescription>
+                        {t('dashboard.progressDesc')}
+                      </CardDescription>
+                    </div>
                   </div>
-                  <Progress 
-                    value={studentProgress.overallProgress} 
-                    className="w-full h-2 transition-all duration-500" 
-                    aria-label={`Learning progress: ${studentProgress.overallProgress}%`}
-                  />
-                </div>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center justify-between p-2 rounded-lg transition-colors hover:bg-muted/50">
-                    <span className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500 dark:text-green-400 flex-shrink-0" />
-                      <span className="break-words">{t('dashboard.modulesCompleted')}</span>
-                    </span>
-                    <span className="text-green-600 dark:text-green-400 font-medium tabular-nums">
-                      {studentProgress.modulesCompleted}/{studentProgress.totalModules}
-                    </span>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center mb-6">
+                    <div className="text-5xl text-foreground mb-3">
+                      {studentProgress.overallProgress}%
+                    </div>
+                    <Progress value={studentProgress.overallProgress} className="h-2" />
                   </div>
-                  <div className="flex items-center justify-between p-2 rounded-lg transition-colors hover:bg-muted/50">
-                    <span className="flex items-center gap-2">
-                      <Target className="h-4 w-4 text-purple-500 dark:text-purple-400 flex-shrink-0" />
-                      <span className="break-words">{t('dashboard.vrTrainingsCompleted')}</span>
-                    </span>
-                    <span className="text-purple-600 dark:text-purple-400 font-medium tabular-nums">
-                      {studentProgress.vrTrainingsCompleted}/{studentProgress.totalVrTrainings}
-                    </span>
+                  <div className="space-y-3">
+                    {[
+                      { 
+                        icon: CheckCircle, 
+                        label: t('dashboard.modulesCompleted'), 
+                        value: `${studentProgress.modulesCompleted}/${studentProgress.totalModules}`,
+                        color: 'green'
+                      },
+                      { 
+                        icon: Target, 
+                        label: t('dashboard.vrTrainingsCompleted'), 
+                        value: `${studentProgress.vrTrainingsCompleted}/${studentProgress.totalVrTrainings}`,
+                        color: 'purple'
+                      },
+                      { 
+                        icon: Award, 
+                        label: t('dashboard.latestQuizScore'), 
+                        value: `${studentProgress.latestQuizScore}%`,
+                        color: 'orange'
+                      }
+                    ].map((stat, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-800"
+                      >
+                        <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <stat.icon className={`h-4 w-4 text-${stat.color}-600 dark:text-${stat.color}-500`} />
+                          {stat.label}
+                        </span>
+                        <span className={`text-${stat.color}-600 dark:text-${stat.color}-500`}>
+                          {stat.value}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-center justify-between p-2 rounded-lg transition-colors hover:bg-muted/50">
-                    <span className="flex items-center gap-2">
-                      <Award className="h-4 w-4 text-orange-500 dark:text-orange-400 flex-shrink-0" />
-                      <span className="break-words">{t('dashboard.latestQuizScore')}</span>
-                    </span>
-                    <span className="text-orange-600 dark:text-orange-400 font-medium tabular-nums">
-                      {studentProgress.latestQuizScore}%
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            {/* Recent Activity - Student Centric - Optimized */}
-            <Card className="transition-shadow hover:shadow-md">
-              <CardHeader>
-                <CardTitle>{t('dashboard.recentActivity')}</CardTitle>
-                <CardDescription>{t('dashboard.recentActivityDesc')}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-start space-x-3 p-2 rounded-lg transition-colors hover:bg-muted/50">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" role="presentation"></div>
-                  <div className="text-sm flex-1 min-w-0">
-                    <p className="font-medium break-words">{t('dashboard.recentActivity.module4')}</p>
-                    <p className="text-gray-500 dark:text-gray-400 break-words">{t('dashboard.recentActivity.keepProgress')}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('dashboard.recentActivity.timeAgo1h')}</p>
+            {/* Recent Activity - Refined */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="animate-fadeInUp delay-300"
+            >
+              <Card className="shadow-lg border-green-100 dark:border-green-900/30 bg-gradient-to-br from-white via-green-50/20 to-white dark:from-slate-900 dark:via-green-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-950/50 dark:to-green-900/30 rounded-lg shadow-md">
+                      <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-foreground">
+                        {t('dashboard.recentActivity')}
+                      </CardTitle>
+                      <CardDescription>
+                        {t('dashboard.recentActivityDesc')}
+                      </CardDescription>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start space-x-3 p-2 rounded-lg transition-colors hover:bg-muted/50">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" role="presentation"></div>
-                  <div className="text-sm flex-1 min-w-0">
-                    <p className="font-medium break-words">{t('dashboard.recentActivity.vrFire')}</p>
-                    <p className="text-gray-500 dark:text-gray-400 break-words">{t('dashboard.recentActivity.evacuationTime')}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('dashboard.recentActivity.timeAgo2d')}</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3 p-2 rounded-lg transition-colors hover:bg-muted/50">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0" role="presentation"></div>
-                  <div className="text-sm flex-1 min-w-0">
-                    <p className="font-medium break-words">{t('dashboard.recentActivity.quizEarthquake')}</p>
-                    <p className="text-gray-500 dark:text-gray-400 break-words">{t('dashboard.recentActivity.performance')}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('dashboard.recentActivity.timeAgo3d')}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Emergency Contacts - Optimized with better interactions */}
-            <Card className="transition-shadow hover:shadow-md">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Phone className="h-5 w-5 text-blue-500" />
-                  <span>{t('dashboard.emergencyContacts')}</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {emergencyContacts.map((contact) => (
-                  <div key={contact.id} className="flex items-center justify-between p-2 rounded-lg transition-colors hover:bg-muted/50">
-                    <span className="text-sm font-medium break-words flex-1">{contact.name}</span>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleCall(contact.number)}
-                      className="transition-all hover:scale-105 active:scale-95 shrink-0 ml-2"
-                      aria-label={`Call ${contact.name} at ${contact.number}`}
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {[
+                    { 
+                      color: 'green', 
+                      title: t('dashboard.recentActivity.module4'), 
+                      desc: t('dashboard.recentActivity.keepProgress'),
+                      time: t('dashboard.recentActivity.timeAgo1h'),
+                      icon: BookOpen
+                    },
+                    { 
+                      color: 'purple', 
+                      title: t('dashboard.recentActivity.vrFire'), 
+                      desc: t('dashboard.recentActivity.evacuationTime'),
+                      time: t('dashboard.recentActivity.timeAgo2d'),
+                      icon: Target
+                    },
+                    { 
+                      color: 'orange', 
+                      title: t('dashboard.recentActivity.quizEarthquake'), 
+                      desc: t('dashboard.recentActivity.performance'),
+                      time: t('dashboard.recentActivity.timeAgo3d'),
+                      icon: Award
+                    }
+                  ].map((activity, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-800"
                     >
-                      {contact.number}
-                    </Button>
+                      <div className={`w-1.5 h-1.5 bg-${activity.color}-500 rounded-full mt-2 flex-shrink-0`}></div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <activity.icon className={`h-4 w-4 text-${activity.color}-600 dark:text-${activity.color}-500 flex-shrink-0`} />
+                          <p className="text-sm text-foreground truncate">{activity.title}</p>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{activity.desc}</p>
+                        <p className="text-xs text-muted-foreground mt-1 flex items-center">
+                          <Clock className="h-3 w-3 mr-1" />
+                          {activity.time}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Emergency Contacts - Simple */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="animate-fadeInUp delay-400"
+            >
+              <Card className="shadow-lg border-red-100 dark:border-red-900/30 bg-gradient-to-br from-white via-red-50/20 to-white dark:from-slate-900 dark:via-red-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 dark:from-red-950/50 dark:to-red-900/30 rounded-lg shadow-md">
+                      <Phone className="h-5 w-5 text-red-600 dark:text-red-400" />
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-foreground">
+                        {t('dashboard.emergencyContacts')}
+                      </CardTitle>
+                    </div>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {[
+                    { label: t('dashboard.emergencyContacts.fire'), number: '101' },
+                    { label: t('dashboard.emergencyContacts.police'), number: '100' },
+                    { label: t('dashboard.emergencyContacts.medical'), number: '108' },
+                    { label: t('dashboard.emergencyContacts.disaster'), number: '1070' }
+                  ].map((contact, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                    >
+                      <span className="text-sm text-foreground">{contact.label}</span>
+                      <Button 
+                        size="sm"
+                        variant="ghost"
+                        className="text-blue-600 dark:text-blue-500 hover:text-blue-700 dark:hover:text-blue-400"
+                      >
+                        <Phone className="h-3 w-3 mr-1" />
+                        {contact.number}
+                      </Button>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </div>
-
-
 
       {/* Quick Contacts Sheet */}
       <Sheet open={contactsSheetOpen} onOpenChange={setContactsSheetOpen}>
         <SheetContent side="right" className="w-full sm:w-[400px]">
           <SheetHeader>
-            <SheetTitle className="flex items-center space-x-2">
-              <Phone className="h-5 w-5 text-orange-500" />
+            <SheetTitle className="flex items-center gap-2">
+              <Phone className="h-5 w-5 text-blue-600 dark:text-blue-500" />
               <span>{t('dashboard.emergencyContacts')}</span>
             </SheetTitle>
             <SheetDescription>
               {t('dashboard.emergencyContacts.tapToCall')}
             </SheetDescription>
           </SheetHeader>
-          <div className="mt-6 space-y-4">
-            {emergencyContacts.map((contact) => (
-              <Card key={contact.id} className="p-4 transition-shadow hover:shadow-md">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl" role="img" aria-label={contact.name}>{contact.icon}</span>
-                    <div>
-                      <p className="font-medium">{contact.name}</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{contact.number}</p>
+          <div className="mt-6 space-y-3">
+            {emergencyContacts.map((contact, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="p-4 border-gray-200 dark:border-gray-800 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{contact.icon}</span>
+                      <div>
+                        <p className="text-foreground">{contact.name}</p>
+                        <p className="text-sm text-muted-foreground">{contact.number}</p>
+                      </div>
                     </div>
+                    <Button
+                      onClick={() => handleCall(contact.number)}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      {t('dashboard.emergencyContacts.call')}
+                    </Button>
                   </div>
-                  <Button
-                    onClick={() => handleCall(contact.number)}
-                    className="bg-green-600 hover:bg-green-700 text-white transition-colors"
-                    aria-label={`Call ${contact.name} at ${contact.number}`}
-                  >
-                    📞 {t('dashboard.emergencyContacts.call')}
-                  </Button>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </SheetContent>
@@ -538,8 +610,8 @@ export function Dashboard({ userData }: DashboardProps) {
       <Dialog open={incidentModalOpen} onOpenChange={setIncidentModalOpen}>
         <DialogContent className="sm:max-w-md" aria-describedby="incident-dialog-description">
           <DialogHeader>
-            <DialogTitle className="flex items-center space-x-2">
-              <FileText className="h-5 w-5 text-blue-500" />
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-orange-600 dark:text-orange-500" />
               <span>{t('dashboard.incident.title')}</span>
             </DialogTitle>
             <DialogDescription id="incident-dialog-description">
@@ -551,7 +623,7 @@ export function Dashboard({ userData }: DashboardProps) {
               <Label htmlFor="incident-type">{t('dashboard.incident.type')}</Label>
               <Select
                 value={incidentForm.type}
-                onValueChange={handleIncidentTypeChange}
+                onValueChange={(value) => setIncidentForm(prev => ({ ...prev, type: value }))}
               >
                 <SelectTrigger id="incident-type">
                   <SelectValue placeholder={t('dashboard.incident.selectType')} />
@@ -570,9 +642,8 @@ export function Dashboard({ userData }: DashboardProps) {
                 id="location"
                 placeholder={t('dashboard.incident.locationPlaceholder')}
                 value={incidentForm.location}
-                onChange={handleLocationChange}
+                onChange={(e) => setIncidentForm(prev => ({ ...prev, location: e.target.value }))}
                 required
-                autoComplete="off"
               />
             </div>
             <div className="space-y-2">
@@ -581,7 +652,7 @@ export function Dashboard({ userData }: DashboardProps) {
                 id="description"
                 placeholder={t('dashboard.incident.descriptionPlaceholder')}
                 value={incidentForm.description}
-                onChange={handleDescriptionChange}
+                onChange={(e) => setIncidentForm(prev => ({ ...prev, description: e.target.value }))}
                 required
                 rows={3}
               />

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { School, Building2, AlertTriangle, X, Info } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, School, Building2, AlertTriangle, X, Info } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { allInstitutions, representedStates } from './shared/institutionsData';
@@ -68,6 +68,19 @@ export function IndiaMap({ className = '', showInstitutions = true, onInstitutio
 
   const getStateAlerts = (state: string) => {
     return activeAlerts.filter(alert => alert.state === state);
+  };
+
+  const getStateColor = (state: string) => {
+    const alerts = getStateAlerts(state);
+    const institutions = getInstitutionsByState(state);
+    
+    if (alerts.length > 0) {
+      return '#dc2626'; // Red for states with active alerts
+    } else if (institutions.length > 0) {
+      return '#10b981'; // Emerald green for states with institutions but no alerts
+    } else {
+      return '#84cc16'; // Lime green for states without institutions (matching image aesthetic)
+    }
   };
 
   return (
