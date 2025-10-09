@@ -1,21 +1,26 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Shield, 
   BarChart3,
   Building2,
+  Bell,
   FileText,
   Settings,
   LogOut,
   Menu,
   Activity,
   Award,
+  MessageSquare,
+  MapPin,
   AlertTriangle,
   Users,
-  Radio
+  TrendingUp,
+  Radio,
+  Zap
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { Tabs, TabsContent } from './ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { schools, colleges, allInstitutions } from './shared/institutionsData';
 import { useAlerts } from './shared/AlertContext';
@@ -104,23 +109,22 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
   // Navigation component for both mobile and desktop
   const NavigationContent = ({ mobile = false }) => (
-    <div className="space-y-3">
+    <div className="space-y-1">
       <button
         onClick={() => {
           setActiveTab('overview');
           mobile && setSidebarOpen(false);
         }}
-        className={`w-full flex items-center justify-start px-5 py-4 rounded-lg transition-all duration-200 group ${
+        className={`w-full flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 group ${
           activeTab === 'overview'
             ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
             : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
         }`}
-        style={{ fontSize: '15px' }}
       >
-        <BarChart3 className="h-6 w-6 mr-4 flex-shrink-0" />
-        <span className="font-semibold">Command Center</span>
+        <BarChart3 className="h-4 w-4 mr-3" />
+        <span className="font-medium">Command Center</span>
         {activeTab === 'overview' && (
-          <div className="ml-10 w-2 h-2 bg-white rounded-full animate-pulse flex-shrink-0" />
+          <div className="ml-auto w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
         )}
       </button>
 
@@ -129,16 +133,15 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           setActiveTab('institutions');
           mobile && setSidebarOpen(false);
         }}
-        className={`w-full flex items-center justify-start px-5 py-4 rounded-lg transition-all duration-200 ${
+        className={`w-full flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 ${
           activeTab === 'institutions'
             ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
             : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
         }`}
-        style={{ fontSize: '15px' }}
       >
-        <Building2 className="h-6 w-6 mr-4 flex-shrink-0" />
-        <span className="font-semibold">Institutions</span>
-        <Badge className="ml-auto bg-blue-500/20 text-blue-300 border-blue-500/30 text-sm px-3 py-1 flex-shrink-0">
+        <Building2 className="h-4 w-4 mr-3" />
+        <span className="font-medium">Institutions</span>
+        <Badge className="ml-auto bg-blue-500/20 text-blue-300 border-blue-500/30 text-xs">
           {allInstitutions.length}
         </Badge>
       </button>
@@ -148,17 +151,16 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           setActiveTab('alerts');
           mobile && setSidebarOpen(false);
         }}
-        className={`w-full flex items-center justify-start px-5 py-4 rounded-lg transition-all duration-200 ${
+        className={`w-full flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 ${
           activeTab === 'alerts'
             ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
             : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
         }`}
-        style={{ fontSize: '15px' }}
       >
-        <AlertTriangle className="h-6 w-6 mr-4 flex-shrink-0" />
-        <span className="font-semibold">Emergency Alerts</span>
+        <AlertTriangle className="h-4 w-4 mr-3" />
+        <span className="font-medium">Emergency Alerts</span>
         {activeAlerts.length > 0 && (
-          <Badge className="ml-auto bg-red-500 text-white border-0 text-xs px-2 py-0.5 animate-pulse flex-shrink-0">
+          <Badge className="ml-auto bg-red-500 text-white border-0 text-xs animate-pulse">
             {activeAlerts.length}
           </Badge>
         )}
@@ -169,15 +171,14 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           setActiveTab('communications');
           mobile && setSidebarOpen(false);
         }}
-        className={`w-full flex items-center justify-start px-5 py-4 rounded-lg transition-all duration-200 ${
+        className={`w-full flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 ${
           activeTab === 'communications'
             ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
             : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
         }`}
-        style={{ fontSize: '15px' }}
       >
-        <Radio className="h-6 w-6 mr-4 flex-shrink-0" />
-        <span className="font-semibold">SMS/IVR</span>
+        <Radio className="h-4 w-4 mr-3" />
+        <span className="font-medium">SMS/IVR</span>
       </button>
 
       <button
@@ -185,15 +186,14 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           setActiveTab('certificates');
           mobile && setSidebarOpen(false);
         }}
-        className={`w-full flex items-center justify-start px-5 py-4 rounded-lg transition-all duration-200 ${
+        className={`w-full flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 ${
           activeTab === 'certificates'
             ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
             : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
         }`}
-        style={{ fontSize: '15px' }}
       >
-        <Award className="h-6 w-6 mr-4 flex-shrink-0" />
-        <span className="font-semibold">Certificates</span>
+        <Award className="h-4 w-4 mr-3" />
+        <span className="font-medium">Certificates</span>
       </button>
 
       <button
@@ -201,15 +201,14 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           setActiveTab('reports');
           mobile && setSidebarOpen(false);
         }}
-        className={`w-full flex items-center justify-start px-5 py-4 rounded-lg transition-all duration-200 ${
+        className={`w-full flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 ${
           activeTab === 'reports'
             ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
             : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
         }`}
-        style={{ fontSize: '15px' }}
       >
-        <FileText className="h-6 w-6 mr-4 flex-shrink-0" />
-        <span className="font-semibold">Analytics</span>
+        <FileText className="h-4 w-4 mr-3" />
+        <span className="font-medium">Analytics</span>
       </button>
 
       <button
@@ -217,15 +216,14 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           setActiveTab('settings');
           mobile && setSidebarOpen(false);
         }}
-        className={`w-full flex items-center justify-start px-5 py-4 rounded-lg transition-all duration-200 ${
+        className={`w-full flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 ${
           activeTab === 'settings'
             ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
             : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
         }`}
-        style={{ fontSize: '15px' }}
       >
-        <Settings className="h-6 w-6 mr-4 flex-shrink-0" />
-        <span className="font-semibold">Settings</span>
+        <Settings className="h-4 w-4 mr-3" />
+        <span className="font-medium">Settings</span>
       </button>
     </div>
   );
@@ -317,32 +315,32 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
       <div className="flex">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:block w-[480px] border-r border-slate-800 bg-slate-900 min-h-screen sticky top-[73px]">
-          <div className="p-6">
+        <div className="hidden lg:block w-64 border-r border-slate-800 bg-slate-900 min-h-screen sticky top-[73px]">
+          <div className="p-4">
             {/* Quick stats in sidebar */}
-            <div className="mb-8 space-y-4">
-              <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/10 border-2 border-blue-600/30 rounded-xl p-5">
+            <div className="mb-6 space-y-3">
+              <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/10 border border-blue-600/30 rounded-lg p-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-sm text-blue-300 mb-2 font-medium">Total Students</div>
-                    <div className="text-3xl font-bold text-white">{overviewStats.totalStudents.toLocaleString()}</div>
+                    <div className="text-xs text-blue-300 mb-1">Total Students</div>
+                    <div className="text-2xl font-bold text-white">{overviewStats.totalStudents.toLocaleString()}</div>
                   </div>
-                  <Users className="h-12 w-12 text-blue-400 opacity-50" />
+                  <Users className="h-8 w-8 text-blue-400 opacity-50" />
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/10 border-2 border-orange-600/30 rounded-xl p-5">
+              <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/10 border border-orange-600/30 rounded-lg p-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-sm text-orange-300 mb-2 font-medium">Institutions</div>
-                    <div className="text-3xl font-bold text-white">{allInstitutions.length}</div>
+                    <div className="text-xs text-orange-300 mb-1">Institutions</div>
+                    <div className="text-2xl font-bold text-white">{allInstitutions.length}</div>
                   </div>
-                  <Building2 className="h-12 w-12 text-orange-400 opacity-50" />
+                  <Building2 className="h-8 w-8 text-orange-400 opacity-50" />
                 </div>
               </div>
             </div>
 
-            <div className="h-px bg-slate-800 mb-6" />
+            <div className="h-px bg-slate-800 mb-4" />
 
             <NavigationContent />
           </div>

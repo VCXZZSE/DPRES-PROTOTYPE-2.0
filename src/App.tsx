@@ -1,35 +1,25 @@
-import { useState, lazy, Suspense, useCallback, useEffect } from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
+import { LoginPage } from "./components/LoginPage";
+import { LandingPage } from "./components/LandingPage";
+import { Dashboard } from "./components/Dashboard";
+import { ModulesPage } from "./components/ModulesPage";
+import { VRTrainingPage } from "./components/VRTrainingPage";
+import { AdminDashboard } from "./components/AdminDashboard";
+import { DesktopOnlyScreen } from "./components/DesktopOnlyScreen";
+import { Navigation } from "./components/Navigation";
+import { WelcomeAnimation } from "./components/WelcomeAnimation";
+import { AdminWelcomeAnimation } from "./components/AdminWelcomeAnimation";
 import { LanguageProvider, useLanguage } from "./components/LanguageContext";
 import { AlertProvider } from "./components/shared/AlertContext";
 import { CommunicationProvider } from "./components/shared/CommunicationContext";
 import { useIsMobile } from "./components/hooks/useIsMobile";
-
-// Lazy load components for better code splitting and faster initial load
-const LoginPage = lazy(() => import("./components/LoginPage").then(m => ({ default: m.LoginPage })));
-const LandingPage = lazy(() => import("./components/LandingPage").then(m => ({ default: m.LandingPage })));
-const Dashboard = lazy(() => import("./components/Dashboard").then(m => ({ default: m.Dashboard })));
-const ModulesPage = lazy(() => import("./components/ModulesPage").then(m => ({ default: m.ModulesPage })));
-const VRTrainingPage = lazy(() => import("./components/VRTrainingPage").then(m => ({ default: m.VRTrainingPage })));
-const AdminDashboard = lazy(() => import("./components/AdminDashboard").then(m => ({ default: m.AdminDashboard })));
-const DesktopOnlyScreen = lazy(() => import("./components/DesktopOnlyScreen").then(m => ({ default: m.DesktopOnlyScreen })));
-const Navigation = lazy(() => import("./components/Navigation").then(m => ({ default: m.Navigation })));
-const WelcomeAnimation = lazy(() => import("./components/WelcomeAnimation").then(m => ({ default: m.WelcomeAnimation })));
-
-// Loading fallback component
-const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-950 dark:to-blue-950">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-      <p className="text-gray-600 dark:text-gray-400">Loading...</p>
-    </div>
-  </div>
-);
+import { Toaster } from "./components/ui/sonner";
 
 interface UserData {
   schoolName: string;
@@ -56,6 +46,7 @@ function AppContent() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [isFirstLogin, setIsFirstLogin] = useState(true);
   const [showWelcomeAnimation, setShowWelcomeAnimation] = useState(false);
+  const [showAdminWelcomeAnimation, setShowAdminWelcomeAnimation] = useState(false);
   
   // Mobile detection hook
   const isMobile = useIsMobile(1024);
@@ -63,34 +54,40 @@ function AppContent() {
   // Language context to reset on logout
   const { setLanguage } = useLanguage();
 
-  // Memoize animation complete handler to prevent infinite loops
-  const handleAnimationComplete = useCallback(() => {
+  // Memoize animation complete handlers to prevent infinite loops
+  const handleAnimationComplete = React.useCallback(() => {
     setShowWelcomeAnimation(false);
   }, []);
 
-  // Memoized login handler
-  const handleLogin = useCallback((data: UserData) => {
+  const handleAdminAnimationComplete = React.useCallback(() => {
+    setShowAdminWelcomeAnimation(false);
+  }, []);
+
+  const handleLogin = (data: UserData) => {
     setUserData(data);
     setIsLoggedIn(true);
     setIsAdminLoggedIn(false);
+    // Set first login to true on initial login, false on subsequent navigation
     setIsFirstLogin(true);
+    // Show welcome animation on login
     setShowWelcomeAnimation(true);
-  }, []);
+  };
 
-  // Memoized admin login handler
-  const handleAdminLogin = useCallback((data: AdminData) => {
+  const handleAdminLogin = (data: AdminData) => {
     // Check if user is on mobile - if so, don't allow admin login
     if (isMobile) {
+      // Don't proceed with admin login on mobile
       return;
     }
     setAdminData(data);
     setIsAdminLoggedIn(true);
     setIsLoggedIn(false);
     setIsFirstLogin(true);
-  }, [isMobile]);
+    // Show admin welcome animation on login
+    setShowAdminWelcomeAnimation(true);
+  };
 
-  // Memoized admin logout handler
-  const handleAdminLogout = useCallback(() => {
+  const handleAdminLogout = () => {
     setAdminData(null);
     setIsAdminLoggedIn(false);
     setIsFirstLogin(true);
@@ -98,24 +95,24 @@ function AppContent() {
     document.documentElement.classList.remove("dark");
     // Reset language to English
     setLanguage('en');
-  }, [setLanguage]);
+  };
 
-  // Memoized logout handler
-  const handleLogout = useCallback(() => {
+  const handleLogout = () => {
     setUserData(null);
     setAdminData(null);
     setIsLoggedIn(false);
     setIsAdminLoggedIn(false);
-    setIsFirstLogin(true);
-    setShowWelcomeAnimation(false);
+    setIsFirstLogin(true); // Reset for next login
+    setShowWelcomeAnimation(false); // Reset animation state
+    setShowAdminWelcomeAnimation(false); // Reset admin animation state
     // Force light mode on logout
     document.documentElement.classList.remove("dark");
     // Reset language to English
     setLanguage('en');
-  }, [setLanguage]);
+  };
 
   // Track navigation to mark subsequent visits as "Welcome back"
-  useEffect(() => {
+  React.useEffect(() => {
     if (isLoggedIn && isFirstLogin) {
       const timer = setTimeout(() => {
         setIsFirstLogin(false);
@@ -129,7 +126,7 @@ function AppContent() {
     <AlertProvider>
       <CommunicationProvider>
         <Router>
-          <Suspense fallback={<LoadingFallback />}>
+          <Toaster position="top-right" richColors />
             {!isLoggedIn && !isAdminLoggedIn ? (
               <LoginPage
                 onLogin={handleLogin}
@@ -140,6 +137,11 @@ function AppContent() {
                 studentName={userData.studentName}
                 schoolName={userData.schoolName}
                 onComplete={handleAnimationComplete}
+              />
+            ) : showAdminWelcomeAnimation && adminData ? (
+              <AdminWelcomeAnimation
+                adminEmail={adminData.email}
+                onComplete={handleAdminAnimationComplete}
               />
             ) : (
               <div className="min-h-screen bg-background text-foreground">
@@ -204,7 +206,6 @@ function AppContent() {
                 )}
               </div>
             )}
-          </Suspense>
           </Router>
         </CommunicationProvider>
       </AlertProvider>

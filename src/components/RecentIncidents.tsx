@@ -1,7 +1,8 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Card, CardContent } from './ui/card';
-import { ImageWithFallback } from './designAssets/ImageWithFallback';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 import { BookOpen, Users, Shield, AlertTriangle } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 

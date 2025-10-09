@@ -1,13 +1,18 @@
+import image_eb676453f7fa58e46cc7a87afbf8720a41cd2d30 from 'figma:asset/eb676453f7fa58e46cc7a87afbf8720a41cd2d30.png';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { ImageWithFallback } from './designAssets/ImageWithFallback';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 import { 
   Shield, 
   LayoutDashboard, 
   BookOpen, 
   Headphones, 
-  AlertTriangle
+  AlertTriangle,
+  Users,
+  Target,
+  Globe
 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { RecentIncidents } from './RecentIncidents';
@@ -236,8 +241,31 @@ export function LandingPage({ userData }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Disaster Case Studies Section */}
+      {/* Recent Disasters & Case Studies Section */}
       <RecentIncidents />
+
+      {/* Statistics Section */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
+            <div>
+              <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">1,250+</div>
+              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 break-words">{t('landing.stats.institutions')}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 break-words">Currently enrolled in DPRES</div>
+            </div>
+            <div>
+              <div className="text-3xl sm:text-4xl font-bold text-orange-600 mb-2">45,000+</div>
+              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 break-words">{t('landing.stats.students')}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 break-words">Across all modules and VR sessions</div>
+            </div>
+            <div>
+              <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-2">98%</div>
+              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 break-words">{t('landing.stats.satisfaction')}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 break-words">Average institutional readiness</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* FAQ Section */}
       <FAQSection />

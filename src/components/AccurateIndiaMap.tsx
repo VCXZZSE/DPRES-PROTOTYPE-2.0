@@ -2,6 +2,8 @@
 // The functionality has been moved to the main IndiaMap component
 // using accurate SVG rendering instead of Leaflet
 
+import React from 'react';
+
 // Deprecated component - functionality moved to IndiaMap.tsx
 export function AccurateIndiaMap() {
   return (

@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
 import { AlertTriangle, Clock, X } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 interface EmergencySOSProps {
   children: React.ReactNode;
@@ -9,7 +10,8 @@ interface EmergencySOSProps {
   variant?: 'navigation' | 'dashboard';
 }
 
-export function EmergencySOS({ children, onConfirm }: EmergencySOSProps) {
+export function EmergencySOS({ children, onConfirm, variant = 'navigation' }: EmergencySOSProps) {
+  const { t } = useLanguage();
   const [showModal, setShowModal] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [countdown, setCountdown] = useState(5);
@@ -72,13 +74,13 @@ export function EmergencySOS({ children, onConfirm }: EmergencySOSProps) {
 
       {/* Initial confirmation modal */}
       <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent className="sm:max-w-md bg-gray-900 border-gray-700 text-white">
+        <DialogContent className="sm:max-w-md bg-gray-900 border-gray-700 text-white" aria-describedby="sos-dialog-description">
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-2 text-white">
               <AlertTriangle className="h-5 w-5 text-red-500" />
               <span>Emergency SOS</span>
             </DialogTitle>
-            <DialogDescription className="text-gray-300">
+            <DialogDescription id="sos-dialog-description" className="text-gray-300">
               Are you sure you want to trigger SOS? This will alert the nearest disaster management authorities.
             </DialogDescription>
           </DialogHeader>

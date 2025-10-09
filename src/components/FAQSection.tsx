@@ -38,7 +38,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import { toast } from 'sonner';
+import { toast } from 'sonner@2.0.3';
 
 interface FAQ {
   id: string;
@@ -121,7 +121,7 @@ export function FAQSection() {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
       {/* Decorative Indian-inspired patterns */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 border-2 border-blue-600 rounded-full animate-spin-slow"></div>
@@ -137,7 +137,7 @@ export function FAQSection() {
           <Badge className="mb-4 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 border-blue-200 dark:border-blue-700">
             {t('faq.badge')}
           </Badge>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
             {t('faq.title')}
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto break-words">
@@ -197,12 +197,12 @@ export function FAQSection() {
         )}
 
         {/* Help Footer */}
-        <div className="mt-8 sm:mt-12 text-center bg-white dark:bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="mt-8 sm:mt-12 text-center bg-gradient-to-r from-blue-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 sm:p-8 border border-blue-100 dark:border-gray-700">
           <Headphones className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-blue-600 dark:text-blue-400" />
           <h3 className="font-semibold text-base sm:text-lg mb-2 text-gray-900 dark:text-white">
             {t('faq.helpTitle')}
           </h3>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 break-words mb-4">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 break-words mb-4">
             {t('faq.helpDescription')}
           </p>
 
@@ -217,13 +217,13 @@ export function FAQSection() {
                 {t('faq.query.raiseQuery')}
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto" aria-describedby="faq-query-description">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2 text-xl">
                   <Send className="h-5 w-5 text-blue-600" />
                   {t('faq.query.title')}
                 </DialogTitle>
-                <DialogDescription className="text-sm sm:text-base">
+                <DialogDescription id="faq-query-description" className="text-sm sm:text-base">
                   {t('faq.query.description')}
                 </DialogDescription>
               </DialogHeader>
