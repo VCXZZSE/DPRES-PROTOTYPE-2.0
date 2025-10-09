@@ -8,10 +8,10 @@
 ## 🖼️ **Preview**
 
 ### **Admin Dashboard — SDMA Command Center**
-![Admin Dashboard](public/assets/VERSION%203.0.png)
+<img width="1440" height="810" alt="VERSION 3 0" src="https://github.com/user-attachments/assets/0f9d95df-3e7e-40f1-ae36-8676f4081ef8" />
 
 ### **Student Portal — Dashboard & Training Modules**
-![Student Portal](public/assets/VERSION%203.01.png)
+<img width="1440" height="810" alt="VERSION 3 01" src="https://github.com/user-attachments/assets/b2e5ad5f-c654-4c9d-b0eb-92b7d42b0ce9" />
 
 ---
 
@@ -66,40 +66,6 @@ This prototype introduces a **refined UI/UX system**, new **student dashboard**,
 - **Learnability**: Progressive learning flow for disaster readiness.
 - **Resilience**: Optimized layouts for stress and response conditions.
 - **Accessibility**: WCAG-focused color tokens and readable contrast ratios.
-
----
-
-## 🗂️ **Suggested Repository Structure**
-
-```
-/
-├─ README.md
-├─ package.json
-├─ public/
-│  ├─ index.html
-│  └─ assets/
-│     ├─ VERSION 3.0.png
-│     └─ VERSION 3.01.png
-├─ src/
-│  ├─ App.jsx
-│  ├─ pages/
-│  │  ├─ StudentDashboard.jsx
-│  │  ├─ TrainingModules.jsx
-│  │  └─ AdminDashboard.jsx
-│  ├─ components/
-│  │  ├─ Card/
-│  │  ├─ Table/
-│  │  └─ QuickActions/
-│  ├─ styles/
-│  │  ├─ tokens.css
-│  │  └─ dark-theme.css
-│  └─ utils/
-└─ design/
-   ├─ figma-links.md
-   └─ handoff-notes.md
-```
-
-*Adjust paths based on framework — React, Next.js, or Vue.*
 
 ---
 
@@ -192,13 +158,13 @@ This prototype introduces a **refined UI/UX system**, new **student dashboard**,
 ## 📬 **Contact / Feedback**
 
 💬 **Issues & Feedback**: Open a GitHub issue with screenshots or design suggestions.  
-🧑‍🎨 **Design Queries**: Include Figma reference links in `design/figma-links.md`.  
+🧑‍🎨 **Design Queries**: repomerm23@gmail.com
 📅 **Next Milestone**: Integration of Student Progress API and Admin Alert System.
 
 ---
 
 ## 🧠 **"Preparedness isn't a feature — it's a mindset."**
 
-*— DPRES 3.0 Team*
+*— Team Oryza
 
 ---
