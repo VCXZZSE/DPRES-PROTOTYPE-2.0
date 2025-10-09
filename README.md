@@ -148,10 +148,22 @@ This prototype introduces a **refined UI/UX system**, new **student dashboard**,
 
 ## 📜 **License**
 
-**Prototype © DPRES Team.**  
-*All rights reserved — For internal and educational preview only.*
+**Copyright © 2025 Team Oryza. All Rights Reserved.**
 
-*(You may replace this with your actual license such as MIT, Apache 2.0, etc.)*
+This project is a proprietary prototype developed for educational, research, and competition purposes.
+
+### **Permitted Uses:**
+- ✅ Viewing and evaluating the codebase for educational purposes
+- ✅ Academic reference and citation
+- ✅ Portfolio demonstration and showcase
+
+### **Restrictions:**
+- ❌ No commercial use without explicit written permission
+- ❌ No redistribution or reproduction
+- ❌ No modification or derivative works
+- ❌ No public deployment without authorization
+
+**For licensing inquiries or collaboration opportunities, contact:** repomerm23@gmail.com
 
 ---
 
