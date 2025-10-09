@@ -39,7 +39,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 // Translation function
 const getTranslation = (key: string, lang: Language): string => {
   const translations = getTranslations();
-  return translations[lang]?.[key] || translations['en'][key] || key;
+  const langTranslations = translations[lang as keyof typeof translations];
+  const enTranslations = translations['en'];
+  return (langTranslations?.[key as keyof typeof enTranslations] as string) || (enTranslations[key as keyof typeof enTranslations] as string) || key;
 };
 
 // Translation data
