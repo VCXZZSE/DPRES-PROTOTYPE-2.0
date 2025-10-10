@@ -40,14 +40,32 @@ beforeAll(() => {
     },
   });
 
-  // Mock localStorage
+  // Mock localStorage with proper storage implementation
+  const localStorageMock = (() => {
+    let store: Record<string, string> = {};
+    return {
+      getItem: (key: string) => store[key] || null,
+      setItem: (key: string, value: string) => {
+        store[key] = value.toString();
+      },
+      removeItem: (key: string) => {
+        delete store[key];
+      },
+      clear: () => {
+        store = {};
+      },
+      get length() {
+        return Object.keys(store).length;
+      },
+      key: (index: number) => {
+        const keys = Object.keys(store);
+        return keys[index] || null;
+      },
+    };
+  })();
+
   Object.defineProperty(window, 'localStorage', {
-    value: {
-      getItem: vi.fn(() => null),
-      setItem: vi.fn(() => null),
-      removeItem: vi.fn(() => null),
-      clear: vi.fn(() => null),
-    },
+    value: localStorageMock,
     writable: true,
   });
 });
