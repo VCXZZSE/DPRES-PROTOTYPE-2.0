@@ -30,6 +30,45 @@ if (typeof global.WeakMap === 'undefined') {
 
 // Mock environment variables
 beforeAll(() => {
+  // Ensure global URL is available (some libs rely on whatwg-url)
+  if (typeof global.URL === 'undefined') {
+    // Use Node's URL if available
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { URL } = require('url');
+      global.URL = URL;
+    } catch (e) {
+      // fallback minimal polyfill
+      // minimal URL polyfill is intentionally small — only what tests need
+      // @ts-ignore
+      global.URL = class {
+        private _href: string;
+        constructor(href: string) {
+          this._href = href;
+        }
+        toString() {
+          return this._href;
+        }
+        get href() {
+          return this._href;
+        }
+      };
+    }
+  }
+
+  // Ensure structuredClone exists (used by some web libs)
+  if (typeof (global as any).structuredClone === 'undefined') {
+    // simple structured clone using JSON as a best-effort fallback
+    // Not suitable for functions, dates, etc., but fine for test fixtures
+    // @ts-ignore
+    global.structuredClone = (obj: any) => JSON.parse(JSON.stringify(obj));
+  }
+
+  // Ensure window.location exists in jsdom environment
+  if (typeof window.location === 'undefined') {
+    // @ts-ignore
+    window.location = new URL('http://localhost');
+  }
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: vi.fn().mockImplementation(query => ({
