@@ -10,6 +10,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    deps: {
+      inline: ['webidl-conversions', 'whatwg-url'],
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
