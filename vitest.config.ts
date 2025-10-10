@@ -11,7 +11,7 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     css: true,
     deps: {
-      inline: ['webidl-conversions', 'whatwg-url'],
+      inline: ['webidl-conversions', 'whatwg-url', 'jsdom'],
     },
     coverage: {
       provider: 'v8',
