@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Shield, 
   BarChart3,
   Building2,
-  Bell,
   FileText,
   Settings,
   LogOut,
   Menu,
   Activity,
   Award,
-  MessageSquare,
-  MapPin,
   AlertTriangle,
   Users,
-  TrendingUp,
-  Radio,
-  Zap
+  Radio
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Tabs, TabsContent } from './ui/tabs';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { schools, colleges, allInstitutions } from './shared/institutionsData';
 import { useAlerts } from './shared/AlertContext';
