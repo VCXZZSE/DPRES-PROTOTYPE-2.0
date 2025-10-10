@@ -7,7 +7,7 @@
             "glob": "^11.0.0",
             "inflight": "npm:lru-cache@^11.0.0",
             "source-map": "^0.7.4",
-            "webidl-conversions": "9.0.0"
+            "webidl-conversions": "^8.0.0"
       },
       "dependencies": {
             "@radix-ui/react-accordion": "^1.2.3",
