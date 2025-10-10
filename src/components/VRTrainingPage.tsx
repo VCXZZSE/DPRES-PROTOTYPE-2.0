@@ -8,8 +8,6 @@ import {
   Play, 
   Users, 
   Clock, 
-  Zap,
-  Shield,
   Flame,
   Mountain,
   Waves,

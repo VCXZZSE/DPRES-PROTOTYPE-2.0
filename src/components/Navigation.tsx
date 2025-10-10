@@ -27,11 +27,20 @@ import {
 } from "./ui/select";
 import { useLanguage } from './LanguageContext';
 
-interface NavigationProps {
-  onLogout: () => void;
+interface UserData {
+  schoolName: string;
+  schoolCode: string;
+  studentName: string;
+  age: string;
 }
 
-export function Navigation({ onLogout }: NavigationProps) {
+interface NavigationProps {
+  userData: UserData | null;
+  onLogout: () => void;
+  isFirstLogin?: boolean;
+}
+
+export function Navigation({ userData, onLogout, isFirstLogin }: NavigationProps) {
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(() => {
     // Check if dark mode was previously enabled

@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Progress } from './ui/progress';
 import { 
@@ -12,9 +12,7 @@ import {
   Download, 
   Eye, 
   Search, 
-  
   RefreshCw, 
-  Calendar,
   CheckCircle,
   Clock,
   XCircle,
@@ -22,8 +20,7 @@ import {
   FileCheck,
   QrCode,
   Printer,
-  Mail,
-  ExternalLink
+  Mail
 } from 'lucide-react';
 import { allInstitutions, ComplianceCertificate } from './shared/institutionsData';
 import { useCommunication } from './shared/CommunicationContext';
