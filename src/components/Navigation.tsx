@@ -40,7 +40,7 @@ interface NavigationProps {
   isFirstLogin?: boolean;
 }
 
-export function Navigation({ userData, onLogout, isFirstLogin }: NavigationProps) {
+export function Navigation({ userData: _userData, onLogout, isFirstLogin: _isFirstLogin }: NavigationProps) {
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(() => {
     // Check if dark mode was previously enabled
