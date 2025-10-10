@@ -10,8 +10,10 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: true,
-    deps: {
-      inline: ['webidl-conversions', 'whatwg-url', 'jsdom'],
+    server: {
+      deps: {
+        inline: ['webidl-conversions', 'whatwg-url', 'jsdom'],
+      },
     },
     coverage: {
       provider: 'v8',
