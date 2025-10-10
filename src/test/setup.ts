@@ -2,6 +2,32 @@ import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeAll, vi } from 'vitest';
 
+// Polyfill WeakMap for webidl-conversions
+if (typeof global.WeakMap === 'undefined') {
+  global.WeakMap = class WeakMap {
+    private items = new Map();
+    
+    constructor() {}
+    
+    get(key: any) {
+      return this.items.get(key);
+    }
+    
+    set(key: any, value: any) {
+      this.items.set(key, value);
+      return this;
+    }
+    
+    has(key: any) {
+      return this.items.has(key);
+    }
+    
+    delete(key: any) {
+      return this.items.delete(key);
+    }
+  } as any;
+}
+
 // Mock environment variables
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
