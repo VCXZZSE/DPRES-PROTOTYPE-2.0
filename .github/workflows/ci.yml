@@ -22,13 +22,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
       
       - name: Install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install
-          npm ls webidl-conversions || true
+        run: npm install
       
       - name: Run TypeScript type check
         run: npm run lint
