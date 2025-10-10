@@ -38,7 +38,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface FAQ {
   id: string;

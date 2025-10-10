@@ -3,13 +3,16 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { EmergencySOS } from '../components/EmergencySOS';
 import { AlertProvider } from '../components/shared/AlertContext';
+import { LanguageProvider } from '../components/LanguageContext';
 
 // Mock the context providers
 const MockProviders = ({ children }: { children: React.ReactNode }) => (
   <BrowserRouter>
-    <AlertProvider>
-      {children}
-    </AlertProvider>
+    <LanguageProvider>
+      <AlertProvider>
+        {children}
+      </AlertProvider>
+    </LanguageProvider>
   </BrowserRouter>
 );
 
