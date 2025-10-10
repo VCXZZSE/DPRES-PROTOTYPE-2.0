@@ -1,5 +1,3 @@
-import image_eb676453f7fa58e46cc7a87afbf8720a41cd2d30 from 'figma:asset/eb676453f7fa58e46cc7a87afbf8720a41cd2d30.png';
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -9,10 +7,7 @@ import {
   LayoutDashboard, 
   BookOpen, 
   Headphones, 
-  AlertTriangle,
-  Users,
-  Target,
-  Globe
+  AlertTriangle
 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { RecentIncidents } from './RecentIncidents';

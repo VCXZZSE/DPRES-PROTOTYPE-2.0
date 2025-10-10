@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Switch } from '../ui/switch';
 import { Separator } from '../ui/separator';
 import { 
-  Settings, 
   Shield, 
   Bell, 
-  Users, 
   Database, 
   Globe,
   Mail,
@@ -23,16 +19,13 @@ import {
   Key,
   Save,
   RefreshCw,
-  AlertTriangle,
   CheckCircle,
   Info,
   Server,
   Monitor,
   Clock,
   Languages,
-  Palette,
-  Moon,
-  Sun
+  Palette
 } from 'lucide-react';
 
 export function AdminSettings() {

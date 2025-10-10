@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
 import { AlertTriangle, Clock, X } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
 
 interface EmergencySOSProps {
   children: React.ReactNode;
@@ -10,8 +9,7 @@ interface EmergencySOSProps {
   variant?: 'navigation' | 'dashboard';
 }
 
-export function EmergencySOS({ children, onConfirm, variant = 'navigation' }: EmergencySOSProps) {
-  const { t } = useLanguage();
+export function EmergencySOS({ children, onConfirm }: EmergencySOSProps) {
   const [showModal, setShowModal] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [countdown, setCountdown] = useState(5);

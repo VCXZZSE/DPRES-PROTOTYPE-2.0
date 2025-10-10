@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -15,13 +15,11 @@ import {
   MessageSquare, 
   Phone, 
   Send, 
-  Users, 
   Clock, 
   CheckCircle,
   XCircle,
   AlertTriangle,
   Search,
-  Filter,
   Plus,
   Edit,
   Trash2,
@@ -30,14 +28,10 @@ import {
   BarChart3,
   TrendingUp,
   Languages,
-  Settings,
-  Volume2,
-  Mail,
   Calendar,
   Download
 } from 'lucide-react';
-import { allInstitutions, mockSMSTemplates, SMSIVRLog, SMSTemplate } from './shared/institutionsData';
-import { useAlerts } from './shared/AlertContext';
+import { allInstitutions, mockSMSTemplates, SMSIVRLog } from './shared/institutionsData';
 import { useCommunication } from './shared/CommunicationContext';
 
 interface BulkMessage {
@@ -58,7 +52,6 @@ interface BulkMessage {
 }
 
 export function SMSIVRManager() {
-  const { alerts } = useAlerts();
   const { smsIVRLogs, addSMSIVRLog } = useCommunication();
   const [activeTab, setActiveTab] = useState('logs');
   const [searchTerm, setSearchTerm] = useState('');
@@ -67,7 +60,6 @@ export function SMSIVRManager() {
   const [showBulkMessage, setShowBulkMessage] = useState(false);
   const [showTemplateDialog, setShowTemplateDialog] = useState(false);
   const [selectedLog, setSelectedLog] = useState<SMSIVRLog | null>(null);
-  const [selectedTemplate, setSelectedTemplate] = useState<SMSTemplate | null>(null);
   
   const [bulkMessage, setBulkMessage] = useState<BulkMessage>({
     institutions: [],

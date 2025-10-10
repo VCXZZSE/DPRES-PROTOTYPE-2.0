@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -9,27 +9,16 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Switch } from '../ui/switch';
 import { 
   AlertTriangle, 
   Bell, 
-  Send, 
   Users, 
   Clock, 
   CheckCircle,
-  XCircle,
   Search,
-  Filter,
-  Plus,
   Eye,
   RefreshCw,
-  BarChart3,
-  TrendingUp,
   MapPin,
-  Zap,
-  Settings,
-  AlertCircle,
-  Calendar,
   Activity,
   Archive
 } from 'lucide-react';
@@ -52,7 +41,7 @@ interface EmergencyAlert {
 }
 
 export function EmergencyAlertsManager() {
-  const { alerts, addAlert } = useAlerts();
+  const { } = useAlerts();
   const [activeTab, setActiveTab] = useState('active');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'earthquake' | 'fire' | 'flood' | 'weather' | 'general'>('all');

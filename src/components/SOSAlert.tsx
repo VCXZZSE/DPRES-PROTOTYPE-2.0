@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AlertTriangle, Phone, Send, X, MapPin, Clock } from 'lucide-react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Input } from './ui/input';
 import { useAlerts } from './shared/AlertContext';
 import { useCommunication } from './shared/CommunicationContext';
-import { getInstitutionById } from './shared/institutionsData';
 
 interface SOSAlertProps {
   userData: {

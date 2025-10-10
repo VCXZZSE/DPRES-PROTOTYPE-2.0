@@ -42,7 +42,7 @@ export interface ContactInfo {
   name: string;
   phone: string;
   email?: string;
-  language: 'en' | 'hi' | 'ta' | 'te' | 'mr';
+  language: 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'mr' | 'gu' | 'kn' | 'ml' | 'or' | 'pa' | 'as' | 'ur';
   type: 'student' | 'parent' | 'teacher' | 'admin' | 'emergency';
   verified: boolean;
   lastContactDate?: string;
@@ -1147,7 +1147,7 @@ export interface SMSIVRLog {
   alertType: 'emergency' | 'evacuation' | 'weather' | 'drill' | 'general';
   title: string;
   message: string;
-  language: 'en' | 'hi' | 'ta' | 'te' | 'mr';
+  language: 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'mr' | 'gu' | 'kn' | 'ml' | 'or' | 'pa' | 'as' | 'ur';
   recipients: {
     students: number;
     parents: number;
@@ -1178,7 +1178,7 @@ export interface SMSTemplate {
   id: string;
   name: string;
   type: 'emergency' | 'evacuation' | 'weather' | 'drill' | 'general';
-  language: 'en' | 'hi' | 'ta' | 'te' | 'mr';
+  language: 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'mr' | 'gu' | 'kn' | 'ml' | 'or' | 'pa' | 'as' | 'ur';
   template: string;
   variables: string[];
   characterCount: number;

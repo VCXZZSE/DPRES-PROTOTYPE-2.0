@@ -1,8 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { 
-  School,
   Building2,
   Users,
   Target,
@@ -32,8 +31,7 @@ interface DashboardOverviewProps {
 }
 
 export function DashboardOverview({ overviewStats, onNavigation }: DashboardOverviewProps) {
-  const { alerts, getActiveAlerts } = useAlerts();
-  const activeAlerts = getActiveAlerts();
+  const { alerts } = useAlerts();
   
   // Filter SOS alerts from enrolled institutions only
   const sosAlerts = alerts.filter(alert => 
@@ -298,7 +296,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
                         </Badge>
                       </div>
                       <div className="text-sm text-white font-medium mb-1">{institution?.name}</div>
-                      <div className="text-xs text-slate-400">{alert.message}</div>
+                      <div className="text-xs text-slate-400">{alert.description}</div>
                       <div className="flex items-center mt-2 text-xs text-slate-500">
                         <MapPin className="h-3 w-3 mr-1" />
                         {institution?.district}, Kolkata
