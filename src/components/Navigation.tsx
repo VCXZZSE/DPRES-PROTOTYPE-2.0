@@ -13,11 +13,9 @@ import {
   Globe,
   AlertTriangle,
   LogOut,
-  User,
   Moon,
   Sun,
   Menu,
-  X,
   CheckCircle
 } from 'lucide-react';
 import {
@@ -29,17 +27,8 @@ import {
 } from "./ui/select";
 import { useLanguage } from './LanguageContext';
 
-interface UserData {
-  schoolName: string;
-  schoolCode: string;
-  studentName: string;
-  age: string;
-}
-
 interface NavigationProps {
-  userData: UserData | null;
   onLogout: () => void;
-  isFirstLogin?: boolean;
 }
 
 export function Navigation({ onLogout }: NavigationProps) {
