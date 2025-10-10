@@ -48,11 +48,13 @@ describe('EmergencySOS Component', () => {
     const button = screen.getByText('Emergency SOS');
     fireEvent.click(button);
 
-    // Should show emergency types in modal
-    expect(screen.getByText(/medical emergency/i)).toBeInTheDocument();
+    // Should show SOS modal with description and confirm button
+    expect(screen.getByText(/are you sure you want to trigger sos/i)).toBeInTheDocument();
+    expect(screen.getByText(/confirm sos/i)).toBeInTheDocument();
+    expect(screen.getByText(/cancel/i)).toBeInTheDocument();
   });
 
-  it('calls onConfirm when emergency is confirmed', () => {
+  it('calls onConfirm when emergency is confirmed', async () => {
     render(
       <MockProviders>
         <EmergencySOS onConfirm={mockOnConfirm}>
@@ -64,13 +66,13 @@ describe('EmergencySOS Component', () => {
     const button = screen.getByText('Emergency SOS');
     fireEvent.click(button);
 
-    // Select emergency type
-    const medicalButton = screen.getByText(/medical emergency/i);
-    fireEvent.click(medicalButton);
-
-    // Find and click confirm button
-    const confirmButton = screen.getByText(/confirm emergency/i);
+    // Wait for modal to appear and find confirm button
+    const confirmButton = await screen.findByRole('button', { name: /confirm sos/i });
     fireEvent.click(confirmButton);
+
+    // After confirming, look for "Send Now" button in countdown dialog
+    const sendNowButton = await screen.findByRole('button', { name: /send now/i });
+    fireEvent.click(sendNowButton);
 
     expect(mockOnConfirm).toHaveBeenCalled();
   });
