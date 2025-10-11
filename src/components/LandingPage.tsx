@@ -25,17 +25,40 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ userData }: LandingPageProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
-  // Generate dynamic greeting messages
-  const greetings = [
-    `Keep going, ${userData?.studentName || 'Student'}! You're almost there 🚀`,
-    `Stay safe, stay smart ${userData?.studentName || 'Student'} 🌍`,
-    `Ready to level up your safety skills, ${userData?.studentName || 'Student'}? 💪`,
-    `Building a safer tomorrow, one step at a time! ${userData?.studentName ? 'Welcome back, ' + userData.studentName : 'Welcome'} ✨`,
-    `Your safety journey continues, ${userData?.studentName || 'Student'}! 🛡️`
-  ];
+  // Generate dynamic greeting messages based on language
+  const getGreetings = () => {
+    const studentName = userData?.studentName || (language === 'hi' ? 'छात्र' : language === 'bn' ? 'ছাত্র' : 'Student');
+    
+    if (language === 'hi') {
+      return [
+        `चलते रहो, ${studentName}! आप लगभग पहुंच गए हैं 🚀`,
+        `सुरक्षित रहें, स्मार्ट रहें ${studentName} 🌍`,
+        `अपने सुरक्षा कौशल को बढ़ाने के लिए तैयार हैं, ${studentName}? �`,
+        `एक समय में एक कदम, एक सुरक्षित कल का निर्माण! ${userData?.studentName ? 'वापस स्वागत है, ' + userData.studentName : 'स्वागत है'} ✨`,
+        `आपकी सुरक्षा यात्रा जारी है, ${studentName}! 🛡️`
+      ];
+    } else if (language === 'bn') {
+      return [
+        `চালিয়ে যান, ${studentName}! আপনি প্রায় পৌঁছে গেছেন 🚀`,
+        `সুরক্ষিত থাকুন, স্মার্ট থাকুন ${studentName} 🌍`,
+        `আপনার নিরাপত্তা দক্ষতা বাড়ানোর জন্য প্রস্তুত, ${studentName}? 💪`,
+        `একটি নিরাপদ আগামীকাল তৈরি করা, এক ধাপে এক সময়ে! ${userData?.studentName ? 'ফিরে আসার জন্য স্বাগতম, ' + userData.studentName : 'স্বাগতম'} ✨`,
+        `আপনার নিরাপত্তা যাত্রা অব্যাহত, ${studentName}! 🛡️`
+      ];
+    } else {
+      return [
+        `Keep going, ${studentName}! You're almost there 🚀`,
+        `Stay safe, stay smart ${studentName} 🌍`,
+        `Ready to level up your safety skills, ${studentName}? 💪`,
+        `Building a safer tomorrow, one step at a time! ${userData?.studentName ? 'Welcome back, ' + userData.studentName : 'Welcome'} ✨`,
+        `Your safety journey continues, ${studentName}! 🛡️`
+      ];
+    }
+  };
 
+  const greetings = getGreetings();
   const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
 
   return (
@@ -112,7 +135,9 @@ export function LandingPage({ userData }: LandingPageProps) {
               {userData && (
                 <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
                   <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 break-words">
-                    Welcome back, {userData.studentName} 👋
+                    {language === 'hi' ? `वापस स्वागत है, ${userData.studentName} 👋` : 
+                     language === 'bn' ? `ফিরে আসার জন্য স্বাগতম, ${userData.studentName} 👋` : 
+                     `Welcome back, ${userData.studentName} 👋`}
                   </h3>
                   <p className="text-white/80 text-sm sm:text-base lg:text-lg break-words">{userData.schoolName}</p>
                   <p className="text-white/60 text-xs sm:text-sm mt-2 break-words">{randomGreeting}</p>
