@@ -1,25 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { LoginPage } from "./components/LoginPage";
-import { LandingPage } from "./components/LandingPage";
-import { Dashboard } from "./components/Dashboard";
-import { ModulesPage } from "./components/ModulesPage";
-import { VRTrainingPage } from "./components/VRTrainingPage";
-import { AdminDashboard } from "./components/AdminDashboard";
-import { DesktopOnlyScreen } from "./components/DesktopOnlyScreen";
-import { Navigation } from "./components/Navigation";
-import { WelcomeAnimation } from "./components/WelcomeAnimation";
-import { AdminWelcomeAnimation } from "./components/AdminWelcomeAnimation";
 import { LanguageProvider, useLanguage } from "./components/LanguageContext";
 import { AlertProvider } from "./components/shared/AlertContext";
 import { CommunicationProvider } from "./components/shared/CommunicationContext";
 import { useIsMobile } from "./components/hooks/useIsMobile";
 import { Toaster } from "./components/ui/sonner";
+
+// Lazy load components for better code splitting
+const LoginPage = lazy(() => import("./components/LoginPage").then(m => ({ default: m.LoginPage })));
+const LandingPage = lazy(() => import("./components/LandingPage").then(m => ({ default: m.LandingPage })));
+const Dashboard = lazy(() => import("./components/Dashboard").then(m => ({ default: m.Dashboard })));
+const ModulesPage = lazy(() => import("./components/ModulesPage").then(m => ({ default: m.ModulesPage })));
+const VRTrainingPage = lazy(() => import("./components/VRTrainingPage").then(m => ({ default: m.VRTrainingPage })));
+const AdminDashboard = lazy(() => import("./components/AdminDashboard").then(m => ({ default: m.AdminDashboard })));
+const DesktopOnlyScreen = lazy(() => import("./components/DesktopOnlyScreen").then(m => ({ default: m.DesktopOnlyScreen })));
+const Navigation = lazy(() => import("./components/Navigation").then(m => ({ default: m.Navigation })));
+const WelcomeAnimation = lazy(() => import("./components/WelcomeAnimation").then(m => ({ default: m.WelcomeAnimation })));
+const AdminWelcomeAnimation = lazy(() => import("./components/AdminWelcomeAnimation").then(m => ({ default: m.AdminWelcomeAnimation })));
 
 interface UserData {
   schoolName: string;
@@ -127,6 +129,11 @@ function AppContent() {
       <CommunicationProvider>
         <Router>
           <Toaster position="top-right" richColors />
+          <Suspense fallback={
+            <div className="min-h-screen bg-background flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+            </div>
+          }>
             {!isLoggedIn && !isAdminLoggedIn ? (
               <LoginPage
                 onLogin={handleLogin}
@@ -206,6 +213,7 @@ function AppContent() {
                 )}
               </div>
             )}
+          </Suspense>
           </Router>
         </CommunicationProvider>
       </AlertProvider>
