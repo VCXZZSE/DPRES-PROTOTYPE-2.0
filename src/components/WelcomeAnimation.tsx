@@ -90,21 +90,6 @@ export function WelcomeAnimation({ studentName, schoolName, onComplete }: Welcom
         </svg>
       </motion.div>
 
-      {/* Small Chakra Symbols scattered */}
-      <motion.div
-        className="absolute top-1/3 left-1/4 opacity-6"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-      >
-        <svg width="60" height="60" viewBox="0 0 60 60" className="text-blue-300">
-          <g stroke="currentColor" fill="none" strokeWidth="0.5">
-            <circle cx="30" cy="30" r="25" />
-            <circle cx="30" cy="30" r="15" />
-            <circle cx="30" cy="30" r="5" fill="currentColor" fillOpacity="0.2" />
-          </g>
-        </svg>
-      </motion.div>
-
       <motion.div
         className="absolute top-2/3 right-1/4 opacity-6"
         animate={{ rotate: 360 }}
@@ -300,7 +285,7 @@ export function WelcomeAnimation({ studentName, schoolName, onComplete }: Welcom
           
           {/* Main text with gradient and shadow */}
           <h2
-            className="relative text-4xl sm:text-5xl md:text-6xl text-center tracking-wide z-10 px-8"
+            className="relative text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-center tracking-wide z-10 px-8"
             style={{
               fontWeight: '800',
               background: 'linear-gradient(135deg, #ffffff 0%, #f0f9ff 30%, #dbeafe 60%, #ffffff 100%)',
@@ -354,7 +339,7 @@ export function WelcomeAnimation({ studentName, schoolName, onComplete }: Welcom
           
           {/* School name with elegant styling */}
           <p 
-            className="relative text-lg sm:text-xl md:text-2xl z-10 px-6"
+            className="relative text-2xl sm:text-3xl md:text-4xl lg:text-5xl z-10 px-6"
             style={{ 
               fontWeight: '600',
               background: 'linear-gradient(135deg, #e2e8f0 0%, #ffffff 50%, #f1f5f9 100%)',

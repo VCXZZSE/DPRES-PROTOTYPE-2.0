@@ -73,69 +73,69 @@ export function ModulesPage({ userData }: ModulesPageProps) {
   const modules = [
     {
       id: 1,
-      title: 'Guided Disaster Risk Management Plan',
-      description: 'Learn to identify and assess disaster risks in your environment, and create effective management strategies.',
+      titleKey: 'modules.module1.title',
+      descriptionKey: 'modules.module1.description',
       progress: 100,
-      duration: '45 min',
+      duration: '45',
       students: 234,
       status: 'completed',
       type: 'video',
-      topics: ['Risk Assessment', 'Vulnerability Analysis', 'Mitigation Strategies']
+      topicKeys: ['modules.topic.riskAssessment', 'modules.topic.vulnerabilityAnalysis', 'modules.topic.mitigationStrategies']
     },
     {
       id: 2,
-      title: 'Operational Plans',
-      description: 'Master emergency response protocols and learn to create actionable plans for various disaster scenarios.',
+      titleKey: 'modules.module2.title',
+      descriptionKey: 'modules.module2.description',
       progress: 75,
-      duration: '60 min',
+      duration: '60',
       students: 198,
       status: 'in-progress',
       type: 'interactive',
-      topics: ['Emergency Protocols', 'Resource Management', 'Communication Plans']
+      topicKeys: ['modules.topic.emergencyProtocols', 'modules.topic.resourceManagement', 'modules.topic.communicationPlans']
     },
     {
       id: 3,
-      title: 'Disaster Deduction & Management',
-      description: 'Advanced techniques for predicting disasters and managing crises effectively when they occur.',
+      titleKey: 'modules.module3.title',
+      descriptionKey: 'modules.module3.description',
       progress: 30,
-      duration: '90 min',
+      duration: '90',
       students: 156,
       status: 'in-progress',
       type: 'mixed',
-      topics: ['Early Warning Systems', 'Crisis Management', 'Recovery Planning']
+      topicKeys: ['modules.topic.earlyWarning', 'modules.topic.crisisManagement', 'modules.topic.recoveryPlanning']
     },
     {
       id: 4,
-      title: 'Experimental Preparedness Training',
-      description: 'Hands-on practical training for earthquake and fire scenarios with real-world simulations.',
+      titleKey: 'modules.module4.title',
+      descriptionKey: 'modules.module4.description',
       progress: 0,
-      duration: '120 min',
+      duration: '120',
       students: 89,
       status: 'locked',
       type: 'simulation',
-      topics: ['Earthquake Response', 'Fire Safety', 'Evacuation Procedures']
+      topicKeys: ['modules.topic.earthquakeResponse', 'modules.topic.fireSafety', 'modules.topic.evacuationProcedures']
     },
     {
       id: 5,
-      title: 'Community Response Coordination',
-      description: 'Learn to coordinate with local authorities and community groups during emergency situations.',
+      titleKey: 'modules.module5.title',
+      descriptionKey: 'modules.module5.description',
       progress: 0,
-      duration: '75 min',
+      duration: '75',
       students: 67,
       status: 'locked',
       type: 'interactive',
-      topics: ['Community Engagement', 'Authority Coordination', 'Public Communication']
+      topicKeys: ['modules.topic.communityEngagement', 'modules.topic.authorityCoordination', 'modules.topic.publicCommunication']
     },
     {
       id: 6,
-      title: 'Recovery & Rehabilitation',
-      description: 'Understand post-disaster recovery processes and how to help communities rebuild effectively.',
+      titleKey: 'modules.module6.title',
+      descriptionKey: 'modules.module6.description',
       progress: 0,
-      duration: '90 min',
+      duration: '90',
       students: 45,
       status: 'locked',
       type: 'mixed',
-      topics: ['Recovery Planning', 'Rehabilitation Strategies', 'Long-term Sustainability']
+      topicKeys: ['modules.topic.recoveryPlanning', 'modules.topic.rehabilitationStrategies', 'modules.topic.longTermSustainability']
     }
   ];
 
@@ -290,10 +290,10 @@ export function ModulesPage({ userData }: ModulesPageProps) {
                       </Badge>
                     </div>
                     <CardTitle className="text-lg mb-2 leading-tight">
-                      {module.title}
+                      {t(module.titleKey)}
                     </CardTitle>
                     <CardDescription className="text-sm leading-relaxed">
-                      {module.description}
+                      {t(module.descriptionKey)}
                     </CardDescription>
                   </div>
                 </div>
@@ -314,7 +314,7 @@ export function ModulesPage({ userData }: ModulesPageProps) {
                   <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg text-center">
                     <Clock className="h-4 w-4 mx-auto mb-1 text-gray-500 dark:text-gray-400" />
                     <div className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                      {module.duration.replace('min', t('modules.minutesShort'))}
+                      {module.duration} {t('modules.minutesShort')}
                     </div>
                   </div>
                   <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg text-center">
@@ -341,13 +341,13 @@ export function ModulesPage({ userData }: ModulesPageProps) {
                 <div>
                   <div className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">{t('modules.keyTopics')}:</div>
                   <div className="flex flex-wrap gap-2">
-                    {module.topics.map((topic, idx) => (
+                    {module.topicKeys.map((topicKey, idx) => (
                       <Badge 
                         key={idx}
                         variant="outline" 
                         className="text-xs bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                       >
-                        {topic}
+                        {t(topicKey)}
                       </Badge>
                     ))}
                   </div>

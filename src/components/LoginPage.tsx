@@ -41,7 +41,7 @@ interface LoginPageProps {
 }
 
 export function LoginPage({ onLogin, onAdminLogin }: LoginPageProps) {
-  const { t } = useLanguage();
+  const { t, setLanguage } = useLanguage();
   const isMobile = useIsMobile(1024);
   const [currentStep, setCurrentStep] = useState<'userType' | 'institutionType' | 'details'>('userType');
   const [userType, setUserType] = useState<'student' | 'admin'>('student');
@@ -59,13 +59,14 @@ export function LoginPage({ onLogin, onAdminLogin }: LoginPageProps) {
     institutionType: 'school' as 'school' | 'college'
   });
 
-  // Force light mode on login page
+  // Force light mode and English language on login page
   useEffect(() => {
     document.documentElement.classList.remove('dark');
+    setLanguage('en');
     return () => {
       // Cleanup when component unmounts
     };
-  }, []);
+  }, [setLanguage]);
 
   // Transform institutions data for dropdown
   const getInstitutions = () => {
@@ -568,7 +569,7 @@ export function LoginPage({ onLogin, onAdminLogin }: LoginPageProps) {
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         <span className="relative z-10 flex items-center justify-center space-x-2">
                           <Shield className="w-4 h-4 flex-shrink-0" />
-                          <span className="break-words">{t('login.startTraining')}</span>
+                          <span className="break-words">{t('login.enterHub')}</span>
                         </span>
                       </Button>
                     </div>
