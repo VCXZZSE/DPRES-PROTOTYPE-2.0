@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/293</span>
+                <span class='fraction'>0/318</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/293</span>
+                <span class='fraction'>0/318</span>
             </div>
         
             
@@ -355,7 +355,57 @@
 <a name='L290'></a><a href='#L290'>290</a>
 <a name='L291'></a><a href='#L291'>291</a>
 <a name='L292'></a><a href='#L292'>292</a>
-<a name='L293'></a><a href='#L293'>293</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L293'></a><a href='#L293'>293</a>
+<a name='L294'></a><a href='#L294'>294</a>
+<a name='L295'></a><a href='#L295'>295</a>
+<a name='L296'></a><a href='#L296'>296</a>
+<a name='L297'></a><a href='#L297'>297</a>
+<a name='L298'></a><a href='#L298'>298</a>
+<a name='L299'></a><a href='#L299'>299</a>
+<a name='L300'></a><a href='#L300'>300</a>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a>
+<a name='L311'></a><a href='#L311'>311</a>
+<a name='L312'></a><a href='#L312'>312</a>
+<a name='L313'></a><a href='#L313'>313</a>
+<a name='L314'></a><a href='#L314'>314</a>
+<a name='L315'></a><a href='#L315'>315</a>
+<a name='L316'></a><a href='#L316'>316</a>
+<a name='L317'></a><a href='#L317'>317</a>
+<a name='L318'></a><a href='#L318'>318</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -674,17 +724,40 @@
 <span class="cstat-no" title="statement not covered" >}</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export function LandingPage({ userData }: LandingPageProps) {</span>
-<span class="cstat-no" title="statement not covered" >  const { t } = useLanguage();</span>
+<span class="cstat-no" title="statement not covered" >  const { t, language } = useLanguage();</span>
 <span class="cstat-no" title="statement not covered" >  </span>
-<span class="cstat-no" title="statement not covered" >  // Generate dynamic greeting messages</span>
-<span class="cstat-no" title="statement not covered" >  const greetings = [</span>
-<span class="cstat-no" title="statement not covered" >    `Keep going, ${userData?.studentName || 'Student'}! You're almost there 🚀`,</span>
-<span class="cstat-no" title="statement not covered" >    `Stay safe, stay smart ${userData?.studentName || 'Student'} 🌍`,</span>
-<span class="cstat-no" title="statement not covered" >    `Ready to level up your safety skills, ${userData?.studentName || 'Student'}? 💪`,</span>
-<span class="cstat-no" title="statement not covered" >    `Building a safer tomorrow, one step at a time! ${userData?.studentName ? 'Welcome back, ' + userData.studentName : 'Welcome'} ✨`,</span>
-<span class="cstat-no" title="statement not covered" >    `Your safety journey continues, ${userData?.studentName || 'Student'}! 🛡️`</span>
-<span class="cstat-no" title="statement not covered" >  ];</span>
+<span class="cstat-no" title="statement not covered" >  // Generate dynamic greeting messages based on language</span>
+<span class="cstat-no" title="statement not covered" >  const getGreetings = () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const studentName = userData?.studentName || (language === 'hi' ? 'छात्र' : language === 'bn' ? 'ছাত্র' : 'Student');</span>
+<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" >    if (language === 'hi') {</span>
+<span class="cstat-no" title="statement not covered" >      return [</span>
+<span class="cstat-no" title="statement not covered" >        `चलते रहो, ${studentName}! आप लगभग पहुंच गए हैं 🚀`,</span>
+<span class="cstat-no" title="statement not covered" >        `सुरक्षित रहें, स्मार्ट रहें ${studentName} 🌍`,</span>
+<span class="cstat-no" title="statement not covered" >        `अपने सुरक्षा कौशल को बढ़ाने के लिए तैयार हैं, ${studentName}? �`,</span>
+<span class="cstat-no" title="statement not covered" >        `एक समय में एक कदम, एक सुरक्षित कल का निर्माण! ${userData?.studentName ? 'वापस स्वागत है, ' + userData.studentName : 'स्वागत है'} ✨`,</span>
+<span class="cstat-no" title="statement not covered" >        `आपकी सुरक्षा यात्रा जारी है, ${studentName}! 🛡️`</span>
+<span class="cstat-no" title="statement not covered" >      ];</span>
+<span class="cstat-no" title="statement not covered" >    } else if (language === 'bn') {</span>
+<span class="cstat-no" title="statement not covered" >      return [</span>
+<span class="cstat-no" title="statement not covered" >        `চালিয়ে যান, ${studentName}! আপনি প্রায় পৌঁছে গেছেন 🚀`,</span>
+<span class="cstat-no" title="statement not covered" >        `সুরক্ষিত থাকুন, স্মার্ট থাকুন ${studentName} 🌍`,</span>
+<span class="cstat-no" title="statement not covered" >        `আপনার নিরাপত্তা দক্ষতা বাড়ানোর জন্য প্রস্তুত, ${studentName}? 💪`,</span>
+<span class="cstat-no" title="statement not covered" >        `একটি নিরাপদ আগামীকাল তৈরি করা, এক ধাপে এক সময়ে! ${userData?.studentName ? 'ফিরে আসার জন্য স্বাগতম, ' + userData.studentName : 'স্বাগতম'} ✨`,</span>
+<span class="cstat-no" title="statement not covered" >        `আপনার নিরাপত্তা যাত্রা অব্যাহত, ${studentName}! 🛡️`</span>
+<span class="cstat-no" title="statement not covered" >      ];</span>
+<span class="cstat-no" title="statement not covered" >    } else {</span>
+<span class="cstat-no" title="statement not covered" >      return [</span>
+<span class="cstat-no" title="statement not covered" >        `Keep going, ${studentName}! You're almost there 🚀`,</span>
+<span class="cstat-no" title="statement not covered" >        `Stay safe, stay smart ${studentName} 🌍`,</span>
+<span class="cstat-no" title="statement not covered" >        `Ready to level up your safety skills, ${studentName}? 💪`,</span>
+<span class="cstat-no" title="statement not covered" >        `Building a safer tomorrow, one step at a time! ${userData?.studentName ? 'Welcome back, ' + userData.studentName : 'Welcome'} ✨`,</span>
+<span class="cstat-no" title="statement not covered" >        `Your safety journey continues, ${studentName}! 🛡️`</span>
+<span class="cstat-no" title="statement not covered" >      ];</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >  };</span>
 <span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  const greetings = getGreetings();</span>
 <span class="cstat-no" title="statement not covered" >  const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  return (</span>
@@ -761,7 +834,9 @@
 <span class="cstat-no" title="statement not covered" >              {userData &amp;&amp; (</span>
 <span class="cstat-no" title="statement not covered" >                &lt;div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20"&gt;</span>
 <span class="cstat-no" title="statement not covered" >                  &lt;h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 break-words"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                    Welcome back, {userData.studentName} 👋</span>
+<span class="cstat-no" title="statement not covered" >                    {language === 'hi' ? `वापस स्वागत है, ${userData.studentName} 👋` : </span>
+<span class="cstat-no" title="statement not covered" >                     language === 'bn' ? `ফিরে আসার জন্য স্বাগতম, ${userData.studentName} 👋` : </span>
+<span class="cstat-no" title="statement not covered" >                     `Welcome back, ${userData.studentName} 👋`}</span>
 <span class="cstat-no" title="statement not covered" >                  &lt;/h3&gt;</span>
 <span class="cstat-no" title="statement not covered" >                  &lt;p className="text-white/80 text-sm sm:text-base lg:text-lg break-words"&gt;{userData.schoolName}&lt;/p&gt;</span>
 <span class="cstat-no" title="statement not covered" >                  &lt;p className="text-white/60 text-xs sm:text-sm mt-2 break-words"&gt;{randomGreeting}&lt;/p&gt;</span>
@@ -946,7 +1021,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-10T17:43:17.733Z
+                at 2025-10-11T18:15:47.589Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
