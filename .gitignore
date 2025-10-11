@@ -29,3 +29,12 @@ yarn-error.log*
 
 # Development build output
 dev-dist/
+
+# Local reports and documentation (for reference only, not committed)
+*_REPORT.md
+*_SUMMARY.md
+*_ANALYSIS.md
+*_FIX.md
+OPTIMIZATION_*.md
+CI_DEPLOYMENT_*.md
+SOURCE_CONTROL_*.md
