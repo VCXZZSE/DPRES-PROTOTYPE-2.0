@@ -178,6 +178,6 @@ This project is a proprietary prototype developed for educational, research, and
 
 ## 🧠 **"Preparedness isn't a feature — it's a mindset."**
 
-*— Team Oryza
+— Team Oryza
 
 ---
