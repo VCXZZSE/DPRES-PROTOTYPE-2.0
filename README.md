@@ -1,3 +1,4 @@
+[![CI](https://github.com/VCXZZSE/DPRES-PROTOTYPE-2.0/actions/workflows/ci.yml/badge.svg?branch=version-3.0)](https://github.com/VCXZZSE/DPRES-PROTOTYPE-2.0/actions/workflows/ci.yml)
 # **DPRES — Version 3.0** (Prototype)
 
 ## **Building Resilient Communities Through Education**
