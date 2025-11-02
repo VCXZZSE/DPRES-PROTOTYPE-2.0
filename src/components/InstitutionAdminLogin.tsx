@@ -18,6 +18,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { schools, colleges } from './shared/institutionsData';
+import { useIsMobile } from './hooks/useIsMobile';
 
 interface InstitutionAdminLoginProps {
   onLogin: (data: {
@@ -29,6 +30,7 @@ interface InstitutionAdminLoginProps {
 }
 
 export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLoginProps) {
+  const isMobile = useIsMobile(1024);
   const [step, setStep] = useState<'type' | 'credentials'>('type');
   const [institutionType, setInstitutionType] = useState<'school' | 'college'>('school');
   const [selectedInstitution, setSelectedInstitution] = useState('');
@@ -38,6 +40,42 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
     password: ''
   });
   const [error, setError] = useState('');
+
+  // Block mobile access completely
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-linear-to-br from-slate-900 via-red-900 to-slate-900 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center bg-white/95 backdrop-blur-sm">
+          <div className="mb-6">
+            <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Lock className="w-10 h-10 text-red-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">
+              Desktop Access Required
+            </h2>
+            <p className="text-slate-600 mb-4">
+              Institution Admin Portal is restricted to desktop devices only for enhanced security and functionality.
+            </p>
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-red-800">
+                <strong>Minimum Requirements:</strong><br />
+                • Screen width: 1024px or larger<br />
+                • Desktop or laptop computer<br />
+                • Tablet in landscape mode
+              </p>
+            </div>
+            <p className="text-xs text-slate-500">
+              Please access this portal from a computer, laptop, or tablet with a screen width of at least 1024 pixels.
+            </p>
+          </div>
+          <Button onClick={onBack} variant="outline" className="w-full">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Login Options
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   const allInstitutions = institutionType === 'school' ? schools : colleges;
 

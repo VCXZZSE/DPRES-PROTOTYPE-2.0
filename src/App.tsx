@@ -12,7 +12,7 @@ import { ModulesPage } from "./components/ModulesPage";
 import { VRTrainingPage } from "./components/VRTrainingPage";
 import { LearningInterface } from "./components/LearningInterface";
 import { AdminDashboard } from "./components/AdminDashboard";
-import InstitutionAdminDashboard from "./components/InstitutionAdminDashboard";
+import { InstitutionAdminDashboard } from "./components/InstitutionAdminDashboard";
 import { DesktopOnlyScreen } from "./components/DesktopOnlyScreen";
 import { Navigation } from "./components/Navigation";
 import { WelcomeAnimation } from "./components/WelcomeAnimation";
@@ -102,6 +102,11 @@ function AppContent() {
   };
 
   const handleInstitutionAdminLogin = (data: InstitutionAdminData) => {
+    // Check if user is on mobile - if so, don't allow institution admin login
+    if (isMobile) {
+      // Don't proceed with institution admin login on mobile
+      return;
+    }
     setInstitutionAdminData(data);
     setIsInstitutionAdminLoggedIn(true);
     setIsAdminLoggedIn(false);

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -35,16 +36,31 @@ import {
   ShieldCheck,
   ClipboardList,
   Siren,
+  CheckCheck,
   Lightbulb,
+  LineChart,
+  PieChart as PieChartIcon,
+  Globe,
+  Flame,
+  Wind,
+  Droplets,
+  Zap,
+  Radio,
+  Phone,
+  Mail,
+  ChevronRight,
   TrendingDown,
   AlertCircle,
   XCircle,
-  Mail
+  Send,
+  MessageSquare,
+  Lock
 } from 'lucide-react';
+import { getInstitutionById } from './shared/institutionHelpers';
+import { useIsMobile } from './hooks/useIsMobile';
 import {
   BarChart,
   Bar,
-  LineChart,
   Line,
   PieChart,
   Pie,
@@ -58,23 +74,7 @@ import {
   AreaChart,
   Area
 } from 'recharts';
-
-// Mock institution data
-const mockInstitution = {
-  id: "inst-001",
-  name: "Springfield High School",
-  district: "Springfield",
-  state: "IL",
-  students: 1500,
-  activeAlerts: 0,
-  compliance: {
-    complianceScore: 90,
-    trainingModulesCompleted: 18,
-    totalTrainingModules: 20,
-    safetyDrillsCompleted: 11,
-    requiredSafetyDrills: 12
-  }
-};
+import { toast } from 'sonner';
 
 interface InstitutionAdminData {
   institutionId: string;
@@ -83,22 +83,61 @@ interface InstitutionAdminData {
 }
 
 interface InstitutionAdminDashboardProps {
-  adminData?: InstitutionAdminData | null;
-  onLogout?: () => void;
+  adminData: InstitutionAdminData | null;
+  onLogout: () => void;
 }
 
-export default function InstitutionAdminDashboard({ 
-  adminData = {
-    institutionId: "inst-001",
-    adminName: "John Doe",
-    role: "Principal"
-  }, 
-  onLogout = () => console.log('Logout clicked')
-}: InstitutionAdminDashboardProps) {
+export function InstitutionAdminDashboard({ adminData, onLogout }: InstitutionAdminDashboardProps) {
+  const isMobile = useIsMobile(1024);
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedPeriod, setSelectedPeriod] = useState('month');
 
-  const institution = mockInstitution;
+  const institution = useMemo(() => {
+    if (!adminData?.institutionId) return null;
+    return getInstitutionById(adminData.institutionId);
+  }, [adminData?.institutionId]);
+
+  // Block mobile access completely
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-linear-to-br from-slate-900 via-red-900 to-slate-900 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full">
+          <CardHeader className="text-center pb-4">
+            <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Lock className="w-10 h-10 text-red-600" />
+            </div>
+            <CardTitle className="text-2xl text-slate-900">
+              Desktop Access Required
+            </CardTitle>
+            <CardDescription className="text-base">
+              Institution Admin Dashboard requires a desktop device
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <p className="text-sm text-red-800 mb-2">
+                <strong>Access Restrictions:</strong>
+              </p>
+              <ul className="text-sm text-red-700 space-y-1 list-disc list-inside">
+                <li>Minimum screen width: 1024px</li>
+                <li>Desktop or laptop computer</li>
+                <li>Tablet in landscape mode (1024px+)</li>
+              </ul>
+            </div>
+            <div className="bg-slate-50 rounded-lg p-4">
+              <p className="text-sm text-slate-600">
+                The Institution Admin Dashboard contains comprehensive data visualizations and management tools that require a larger display for optimal functionality and security.
+              </p>
+            </div>
+            <Button onClick={onLogout} variant="outline" className="w-full">
+              <LogOut className="w-4 h-4 mr-2" />
+              Return to Login
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!institution || !adminData) {
     return (
@@ -158,6 +197,25 @@ export default function InstitutionAdminDashboard({
     { date: 'Feb 20', event: 'Equipment Inspection', participants: 10, type: 'inspection' }
   ];
 
+  // Quick Action handlers
+  const handleExportReport = () => {
+    toast.success('Report Export Started', {
+      description: 'Your comprehensive report is being generated. Download will begin shortly.',
+    });
+  };
+
+  const handleScheduleDrill = () => {
+    toast.success('Drill Scheduled', {
+      description: 'New safety drill scheduled for next week. All students will be notified.',
+    });
+  };
+
+  const handleSendNotification = () => {
+    toast.success('Notification Sent', {
+      description: 'Alert sent to all students and staff members successfully.',
+    });
+  };
+
   const TrendIndicator = ({ value }: { value: number }) => {
     const isPositive = value >= 0;
     return (
@@ -196,13 +254,13 @@ export default function InstitutionAdminDashboard({
 
             {/* Right: Actions */}
             <div className="flex items-center gap-2">
-              <Button size="sm" variant="ghost" className="relative">
+              <Button size="sm" variant="ghost" className="relative" onClick={() => toast.info('Notifications', { description: `${institution.activeAlerts} active alerts` })}>
                 <Bell className="w-4 h-4" />
                 {institution.activeAlerts > 0 && (
                   <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
                 )}
               </Button>
-              <Button size="sm" variant="ghost">
+              <Button size="sm" variant="ghost" onClick={() => toast.info('Settings', { description: 'Settings panel coming soon' })}>
                 <Settings className="w-4 h-4" />
               </Button>
               <Separator orientation="vertical" className="h-6 mx-2" />
@@ -218,14 +276,18 @@ export default function InstitutionAdminDashboard({
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <div className="mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
           <h2 className="text-2xl font-bold text-slate-900 mb-2">
             Welcome back, {adminData.adminName.split(' ')[0]}
           </h2>
           <p className="text-slate-600">
             {adminData.role} • Monitoring {institution.students.toLocaleString()} students
           </p>
-        </div>
+        </motion.div>
 
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -263,7 +325,12 @@ export default function InstitutionAdminDashboard({
               progress: (activeStudents / institution.students) * 100
             }
           ].map((metric, index) => (
-            <div key={metric.label}>
+            <motion.div
+              key={metric.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
               <Card className="hover:shadow-md transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
@@ -277,9 +344,77 @@ export default function InstitutionAdminDashboard({
                   <Progress value={metric.progress} className="h-1.5" />
                 </CardContent>
               </Card>
-            </div>
-          ))}
-        </div>
+            </motion.div>
+          ))}</div>
+
+        {/* Quick Actions - Prominent Position */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mb-8"
+        >
+          <Card className="bg-linear-to-br from-blue-600 to-indigo-700 border-0 shadow-xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
+            <CardHeader className="relative">
+              <CardTitle className="text-white flex items-center gap-2">
+                <Zap className="w-5 h-5" />
+                Quick Actions
+              </CardTitle>
+              <CardDescription className="text-blue-100">
+                Manage your institution's safety operations
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Button
+                  onClick={handleExportReport}
+                  className="w-full justify-start gap-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm h-auto py-4"
+                  size="lg"
+                >
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <Download className="w-5 h-5" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <p className="font-semibold">Export Report</p>
+                    <p className="text-xs text-blue-100 opacity-90">Download analytics</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-50" />
+                </Button>
+
+                <Button
+                  onClick={handleScheduleDrill}
+                  className="w-full justify-start gap-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm h-auto py-4"
+                  size="lg"
+                >
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <Siren className="w-5 h-5" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <p className="font-semibold">Schedule Drill</p>
+                    <p className="text-xs text-blue-100 opacity-90">Plan safety exercise</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-50" />
+                </Button>
+
+                <Button
+                  onClick={handleSendNotification}
+                  className="w-full justify-start gap-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm h-auto py-4"
+                  size="lg"
+                >
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <Send className="w-5 h-5" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <p className="font-semibold">Send Notification</p>
+                    <p className="text-xs text-blue-100 opacity-90">Alert all students</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-50" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
         {/* Tabs Section */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -313,7 +448,7 @@ export default function InstitutionAdminDashboard({
                     <div className="flex items-center justify-between">
                       <div>
                         <CardTitle className="flex items-center gap-2">
-                          <TrendingUp className="w-5 h-5 text-blue-600" />
+                          <LineChart className="w-5 h-5 text-blue-600" />
                           Performance Trend
                         </CardTitle>
                         <CardDescription>6-month overview of key metrics</CardDescription>
@@ -387,7 +522,7 @@ export default function InstitutionAdminDashboard({
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <BarChart3 className="w-5 h-5 text-purple-600" />
+                      <PieChartIcon className="w-5 h-5 text-purple-600" />
                       Training Module Completion
                     </CardTitle>
                     <CardDescription>Student completion rates by module type</CardDescription>
@@ -401,12 +536,12 @@ export default function InstitutionAdminDashboard({
                             <span className="text-sm font-semibold text-slate-900">{module.value}%</span>
                           </div>
                           <div className="relative h-2 bg-slate-100 rounded-full overflow-hidden">
-                            <div
-                              className="absolute inset-y-0 left-0 rounded-full transition-all duration-1000"
-                              style={{ 
-                                backgroundColor: module.color,
-                                width: `${module.value}%`
-                              }}
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${module.value}%` }}
+                              transition={{ duration: 1, delay: 0.2 }}
+                              className="absolute inset-y-0 left-0 rounded-full"
+                              style={{ backgroundColor: module.color }}
                             />
                           </div>
                         </div>
@@ -430,8 +565,11 @@ export default function InstitutionAdminDashboard({
                     <ScrollArea className="h-[300px] pr-4">
                       <div className="space-y-3">
                         {recentActivities.map((activity, index) => (
-                          <div
+                          <motion.div
                             key={index}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
                             className="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors"
                           >
                             <div className={`w-10 h-10 rounded-lg ${activity.bg} flex items-center justify-center shrink-0`}>
@@ -441,7 +579,7 @@ export default function InstitutionAdminDashboard({
                               <p className="text-sm text-slate-900 mb-1">{activity.text}</p>
                               <p className="text-xs text-slate-500">{activity.time}</p>
                             </div>
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
                     </ScrollArea>
@@ -478,27 +616,6 @@ export default function InstitutionAdminDashboard({
                         </div>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
-
-                {/* Quick Actions */}
-                <Card className="bg-linear-to-br from-blue-50 to-indigo-50 border-blue-200">
-                  <CardHeader>
-                    <CardTitle className="text-base">Quick Actions</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <Button variant="outline" className="w-full justify-start gap-2" size="sm">
-                      <Download className="w-4 h-4" />
-                      Export Report
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start gap-2" size="sm">
-                      <Siren className="w-4 h-4" />
-                      Schedule Drill
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start gap-2" size="sm">
-                      <Mail className="w-4 h-4" />
-                      Send Notification
-                    </Button>
                   </CardContent>
                 </Card>
               </div>
@@ -574,15 +691,16 @@ export default function InstitutionAdminDashboard({
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
-                    { title: 'Compliance Report', icon: ShieldCheck, desc: 'Full compliance status' },
-                    { title: 'Student Progress', icon: GraduationCap, desc: 'Individual student data' },
-                    { title: 'Drill Performance', icon: Activity, desc: 'Drill participation data' },
-                    { title: 'Training Analytics', icon: BookOpen, desc: 'Module completion rates' }
+                    { title: 'Compliance Report', icon: ShieldCheck, desc: 'Full compliance status', action: handleExportReport },
+                    { title: 'Student Progress', icon: GraduationCap, desc: 'Individual student data', action: handleExportReport },
+                    { title: 'Drill Performance', icon: Activity, desc: 'Drill participation data', action: handleExportReport },
+                    { title: 'Training Analytics', icon: BookOpen, desc: 'Module completion rates', action: handleExportReport }
                   ].map((report) => (
                     <Button
                       key={report.title}
                       variant="outline"
-                      className="h-auto p-4 justify-start text-left"
+                      className="h-auto p-4 justify-start text-left hover:bg-blue-50 hover:border-blue-300"
+                      onClick={report.action}
                     >
                       <div className="flex gap-3 items-center w-full">
                         <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
