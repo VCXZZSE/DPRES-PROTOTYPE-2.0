@@ -38,7 +38,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface FAQ {
   id: string;
@@ -121,7 +121,7 @@ export function FAQSection() {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+    <section className="py-12 sm:py-16 lg:py-20 bg-linear-to-br from-blue-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
       {/* Decorative Indian-inspired patterns */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 border-2 border-blue-600 rounded-full animate-spin-slow"></div>
@@ -137,10 +137,10 @@ export function FAQSection() {
           <Badge className="mb-4 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 border-blue-200 dark:border-blue-700">
             {t('faq.badge')}
           </Badge>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 bg-linear-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
             {t('faq.title')}
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto break-words">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto wrap-break-word">
             {t('faq.subtitle')}
           </p>
         </div>
@@ -168,11 +168,11 @@ export function FAQSection() {
               >
                 <AccordionTrigger className="py-4 sm:py-5 hover:no-underline group">
                   <div className="flex items-start sm:items-center gap-3 sm:gap-4 text-left w-full pr-2">
-                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                    <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-linear-to-br from-blue-500 to-orange-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform">
                       {faq.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base break-words">
+                      <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base wrap-break-word">
                         {faq.question}
                       </h3>
                       <span className="inline-block mt-1 text-xs text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">
@@ -182,7 +182,7 @@ export function FAQSection() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pb-4 sm:pb-5 pt-2">
-                  <div className="pl-0 sm:pl-16 text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed break-words">
+                  <div className="pl-0 sm:pl-16 text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed wrap-break-word">
                     {faq.answer}
                   </div>
                 </AccordionContent>
@@ -197,12 +197,12 @@ export function FAQSection() {
         )}
 
         {/* Help Footer */}
-        <div className="mt-8 sm:mt-12 text-center bg-gradient-to-r from-blue-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 sm:p-8 border border-blue-100 dark:border-gray-700">
+        <div className="mt-8 sm:mt-12 text-center bg-linear-to-r from-blue-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 sm:p-8 border border-blue-100 dark:border-gray-700">
           <Headphones className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-blue-600 dark:text-blue-400" />
           <h3 className="font-semibold text-base sm:text-lg mb-2 text-gray-900 dark:text-white">
             {t('faq.helpTitle')}
           </h3>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 break-words mb-4">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 wrap-break-word mb-4">
             {t('faq.helpDescription')}
           </p>
 
@@ -211,7 +211,7 @@ export function FAQSection() {
             <DialogTrigger asChild>
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-blue-600 to-orange-600 hover:from-blue-700 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all"
+                className="bg-linear-to-r from-blue-600 to-orange-600 hover:from-blue-700 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all"
               >
                 <MessageSquare className="h-5 w-5 mr-2" />
                 {t('faq.query.raiseQuery')}
@@ -278,7 +278,7 @@ export function FAQSection() {
                 </Button>
                 <Button 
                   onClick={handleSubmitQuery}
-                  className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-orange-600 hover:from-blue-700 hover:to-orange-700"
+                  className="w-full sm:w-auto bg-linear-to-r from-blue-600 to-orange-600 hover:from-blue-700 hover:to-orange-700"
                 >
                   <Send className="h-4 w-4 mr-2" />
                   {t('faq.query.submit')}

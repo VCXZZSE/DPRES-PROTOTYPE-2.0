@@ -120,10 +120,10 @@ export function Navigation({ userData, onLogout, isFirstLogin = false }: Navigat
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-linear-to-br from-orange-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
-              <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-orange-600 to-indigo-600 bg-clip-text text-transparent">
+              <div className="text-lg sm:text-xl font-bold bg-linear-to-r from-orange-600 to-indigo-600 bg-clip-text text-transparent">
                 DPRES
               </div>
             </Link>

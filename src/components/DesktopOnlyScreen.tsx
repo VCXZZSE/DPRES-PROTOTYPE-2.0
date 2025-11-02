@@ -9,10 +9,10 @@ interface DesktopOnlyScreenProps {
 
 export function DesktopOnlyScreen({ onBack }: DesktopOnlyScreenProps) {
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-gradient-to-br from-red-50 via-orange-50 to-red-100 dark:from-red-950 dark:via-orange-950 dark:to-red-900 flex items-center justify-center p-3 sm:p-4 md:p-6">
+    <div className="min-h-dvh bg-linear-to-br from-red-50 via-orange-50 to-red-100 dark:from-red-950 dark:via-orange-950 dark:to-red-900 flex items-center justify-center p-3 sm:p-4 md:p-6">
       <Card className="w-full max-w-[95vw] sm:max-w-md mx-auto shadow-2xl border-red-200 dark:border-red-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
         <CardHeader className="text-center pb-3 px-4 sm:px-6">
-          <div className="mx-auto mb-3 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center shadow-lg">
+          <div className="mx-auto mb-3 w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center shadow-lg">
             <Monitor className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
           </div>
           <CardTitle className="text-base sm:text-lg text-gray-900 dark:text-gray-100">Desktop Access Required</CardTitle>

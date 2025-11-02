@@ -26,7 +26,7 @@ export function AdminWelcomeAnimation({ adminEmail, onComplete }: AdminWelcomeAn
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-gradient-to-br from-slate-950 via-red-950 to-slate-950">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-linear-to-br from-slate-950 via-red-950 to-slate-950">
       {/* Professional grid background */}
       <div className="absolute inset-0 command-center-grid opacity-30" />
       
@@ -85,7 +85,7 @@ export function AdminWelcomeAnimation({ adminEmail, onComplete }: AdminWelcomeAn
         >
           <div className="relative w-24 h-24">
             {/* Main shield */}
-            <div className="absolute inset-0 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center admin-glass">
+            <div className="absolute inset-0 bg-linear-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center admin-glass">
               <Shield className="w-12 h-12 text-white" strokeWidth={1.5} />
             </div>
             {/* Pulse ring */}
@@ -175,7 +175,7 @@ export function AdminWelcomeAnimation({ adminEmail, onComplete }: AdminWelcomeAn
           {/* Progress bar */}
           <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-red-500 to-orange-500"
+              className="h-full bg-linear-to-r from-red-500 to-orange-500"
               initial={{ width: "0%" }}
               animate={{ width: "100%" }}
               transition={{ duration: 2.5, ease: "easeInOut" }}

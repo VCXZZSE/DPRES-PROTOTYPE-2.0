@@ -77,7 +77,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -86,7 +86,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
             rotate: [0, 90, 0],
           }}
           transition={{ duration: 20, repeat: Infinity }}
-          className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl"
+          className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 bg-linear-to-br from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -94,7 +94,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
             rotate: [0, -90, 0],
           }}
           transition={{ duration: 25, repeat: Infinity }}
-          className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-gradient-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"
+          className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-linear-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"
         />
       </div>
 
@@ -112,8 +112,8 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
             className="relative inline-flex items-center justify-center mb-4"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur-xl opacity-50" />
-            <div className="relative bg-gradient-to-br from-blue-600 to-indigo-700 p-4 rounded-2xl shadow-2xl">
+            <div className="absolute inset-0 bg-linear-to-r from-blue-600 to-indigo-600 rounded-2xl blur-xl opacity-50" />
+            <div className="relative bg-linear-to-br from-blue-600 to-indigo-700 p-4 rounded-2xl shadow-2xl">
               <Building2 className="w-10 h-10 text-white" />
               <motion.div
                 animate={{ rotate: 360 }}
@@ -222,7 +222,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
                   <Button
                     onClick={() => selectedInstitution && setStep('credentials')}
                     disabled={!selectedInstitution}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                    className="flex-1 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                   >
                     Continue
                     <ChevronRight className="w-4 h-4 ml-2" />
@@ -244,7 +244,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
             >
               <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-2xl p-6">
                 {/* Selected Institution Banner */}
-                <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                <div className="mb-6 p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
                   <div className="flex items-center gap-3">
                     {institutionType === 'school' ? (
                       <School className="w-8 h-8 text-blue-600" />
@@ -342,7 +342,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
                     </Button>
                     <Button
                       type="submit"
-                      className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                      className="flex-1 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                     >
                       Access Dashboard
                       <ChevronRight className="w-4 h-4 ml-2" />

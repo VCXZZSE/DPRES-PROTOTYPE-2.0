@@ -338,7 +338,7 @@ export function CertificateManager() {
             <div className="space-y-6">
               {/* Certificate Header */}
               <div className="text-center border-b pb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Award className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-blue-600 mb-2">State Disaster Management Authority</h3>

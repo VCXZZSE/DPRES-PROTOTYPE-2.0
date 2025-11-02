@@ -28,7 +28,7 @@ export function WelcomeAnimation({ studentName, schoolName, onComplete }: Welcom
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-linear-to-br from-slate-900 via-blue-900 to-slate-800">
       {/* Sophisticated gradient overlay */}
       <motion.div 
         className="absolute inset-0"
@@ -192,7 +192,7 @@ export function WelcomeAnimation({ studentName, schoolName, onComplete }: Welcom
             />
             
             {/* Logo container - professional gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-blue-800 to-cyan-900 rounded-2xl shadow-2xl flex items-center justify-center overflow-hidden border border-white/10">
+            <div className="absolute inset-0 bg-linear-to-br from-slate-700 via-blue-800 to-cyan-900 rounded-2xl shadow-2xl flex items-center justify-center overflow-hidden border border-white/10">
               {/* Subtle pattern overlay */}
               <div className="absolute inset-0 opacity-10">
                 <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -225,7 +225,7 @@ export function WelcomeAnimation({ studentName, schoolName, onComplete }: Welcom
             Welcome to DPRES
           </div>
           <motion.div 
-            className="h-px w-24 mx-auto bg-gradient-to-r from-transparent via-blue-400/50 to-transparent"
+            className="h-px w-24 mx-auto bg-linear-to-r from-transparent via-blue-400/50 to-transparent"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.5, duration: 0.4 }}
@@ -337,7 +337,7 @@ export function WelcomeAnimation({ studentName, schoolName, onComplete }: Welcom
           className="mt-6 w-64 h-0.5 bg-white/10 rounded-full overflow-hidden"
         >
           <motion.div
-            className="h-full bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500"
+            className="h-full bg-linear-to-r from-blue-500 via-cyan-500 to-teal-500"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             transition={{ duration: 2, ease: "easeInOut" }}

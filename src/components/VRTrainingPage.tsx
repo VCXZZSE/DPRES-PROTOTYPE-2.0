@@ -86,18 +86,18 @@ export function VRTrainingPage() {
     <div className="min-h-screen bg-background dark:bg-background py-4 sm:py-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground dark:text-foreground mb-2 break-words leading-tight">{t('vr.title')}</h1>
-          <p className="text-muted-foreground dark:text-muted-foreground break-words">{t('vr.subtitle')}</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground dark:text-foreground mb-2 wrap-break-word leading-tight">{t('vr.title')}</h1>
+          <p className="text-muted-foreground dark:text-muted-foreground wrap-break-word">{t('vr.subtitle')}</p>
         </div>
 
         {/* Mobile VR Setup Instructions */}
-        <Card className="mb-6 sm:mb-8 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-800">
+        <Card className="mb-6 sm:mb-8 bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-800">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 text-card-foreground dark:text-card-foreground">
               <Smartphone className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <span className="break-words">{t('vr.gettingStarted')}</span>
+              <span className="wrap-break-word">{t('vr.gettingStarted')}</span>
             </CardTitle>
-            <CardDescription className="text-muted-foreground dark:text-muted-foreground break-words">
+            <CardDescription className="text-muted-foreground dark:text-muted-foreground wrap-break-word">
               {t('vr.setupDesc')}
             </CardDescription>
           </CardHeader>
@@ -107,22 +107,22 @@ export function VRTrainingPage() {
                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mx-auto mb-3">
                   <Smartphone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="font-semibold mb-2 text-card-foreground dark:text-card-foreground break-words">{t('vr.smartphone')}</h3>
-                <p className="text-sm text-muted-foreground dark:text-muted-foreground break-words">{t('vr.smartphoneDesc')}</p>
+                <h3 className="font-semibold mb-2 text-card-foreground dark:text-card-foreground wrap-break-word">{t('vr.smartphone')}</h3>
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground wrap-break-word">{t('vr.smartphoneDesc')}</p>
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mx-auto mb-3">
                   <Box className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                 </div>
-                <h3 className="font-semibold mb-2 text-card-foreground dark:text-card-foreground break-words">{t('vr.cardboardViewer')}</h3>
-                <p className="text-sm text-muted-foreground dark:text-muted-foreground break-words">{t('vr.cardboardDesc')}</p>
+                <h3 className="font-semibold mb-2 text-card-foreground dark:text-card-foreground wrap-break-word">{t('vr.cardboardViewer')}</h3>
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground wrap-break-word">{t('vr.cardboardDesc')}</p>
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mx-auto mb-3">
                   <Headphones className="h-6 w-6 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="font-semibold mb-2 text-card-foreground dark:text-card-foreground break-words">{t('vr.headphones')}</h3>
-                <p className="text-sm text-muted-foreground dark:text-muted-foreground break-words">{t('vr.headphonesDesc')}</p>
+                <h3 className="font-semibold mb-2 text-card-foreground dark:text-card-foreground wrap-break-word">{t('vr.headphones')}</h3>
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground wrap-break-word">{t('vr.headphonesDesc')}</p>
               </div>
             </div>
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -155,7 +155,7 @@ export function VRTrainingPage() {
             const IconComponent = scenario.icon;
             return (
               <Card key={scenario.id} className="hover:shadow-lg transition-all duration-300 overflow-hidden bg-card dark:bg-card">
-                <div className={`h-24 sm:h-32 bg-gradient-to-br ${scenario.color} relative`}>
+                <div className={`h-24 sm:h-32 bg-linear-to-br ${scenario.color} relative`}>
                   <div className="absolute inset-0 bg-black/20"></div>
                   <div className="absolute top-3 left-3 sm:top-4 sm:left-4 text-white">
                     <IconComponent className="h-6 w-6 sm:h-8 sm:w-8" />
@@ -173,25 +173,25 @@ export function VRTrainingPage() {
                     )}
                   </div>
                   <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 text-white">
-                    <h3 className="text-sm sm:text-lg lg:text-xl font-bold break-words">{scenario.title}</h3>
+                    <h3 className="text-sm sm:text-lg lg:text-xl font-bold wrap-break-word">{scenario.title}</h3>
                   </div>
                 </div>
                 
                 <CardContent className="p-4 sm:p-6">
-                  <p className="text-muted-foreground dark:text-muted-foreground mb-4 text-sm sm:text-base break-words">{scenario.description}</p>
+                  <p className="text-muted-foreground dark:text-muted-foreground mb-4 text-sm sm:text-base wrap-break-word">{scenario.description}</p>
                   
                   <div className="flex items-center justify-between mb-4 gap-2 sm:gap-4">
                     <div className="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground">
                       <span className="flex items-center">
-                        <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
-                        <span className="break-words">{scenario.duration}</span>
+                        <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1 shrink-0" />
+                        <span className="wrap-break-word">{scenario.duration}</span>
                       </span>
                       <span className="flex items-center">
-                        <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
+                        <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 shrink-0" />
                         <span>{scenario.participants}</span>
                       </span>
                     </div>
-                    <Badge className={`${getDifficultyColor(scenario.difficulty)} flex-shrink-0 text-xs`}>
+                    <Badge className={`${getDifficultyColor(scenario.difficulty)} shrink-0 text-xs`}>
                       {t(`vr.${scenario.difficulty}`)}
                     </Badge>
                   </div>
@@ -224,25 +224,25 @@ export function VRTrainingPage() {
           <Card className="bg-card dark:bg-card">
             <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
               <div className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1 sm:mb-2">515</div>
-              <div className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground break-words">{t('vr.totalSessions')}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground wrap-break-word">{t('vr.totalSessions')}</div>
             </CardContent>
           </Card>
           <Card className="bg-card dark:bg-card">
             <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
               <div className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600 dark:text-green-400 mb-1 sm:mb-2">94%</div>
-              <div className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground break-words">{t('vr.completionRate')}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground wrap-break-word">{t('vr.completionRate')}</div>
             </CardContent>
           </Card>
           <Card className="bg-card dark:bg-card">
             <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
               <div className="text-lg sm:text-xl lg:text-2xl font-bold text-orange-600 dark:text-orange-400 mb-1 sm:mb-2">{t('vr.avgTime')}</div>
-              <div className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground break-words">{t('vr.avgSessionTime')}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground wrap-break-word">{t('vr.avgSessionTime')}</div>
             </CardContent>
           </Card>
           <Card className="bg-card dark:bg-card">
             <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
               <div className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600 dark:text-purple-400 mb-1 sm:mb-2">4.8/5</div>
-              <div className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground break-words">{t('vr.userRating')}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground wrap-break-word">{t('vr.userRating')}</div>
             </CardContent>
           </Card>
         </div>
@@ -252,14 +252,14 @@ export function VRTrainingPage() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 text-card-foreground dark:text-card-foreground">
               <Eye className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-              <span className="break-words">{t('vr.trainingPreview')}</span>
+              <span className="wrap-break-word">{t('vr.trainingPreview')}</span>
             </CardTitle>
-            <CardDescription className="text-muted-foreground dark:text-muted-foreground break-words">
+            <CardDescription className="text-muted-foreground dark:text-muted-foreground wrap-break-word">
               {t('vr.previewDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="relative rounded-lg overflow-hidden bg-gradient-to-br from-blue-900 to-purple-900 h-32 sm:h-48 md:h-64">
+            <div className="relative rounded-lg overflow-hidden bg-linear-to-br from-blue-900 to-purple-900 h-32 sm:h-48 md:h-64">
               <ImageWithFallback 
                 src="https://images.unsplash.com/photo-1592814612565-4961b68b82f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aXJ0dWFsJTIwcmVhbGl0eSUyMGVkdWNhdGlvbnxlbnwxfHx8fDE3NTc4MzM0MTN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt={t('vr.trainingEnvironmentAlt')}

@@ -233,15 +233,15 @@ export function IndiaMap({ className = '', showInstitutions = true, onInstitutio
       <div className="absolute bottom-6 left-6 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-gray-100 dark:border-gray-700">
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-lime-400 to-lime-600"></div>
+            <div className="w-4 h-4 rounded-full bg-linear-to-r from-lime-400 to-lime-600"></div>
             <span className="text-gray-700 dark:text-gray-300 font-medium">Safe</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
+            <div className="w-4 h-4 rounded-full bg-linear-to-r from-emerald-500 to-emerald-600"></div>
             <span className="text-gray-700 dark:text-gray-300 font-medium">Active</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-red-500 to-red-600"></div>
+            <div className="w-4 h-4 rounded-full bg-linear-to-r from-red-500 to-red-600"></div>
             <span className="text-gray-700 dark:text-gray-300 font-medium">Alert</span>
           </div>
         </div>
@@ -271,7 +271,7 @@ export function IndiaMap({ className = '', showInstitutions = true, onInstitutio
       {selectedState && (
         <div className="absolute top-6 right-6 w-96 max-w-[calc(100vw-3rem)]">
           <Card className="bg-white/98 dark:bg-slate-800/98 backdrop-blur-lg shadow-2xl border-0 rounded-3xl overflow-hidden animate-in slide-in-from-right duration-300">
-            <CardHeader className="bg-gradient-to-r from-blue-500 to-emerald-500 text-white pb-4">
+            <CardHeader className="bg-linear-to-r from-blue-500 to-emerald-500 text-white pb-4">
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="text-xl font-bold">{selectedState}</CardTitle>
@@ -290,13 +290,13 @@ export function IndiaMap({ className = '', showInstitutions = true, onInstitutio
             <CardContent className="p-6 space-y-6">
               {/* Statistics Grid */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-2xl text-center">
+                <div className="bg-linear-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-2xl text-center">
                   <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     {getInstitutionsByState(selectedState).filter(i => i.type === 'school').length}
                   </div>
                   <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">Schools</div>
                 </div>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-2xl text-center">
+                <div className="bg-linear-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-2xl text-center">
                   <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                     {getInstitutionsByState(selectedState).filter(i => i.type === 'college').length}
                   </div>
@@ -350,7 +350,7 @@ export function IndiaMap({ className = '', showInstitutions = true, onInstitutio
                   </h5>
                   <div className="space-y-3 max-h-32 overflow-y-auto pr-2">
                     {getStateAlerts(selectedState).map(alert => (
-                      <div key={alert.id} className="p-4 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border border-red-200 dark:border-red-800">
+                      <div key={alert.id} className="p-4 bg-linear-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border border-red-200 dark:border-red-800">
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-semibold text-red-900 dark:text-red-100 text-sm">{alert.type}</span>
                           <Badge className={`text-xs ${

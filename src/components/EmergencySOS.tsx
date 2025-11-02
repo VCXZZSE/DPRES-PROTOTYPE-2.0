@@ -105,7 +105,7 @@ export function EmergencySOS({ children, onConfirm, variant = 'navigation' }: Em
 
       {/* Countdown confirmation dialog */}
       {showConfirmDialog && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-[60]">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-60">
           <div className="bg-gray-900 rounded-lg p-6 max-w-sm w-full mx-4 shadow-2xl border border-gray-700">
             <div className="text-center space-y-4">
               <div className="mx-auto w-16 h-16 bg-red-900/30 rounded-full flex items-center justify-center">

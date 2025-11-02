@@ -43,7 +43,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { useIsMobile } from './hooks/useIsMobile';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface CommunityHubProps {
   userData: {
@@ -1019,13 +1019,13 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
   }
 
   return (
-    <div className="flex flex-col h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="flex flex-col h-screen w-full bg-linear-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Top Navigation Bar */}
-      <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 px-6 py-3 flex-shrink-0 shadow-sm">
+      <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 px-6 py-3 shrink-0 shadow-sm">
         <div className="flex items-center justify-between max-w-[1800px] mx-auto">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
+              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
                 <Shield className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -1097,7 +1097,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                           }`}
                         >
                           <div className="flex items-start space-x-3">
-                            <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                            <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${
                               !notification.read ? 'bg-blue-500' : 'bg-transparent'
                             }`} />
                             <div className="flex-1 min-w-0">
@@ -1149,7 +1149,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
 
       <div className="flex-1 flex overflow-hidden w-full max-w-[1800px] mx-auto">
         {/* Left Sidebar */}
-        <div className="w-72 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-r border-slate-200/50 dark:border-slate-700/50 overflow-y-auto flex-shrink-0">
+        <div className="w-72 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-r border-slate-200/50 dark:border-slate-700/50 overflow-y-auto shrink-0">
           <ScrollArea className="h-full">
             <div className="p-5 space-y-6">
               {/* Navigation */}
@@ -1316,7 +1316,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
               <Separator className="bg-slate-200 dark:bg-slate-700" />
 
               {/* Quick Stats */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800/50">
+              <div className="bg-linear-to-br from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800/50">
                 <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-3 flex items-center">
                   <Star className="w-4 h-4 mr-2" />
                   Your Impact
@@ -1351,7 +1351,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                     <div className="space-y-4">
                       <div className="flex items-center space-x-3 mb-4">
                         <Avatar className="border-2 border-blue-500">
-                          <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+                          <AvatarFallback className="bg-linear-to-br from-blue-500 to-blue-600 text-white">
                             {currentUserName[0]}
                           </AvatarFallback>
                         </Avatar>
@@ -1384,7 +1384,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                         </div>
                         <Button 
                           onClick={handlePostSubmit}
-                          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/30"
+                          className="bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/30"
                         >
                           <Send className="w-4 h-4 mr-2" />
                           Publish Post
@@ -1394,10 +1394,10 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                   </CardContent>
                 </Card>
               ) : (
-                <Card className="border-amber-200 dark:border-amber-800 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 shadow-lg">
+                <Card className="border-amber-200 dark:border-amber-800 bg-linear-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex items-start space-x-3">
-                      <AlertCircle className="w-6 h-6 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                      <AlertCircle className="w-6 h-6 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
                       <div>
                         <p className="font-semibold text-amber-900 dark:text-amber-100 mb-2">
                           Community Discussions (17+ Only)
@@ -1541,7 +1541,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                       <CardContent className="pt-6">
                         <div className="flex items-start space-x-4">
                           <Avatar className={`border-2 ${post.isOfficial ? 'border-blue-500' : 'border-slate-200 dark:border-slate-700'}`}>
-                            <AvatarFallback className={post.isOfficial ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white' : 'bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800'}>
+                            <AvatarFallback className={post.isOfficial ? 'bg-linear-to-br from-blue-500 to-blue-600 text-white' : 'bg-linear-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800'}>
                               {post.author[0]}
                             </AvatarFallback>
                           </Avatar>
@@ -1554,7 +1554,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                                 <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                               )}
                               {post.isOfficial && (
-                                <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0">
+                                <Badge className="bg-linear-to-r from-blue-500 to-blue-600 text-white border-0">
                                   <Sparkles className="w-3 h-3 mr-1" />
                                   Official
                                 </Badge>
@@ -1686,12 +1686,12 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
         </div>
 
         {/* Right Sidebar */}
-        <div className="w-80 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-l border-slate-200/50 dark:border-slate-700/50 overflow-y-auto flex-shrink-0">
+        <div className="w-80 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-l border-slate-200/50 dark:border-slate-700/50 overflow-y-auto shrink-0">
           <ScrollArea className="h-full">
             <div className="p-5 space-y-6">
               {/* Featured Video */}
               <Card className="border-slate-200 dark:border-slate-700 overflow-hidden shadow-lg">
-                <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-4 text-white">
+                <div className="bg-linear-to-br from-blue-500 to-blue-600 p-4 text-white">
                   <h3 className="font-semibold flex items-center">
                     <Video className="w-4 h-4 mr-2" />
                     Featured Training
@@ -1701,7 +1701,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                   <div className="space-y-3">
                     <div className="relative rounded-lg overflow-hidden cursor-pointer group shadow-md" onClick={() => handleVideoPlay(gridCorpsVideos[0])}>
                       <img src={gridCorpsVideos[0].thumbnail} alt={gridCorpsVideos[0].title} className="w-full h-36 object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center group-hover:from-black/80 transition-all">
+                      <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-center justify-center group-hover:from-black/80 transition-all">
                         <PlayCircle className="w-14 h-14 text-white drop-shadow-lg" />
                       </div>
                       <div className="absolute top-2 right-2">
@@ -1718,7 +1718,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                         <span className="text-xs text-slate-500">{gridCorpsVideos[0].views.toLocaleString()} views</span>
                       </div>
                     </div>
-                    <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700" size="sm" onClick={() => handleVideoPlay(gridCorpsVideos[0])}>
+                    <Button className="w-full bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700" size="sm" onClick={() => handleVideoPlay(gridCorpsVideos[0])}>
                       <PlayCircle className="w-4 h-4 mr-2" />
                       Watch Now
                     </Button>
@@ -1743,7 +1743,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                         className="w-full text-left p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
                       >
                         <div className="flex items-start space-x-3">
-                          <div className="relative w-20 h-14 rounded overflow-hidden flex-shrink-0">
+                          <div className="relative w-20 h-14 rounded overflow-hidden shrink-0">
                             <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-all">
                               <PlayCircle className="w-6 h-6 text-white" />
@@ -1790,7 +1790,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
               </Card>
 
               {/* Community Guidelines */}
-              <Card className="border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-sky-50 dark:from-blue-950/20 dark:to-sky-950/20">
+              <Card className="border-blue-200 dark:border-blue-800 bg-linear-to-br from-blue-50 to-sky-50 dark:from-blue-950/20 dark:to-sky-950/20">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center text-blue-900 dark:text-blue-100">
                     <Shield className="w-4 h-4 mr-2" />
@@ -1847,7 +1847,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
           <div className="space-y-4">
             <div className="relative rounded-xl overflow-hidden bg-black aspect-video shadow-2xl">
               <img src={currentVideo?.thumbnail} alt={currentVideo?.title} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/70 to-transparent">
+              <div className="absolute inset-0 flex items-center justify-center bg-linear-to-t from-black/70 to-transparent">
                 <div className="text-center text-white">
                   <PlayCircle className="w-20 h-20 mx-auto mb-4 opacity-90" />
                   <p className="text-lg font-medium">Training Video Player</p>
@@ -1856,7 +1856,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
             </div>
             
             {!canSkipVideo && (
-              <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200 dark:border-amber-800 rounded-xl p-5">
+              <div className="bg-linear-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200 dark:border-amber-800 rounded-xl p-5">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-sm text-amber-900 dark:text-amber-100 font-medium flex items-center">
                     <Lock className="w-4 h-4 mr-2" />
@@ -1866,7 +1866,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                 </div>
                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden shadow-inner">
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-full transition-all duration-500 ease-out shadow-lg"
+                    className="bg-linear-to-r from-blue-500 to-blue-600 h-full transition-all duration-500 ease-out shadow-lg"
                     style={{ width: `${videoProgress}%` }}
                   />
                 </div>
@@ -2036,7 +2036,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
           </DialogHeader>
           <div className="space-y-4">
             <div className="flex items-start space-x-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg p-4">
-              <AlertCircle className="w-6 h-6 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+              <AlertCircle className="w-6 h-6 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
               <div>
                 <p className="font-medium text-amber-900 dark:text-amber-100 mb-2">Community Discussions (17+ Only)</p>
                 <p className="text-sm text-amber-800 dark:text-amber-200">
@@ -2175,12 +2175,12 @@ function CommunityHubMobile({ userData, moduleFilter, onClose }: CommunityHubPro
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="flex flex-col h-screen w-full bg-linear-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Header */}
-      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700 px-4 py-3 flex-shrink-0">
+      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700 px-4 py-3 shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center">
               <Shield className="w-4 h-4 text-white" />
             </div>
             <div>
@@ -2216,10 +2216,10 @@ function CommunityHubMobile({ userData, moduleFilter, onClose }: CommunityHubPro
         {activeTab === 'feed' && (
           <div className="p-4 space-y-4">
             {!canParticipate && (
-              <Card className="border-amber-200 dark:border-amber-800 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20">
+              <Card className="border-amber-200 dark:border-amber-800 bg-linear-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20">
                 <CardContent className="pt-4">
                   <div className="flex items-start space-x-2">
-                    <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                    <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" />
                     <div>
                       <p className="text-sm font-medium text-amber-900 dark:text-amber-100">Age Restriction</p>
                       <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">17+ to participate. Watch training videos below!</p>
@@ -2235,7 +2235,7 @@ function CommunityHubMobile({ userData, moduleFilter, onClose }: CommunityHubPro
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
                       <Avatar className="w-10 h-10">
-                        <AvatarFallback className={post.isOfficial ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white' : ''}>
+                        <AvatarFallback className={post.isOfficial ? 'bg-linear-to-br from-blue-500 to-blue-600 text-white' : ''}>
                           {post.author[0]}
                         </AvatarFallback>
                       </Avatar>
@@ -2283,7 +2283,7 @@ function CommunityHubMobile({ userData, moduleFilter, onClose }: CommunityHubPro
               <Card key={video.id} className="overflow-hidden">
                 <div className="relative">
                   <img src={video.thumbnail} alt={video.title} className="w-full h-40 object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center">
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent flex items-center justify-center">
                     <Button
                       size="lg"
                       className="rounded-full bg-white/90 hover:bg-white text-black"
@@ -2329,7 +2329,7 @@ function CommunityHubMobile({ userData, moduleFilter, onClose }: CommunityHubPro
       </div>
 
       {/* Bottom Navigation */}
-      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-700 px-2 py-2 flex-shrink-0">
+      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-700 px-2 py-2 shrink-0">
         <div className="flex items-center justify-around">
           <Button
             variant={activeTab === 'feed' ? 'default' : 'ghost'}

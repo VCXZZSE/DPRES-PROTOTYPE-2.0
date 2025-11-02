@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { ScrollArea } from './ui/scroll-area';
+import { Separator } from './ui/separator';
 import {
   Building2,
   Users,
@@ -177,7 +177,7 @@ export default function InstitutionAdminDashboard({
             {/* Left: Logo & Institution Name */}
             <div className="flex items-center gap-4 min-w-0 flex-1">
               <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
                   <Building2 className="w-5 h-5 text-white" />
                 </div>
                 {institution.activeAlerts > 0 && (
@@ -434,7 +434,7 @@ export default function InstitutionAdminDashboard({
                             key={index}
                             className="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors"
                           >
-                            <div className={`w-10 h-10 rounded-lg ${activity.bg} flex items-center justify-center flex-shrink-0`}>
+                            <div className={`w-10 h-10 rounded-lg ${activity.bg} flex items-center justify-center shrink-0`}>
                               <activity.icon className={`w-5 h-5 ${activity.color}`} />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -460,7 +460,7 @@ export default function InstitutionAdminDashboard({
                     <div className="space-y-3">
                       {upcomingEvents.map((event, index) => (
                         <div key={index} className="flex gap-3 items-start">
-                          <div className="text-center flex-shrink-0">
+                          <div className="text-center shrink-0">
                             <div className="text-xs font-semibold text-slate-600">
                               {event.date.split(' ')[0]}
                             </div>
@@ -482,7 +482,7 @@ export default function InstitutionAdminDashboard({
                 </Card>
 
                 {/* Quick Actions */}
-                <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+                <Card className="bg-linear-to-br from-blue-50 to-indigo-50 border-blue-200">
                   <CardHeader>
                     <CardTitle className="text-base">Quick Actions</CardTitle>
                   </CardHeader>
@@ -585,14 +585,14 @@ export default function InstitutionAdminDashboard({
                       className="h-auto p-4 justify-start text-left"
                     >
                       <div className="flex gap-3 items-center w-full">
-                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
                           <report.icon className="w-5 h-5 text-blue-600" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-slate-900">{report.title}</p>
                           <p className="text-xs text-slate-500">{report.desc}</p>
                         </div>
-                        <Download className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                        <Download className="w-4 h-4 text-slate-400 shrink-0" />
                       </div>
                     </Button>
                   ))}

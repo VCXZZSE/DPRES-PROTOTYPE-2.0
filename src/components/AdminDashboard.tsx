@@ -137,7 +137,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 group ${
             activeTab === 'overview'
-              ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
               : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
           }`}
         >
@@ -155,7 +155,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'institutions'
-              ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
               : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
           }`}
         >
@@ -173,7 +173,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'alerts'
-              ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
               : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
           }`}
         >
@@ -193,7 +193,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'communications'
-              ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
               : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
           }`}
         >
@@ -208,7 +208,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'community'
-              ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
               : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
           }`}
         >
@@ -223,7 +223,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'certificates'
-              ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
               : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
           }`}
         >
@@ -238,7 +238,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'reports'
-              ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
               : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
           }`}
         >
@@ -253,7 +253,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'settings'
-              ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
               : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
           }`}
         >
@@ -268,7 +268,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Sophisticated Header */}
-      <div className="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-900 sticky top-0 z-40 backdrop-blur-xl bg-opacity-90">
+      <div className="border-b border-slate-800 bg-linear-to-r from-slate-900 via-slate-900 to-slate-900 sticky top-0 z-40 backdrop-blur-xl bg-opacity-90">
         <div className="px-4 lg:px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -283,7 +283,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
                   <div className="p-5">
                     <div className="mb-6">
                       <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-orange-600 rounded-lg flex items-center justify-center shadow-lg shadow-red-500/20">
+                        <div className="w-10 h-10 bg-linear-to-br from-red-600 to-orange-600 rounded-lg flex items-center justify-center shadow-lg shadow-red-500/20">
                           <Shield className="h-6 w-6 text-white" />
                         </div>
                         <div>
@@ -299,7 +299,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
               {/* Logo and branding */}
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-orange-600 rounded-lg flex items-center justify-center shadow-lg shadow-red-500/20">
+                <div className="w-10 h-10 bg-linear-to-br from-red-600 to-orange-600 rounded-lg flex items-center justify-center shadow-lg shadow-red-500/20">
                   <Shield className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -357,7 +357,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
           <div className="p-4">
             {/* Quick stats in sidebar */}
             <div className="mb-6 space-y-3">
-              <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/10 border border-blue-600/30 rounded-lg p-3">
+              <div className="bg-linear-to-br from-blue-600/20 to-blue-700/10 border border-blue-600/30 rounded-lg p-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-xs text-blue-300 mb-1">Total Students</div>
@@ -367,7 +367,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/10 border border-orange-600/30 rounded-lg p-3">
+              <div className="bg-linear-to-br from-orange-600/20 to-orange-700/10 border border-orange-600/30 rounded-lg p-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-xs text-orange-300 mb-1">Institutions</div>
@@ -392,7 +392,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
               <Button
                 onClick={handleGoHome}
                 size="lg"
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg px-6 py-3 text-base font-semibold"
+                className="bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg px-6 py-3 text-base font-semibold"
               >
                 <BarChart3 className="h-5 w-5 mr-2" />
                 Back to Command Center

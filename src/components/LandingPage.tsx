@@ -45,7 +45,7 @@ export function LandingPage({ userData }: LandingPageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-orange-500 via-indigo-600 to-indigo-800 text-white overflow-hidden">
+      <section className="relative bg-linear-to-br from-orange-500 via-indigo-600 to-indigo-800 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-24">
           {/* Indian-inspired decorative elements */}
@@ -60,8 +60,8 @@ export function LandingPage({ userData }: LandingPageProps) {
             
             {/* Paisley-inspired curved elements - positioned at bottom left */}
             <div className="absolute bottom-5 left-5 sm:bottom-10 sm:left-10 w-20 h-20 sm:w-32 sm:h-32 lg:w-40 lg:h-40 opacity-30">
-              <div className="w-32 h-32 bg-gradient-to-br from-orange-400/50 to-transparent rounded-full transform rotate-45 animate-pulse"></div>
-              <div className="absolute top-2 left-4 w-24 h-24 bg-gradient-to-tr from-white/40 to-transparent rounded-full transform -rotate-12"></div>
+              <div className="w-32 h-32 bg-linear-to-br from-orange-400/50 to-transparent rounded-full transform rotate-45 animate-pulse"></div>
+              <div className="absolute top-2 left-4 w-24 h-24 bg-linear-to-tr from-white/40 to-transparent rounded-full transform -rotate-12"></div>
               <div className="absolute top-4 left-6 w-16 h-16 bg-gradient-to-bl from-orange-300/40 to-transparent rounded-full transform rotate-30"></div>
             </div>
             
@@ -83,18 +83,18 @@ export function LandingPage({ userData }: LandingPageProps) {
             {/* Lotus-inspired design - positioned at top center */}
             <div className="absolute top-8 left-1/2 transform -translate-x-1/2 opacity-20">
               <div className="relative w-32 h-32">
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-0"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-30"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-60"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-90"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-120"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-150"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-0"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-30"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-60"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-90"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-120"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-orange-400/60 to-white/30 rounded-full transform scale-x-50 rotate-150"></div>
               </div>
             </div>
             
             {/* Enhanced tricolor stripe */}
             <div className="absolute bottom-0 left-0 right-0 h-4 opacity-40">
-              <div className="h-full bg-gradient-to-r from-orange-500 via-white to-green-500"></div>
+              <div className="h-full bg-linear-to-r from-orange-500 via-white to-green-500"></div>
             </div>
             
             {/* Additional geometric patterns */}
@@ -115,22 +115,22 @@ export function LandingPage({ userData }: LandingPageProps) {
             <div className="space-y-6 sm:space-y-8">
               {userData && (
                 <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 break-words">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 wrap-break-word">
                     Welcome back, {userData.studentName} 👋
                   </h3>
-                  <p className="text-white/80 text-sm sm:text-base lg:text-lg break-words">{userData.schoolName}</p>
-                  <p className="text-white/60 text-xs sm:text-sm mt-2 break-words">{randomGreeting}</p>
+                  <p className="text-white/80 text-sm sm:text-base lg:text-lg wrap-break-word">{userData.schoolName}</p>
+                  <p className="text-white/60 text-xs sm:text-sm mt-2 wrap-break-word">{randomGreeting}</p>
                 </div>
               )}
               
               <div>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white to-orange-200 bg-clip-text text-transparent break-words">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 bg-linear-to-r from-white to-orange-200 bg-clip-text text-transparent wrap-break-word">
                   DPRES
                 </h1>
-                <h2 className="text-xl sm:text-2xl lg:text-3xl mb-4 sm:mb-6 break-words">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl mb-4 sm:mb-6 wrap-break-word">
                   {t('landing.hero.title')}
                 </h2>
-                <p className="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 break-words">
+                <p className="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 wrap-break-word">
                   {t('landing.hero.subtitle')}
                 </p>
               </div>
@@ -172,10 +172,10 @@ export function LandingPage({ userData }: LandingPageProps) {
       <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4 break-words">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4 wrap-break-word">
               {t('landing.features.title')}
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto break-words">
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto wrap-break-word">
               {t('landing.features.subtitle')}
             </p>
           </div>
@@ -186,10 +186,10 @@ export function LandingPage({ userData }: LandingPageProps) {
                 <div className="mx-auto w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
                   <AlertTriangle className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
-                <CardTitle className="text-base sm:text-lg break-words dark:text-white">{t('landing.features.realtime')}</CardTitle>
+                <CardTitle className="text-base sm:text-lg wrap-break-word dark:text-white">{t('landing.features.realtime')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-sm sm:text-base break-words dark:text-gray-300">
+                <CardDescription className="text-sm sm:text-base wrap-break-word dark:text-gray-300">
                   {t('landing.features.realtimeDesc')}
                 </CardDescription>
               </CardContent>
@@ -200,10 +200,10 @@ export function LandingPage({ userData }: LandingPageProps) {
                 <div className="mx-auto w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mb-4">
                   <BookOpen className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                 </div>
-                <CardTitle className="text-base sm:text-lg break-words dark:text-white">{t('landing.features.training')}</CardTitle>
+                <CardTitle className="text-base sm:text-lg wrap-break-word dark:text-white">{t('landing.features.training')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-sm sm:text-base break-words dark:text-gray-300">
+                <CardDescription className="text-sm sm:text-base wrap-break-word dark:text-gray-300">
                   {t('landing.features.trainingDesc')}
                 </CardDescription>
               </CardContent>
@@ -214,10 +214,10 @@ export function LandingPage({ userData }: LandingPageProps) {
                 <div className="mx-auto w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
                   <Headphones className="h-6 w-6 text-green-600 dark:text-green-400" />
                 </div>
-                <CardTitle className="text-base sm:text-lg break-words dark:text-white">{t('landing.features.vr')}</CardTitle>
+                <CardTitle className="text-base sm:text-lg wrap-break-word dark:text-white">{t('landing.features.vr')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-sm sm:text-base break-words dark:text-gray-300">
+                <CardDescription className="text-sm sm:text-base wrap-break-word dark:text-gray-300">
                   {t('landing.features.vrDesc')}
                 </CardDescription>
               </CardContent>
@@ -228,10 +228,10 @@ export function LandingPage({ userData }: LandingPageProps) {
                 <div className="mx-auto w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
                   <Shield className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                 </div>
-                <CardTitle className="text-base sm:text-lg break-words dark:text-white">{t('landing.features.progress')}</CardTitle>
+                <CardTitle className="text-base sm:text-lg wrap-break-word dark:text-white">{t('landing.features.progress')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-sm sm:text-base break-words dark:text-gray-300">
+                <CardDescription className="text-sm sm:text-base wrap-break-word dark:text-gray-300">
                   {t('landing.features.progressDesc')}
                 </CardDescription>
               </CardContent>
@@ -249,18 +249,18 @@ export function LandingPage({ userData }: LandingPageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">1,250+</div>
-              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 break-words">{t('landing.stats.institutions')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 break-words">Currently enrolled in DPRES</div>
+              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 wrap-break-word">{t('landing.stats.institutions')}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 wrap-break-word">Currently enrolled in DPRES</div>
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-orange-600 mb-2">45,000+</div>
-              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 break-words">{t('landing.stats.students')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 break-words">Across all modules and VR sessions</div>
+              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 wrap-break-word">{t('landing.stats.students')}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 wrap-break-word">Across all modules and VR sessions</div>
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-2">98%</div>
-              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 break-words">{t('landing.stats.satisfaction')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 break-words">Average institutional readiness</div>
+              <div className="text-base sm:text-lg text-gray-600 dark:text-gray-300 wrap-break-word">{t('landing.stats.satisfaction')}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 wrap-break-word">Average institutional readiness</div>
             </div>
           </div>
         </div>
@@ -270,12 +270,12 @@ export function LandingPage({ userData }: LandingPageProps) {
       <FAQSection />
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-linear-to-r from-blue-600 to-blue-700 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 break-words">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 wrap-break-word">
             Ready to Enhance Your Institution's Disaster Preparedness?
           </h2>
-          <p className="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8 break-words">
+          <p className="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8 wrap-break-word">
             Join thousands of educational institutions already using DPRES to build safer, more prepared communities.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">

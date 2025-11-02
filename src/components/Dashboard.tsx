@@ -168,7 +168,7 @@ export function Dashboard({ userData }: DashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 lg:py-12 transition-colors duration-200">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 lg:py-12 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Refined Header */}
         <motion.div 
@@ -177,10 +177,10 @@ export function Dashboard({ userData }: DashboardProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="mb-2 break-words bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent text-[40px] font-bold">
+          <h1 className="mb-2 wrap-break-word bg-linear-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent text-[40px] font-bold">
             {t('dashboard.welcome')}
           </h1>
-          <p className="text-muted-foreground max-w-2xl break-words text-[20px]">{t('dashboard.overview')}</p>
+          <p className="text-muted-foreground max-w-2xl wrap-break-word text-[20px]">{t('dashboard.overview')}</p>
         </motion.div>
 
         {/* Emergency Actions - Clean & Professional */}
@@ -193,7 +193,7 @@ export function Dashboard({ userData }: DashboardProps) {
           <EmergencySOS onConfirm={handleSosConfirm} variant="dashboard">
             <motion.div whileHover={{ y: -4, scale: 1.02 }} transition={{ duration: 0.2 }}>
               <Button 
-                className="h-20 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 w-full"
+                className="h-20 bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 w-full"
               >
                 <Zap className="h-6 w-6 animate-pulse" />
                 <span>{t('landing.sos')}</span>
@@ -205,7 +205,7 @@ export function Dashboard({ userData }: DashboardProps) {
             <Button 
               onClick={() => setContactsSheetOpen(true)}
               variant="outline"
-              className="h-20 border-2 border-blue-200 dark:border-blue-900 hover:border-blue-500 dark:hover:border-blue-600 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-950/40 flex flex-col items-center justify-center gap-2 w-full shadow-md hover:shadow-lg transition-all duration-300"
+              className="h-20 border-2 border-blue-200 dark:border-blue-900 hover:border-blue-500 dark:hover:border-blue-600 bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-950/40 flex flex-col items-center justify-center gap-2 w-full shadow-md hover:shadow-lg transition-all duration-300"
             >
               <Phone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
               <span className="text-blue-700 dark:text-blue-300">{t('landing.contacts')}</span>
@@ -216,7 +216,7 @@ export function Dashboard({ userData }: DashboardProps) {
             <Button 
               onClick={() => setIncidentModalOpen(true)}
               variant="outline"
-              className="h-20 border-2 border-orange-200 dark:border-orange-900 hover:border-orange-500 dark:hover:border-orange-600 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/30 dark:to-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-950/40 flex flex-col items-center justify-center gap-2 w-full shadow-md hover:shadow-lg transition-all duration-300"
+              className="h-20 border-2 border-orange-200 dark:border-orange-900 hover:border-orange-500 dark:hover:border-orange-600 bg-linear-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/30 dark:to-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-950/40 flex flex-col items-center justify-center gap-2 w-full shadow-md hover:shadow-lg transition-all duration-300"
             >
               <FileText className="h-6 w-6 text-orange-600 dark:text-orange-400" />
               <span className="text-orange-700 dark:text-orange-300">{t('landing.report')}</span>
@@ -267,17 +267,17 @@ export function Dashboard({ userData }: DashboardProps) {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="animate-fadeInUp delay-200"
             >
-              <Card className="shadow-lg border-orange-100 dark:border-orange-900/30 bg-gradient-to-br from-white via-orange-50/30 to-white dark:from-slate-900 dark:via-orange-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+              <Card className="shadow-lg border-orange-100 dark:border-orange-900/30 bg-linear-to-br from-white via-orange-50/30 to-white dark:from-slate-900 dark:via-orange-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 rounded-lg shadow-md">
+                    <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 rounded-lg shadow-md">
                       <Bell className="h-5 w-5 text-orange-600 dark:text-orange-400 animate-pulse" />
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-foreground break-words">
+                      <CardTitle className="text-foreground wrap-break-word">
                         {t('dashboard.alerts.title')}
                       </CardTitle>
-                      <CardDescription className="text-muted-foreground break-words">
+                      <CardDescription className="text-muted-foreground wrap-break-word">
                         {t('dashboard.alerts.description')}
                       </CardDescription>
                     </div>
@@ -294,20 +294,20 @@ export function Dashboard({ userData }: DashboardProps) {
                       className="animate-fadeIn"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
-                      <div className="p-4 rounded-lg border border-orange-100 dark:border-orange-900/30 bg-gradient-to-r from-white to-orange-50/30 dark:from-slate-900 dark:to-orange-950/10 shadow-sm hover:shadow-md transition-all duration-300">
+                      <div className="p-4 rounded-lg border border-orange-100 dark:border-orange-900/30 bg-linear-to-r from-white to-orange-50/30 dark:from-slate-900 dark:to-orange-950/10 shadow-sm hover:shadow-md transition-all duration-300">
                         <div className="flex items-start gap-3">
-                          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 flex-shrink-0 shadow-sm">
+                          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-linear-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 shrink-0 shadow-sm">
                             <AlertCircle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
-                              <h4 className="text-foreground break-words">{alert.title}</h4>
+                              <h4 className="text-foreground wrap-break-word">{alert.title}</h4>
                               <Badge variant="secondary" className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-0">
                                 <MapPin className="h-3 w-3 mr-1" />
                                 {alert.region}
                               </Badge>
                             </div>
-                            <p className="text-muted-foreground text-sm break-words mb-2">
+                            <p className="text-muted-foreground text-sm wrap-break-word mb-2">
                               {alert.description}
                             </p>
                             <div className="flex items-center text-xs text-muted-foreground">
@@ -330,10 +330,10 @@ export function Dashboard({ userData }: DashboardProps) {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="animate-fadeInUp delay-300"
             >
-              <Card className="shadow-lg border-blue-100 dark:border-blue-900/30 bg-gradient-to-br from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-blue-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+              <Card className="shadow-lg border-blue-100 dark:border-blue-900/30 bg-linear-to-br from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-blue-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg shadow-md">
+                    <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg shadow-md">
                       <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div className="flex-1">
@@ -383,10 +383,10 @@ export function Dashboard({ userData }: DashboardProps) {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="animate-fadeInUp delay-200"
             >
-              <Card className="shadow-lg border-purple-100 dark:border-purple-900/30 bg-gradient-to-br from-white via-purple-50/20 to-white dark:from-slate-900 dark:via-purple-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+              <Card className="shadow-lg border-purple-100 dark:border-purple-900/30 bg-linear-to-br from-white via-purple-50/20 to-white dark:from-slate-900 dark:via-purple-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-950/50 dark:to-purple-900/30 rounded-lg shadow-md">
+                    <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-purple-100 to-purple-200 dark:from-purple-950/50 dark:to-purple-900/30 rounded-lg shadow-md">
                       <BookOpen className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                     </div>
                     <div className="flex-1">
@@ -452,10 +452,10 @@ export function Dashboard({ userData }: DashboardProps) {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="animate-fadeInUp delay-300"
             >
-              <Card className="shadow-lg border-green-100 dark:border-green-900/30 bg-gradient-to-br from-white via-green-50/20 to-white dark:from-slate-900 dark:via-green-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+              <Card className="shadow-lg border-green-100 dark:border-green-900/30 bg-linear-to-br from-white via-green-50/20 to-white dark:from-slate-900 dark:via-green-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-950/50 dark:to-green-900/30 rounded-lg shadow-md">
+                    <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-green-100 to-green-200 dark:from-green-950/50 dark:to-green-900/30 rounded-lg shadow-md">
                       <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
                     </div>
                     <div className="flex-1">
@@ -496,10 +496,10 @@ export function Dashboard({ userData }: DashboardProps) {
                       key={index}
                       className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-800"
                     >
-                      <div className={`w-1.5 h-1.5 bg-${activity.color}-500 rounded-full mt-2 flex-shrink-0`}></div>
+                      <div className={`w-1.5 h-1.5 bg-${activity.color}-500 rounded-full mt-2 shrink-0`}></div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <activity.icon className={`h-4 w-4 text-${activity.color}-600 dark:text-${activity.color}-500 flex-shrink-0`} />
+                          <activity.icon className={`h-4 w-4 text-${activity.color}-600 dark:text-${activity.color}-500 shrink-0`} />
                           <p className="text-sm text-foreground truncate">{activity.title}</p>
                         </div>
                         <p className="text-sm text-muted-foreground">{activity.desc}</p>
@@ -521,10 +521,10 @@ export function Dashboard({ userData }: DashboardProps) {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="animate-fadeInUp delay-400"
             >
-              <Card className="shadow-lg border-red-100 dark:border-red-900/30 bg-gradient-to-br from-white via-red-50/20 to-white dark:from-slate-900 dark:via-red-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
+              <Card className="shadow-lg border-red-100 dark:border-red-900/30 bg-linear-to-br from-white via-red-50/20 to-white dark:from-slate-900 dark:via-red-950/10 dark:to-slate-900 hover:shadow-xl transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 dark:from-red-950/50 dark:to-red-900/30 rounded-lg shadow-md">
+                    <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-red-100 to-red-200 dark:from-red-950/50 dark:to-red-900/30 rounded-lg shadow-md">
                       <Phone className="h-5 w-5 text-red-600 dark:text-red-400" />
                     </div>
                     <div className="flex-1">

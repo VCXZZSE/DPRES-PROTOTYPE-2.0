@@ -300,7 +300,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Desktop Layout */}
       <div className="hidden lg:flex h-screen">
         {/* Left Sidebar - Task Progress */}
@@ -400,7 +400,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
                 {t('learning.backToModules')}
               </Button>
               <div className="flex items-start gap-3 mb-2">
-                <h1 className="flex-1 bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
+                <h1 className="flex-1 bg-linear-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
                   {t(module.titleKey)}
                 </h1>
                 {isReviewMode && (
@@ -459,7 +459,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
                     </Button>
                     {isReviewMode ? (
                       <Button
-                        className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+                        className="flex-1 bg-linear-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
                         onClick={() => navigate('/modules')}
                       >
                         <CheckCircle className="w-4 h-4 mr-2" />
@@ -467,7 +467,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
                       </Button>
                     ) : (
                       <Button
-                        className="flex-1 bg-gradient-to-r from-blue-600 to-orange-600 hover:from-blue-700 hover:to-orange-700"
+                        className="flex-1 bg-linear-to-r from-blue-600 to-orange-600 hover:from-blue-700 hover:to-orange-700"
                         disabled={!videoWatched || !quizSubmitted || quizScore < 70}
                       >
                         {t('learning.nextTask')}
@@ -597,7 +597,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
                           <Button
                             onClick={handleQuizSubmit}
                             disabled={Object.keys(quizAnswers).length < module.quiz.questions.length}
-                            className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
+                            className="w-full bg-linear-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
                           >
                             <Sparkles className="w-4 h-4 mr-2" />
                             Check Answers
@@ -663,7 +663,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
             </Card>
 
             {/* GIDM Resources */}
-            <Card className="bg-gradient-to-br from-blue-50 to-orange-50 dark:from-blue-950/20 dark:to-orange-950/20 border-blue-200 dark:border-blue-900/30">
+            <Card className="bg-linear-to-br from-blue-50 to-orange-50 dark:from-blue-950/20 dark:to-orange-950/20 border-blue-200 dark:border-blue-900/30">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -721,7 +721,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
                 <Badge
                   key={task.id}
                   variant={displayStatus === 'active' ? 'default' : 'outline'}
-                  className={`flex-shrink-0 ${
+                  className={`shrink-0 ${
                     displayStatus === 'completed' 
                       ? 'bg-green-100 text-green-700 dark:bg-green-950/30 dark:text-green-400' 
                       : displayStatus === 'locked'
@@ -826,7 +826,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
                               {t(optionKey)}
                             </Label>
                             {showResult && isCorrect && (
-                              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                              <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
                             )}
                           </div>
                         );
@@ -864,7 +864,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
           {/* Next Task Button */}
           {isReviewMode ? (
             <Button
-              className="w-full bg-gradient-to-r from-green-600 to-green-700"
+              className="w-full bg-linear-to-r from-green-600 to-green-700"
               onClick={() => navigate('/modules')}
             >
               <CheckCircle className="w-4 h-4 mr-2" />
@@ -872,7 +872,7 @@ export function LearningInterface({ userData }: LearningInterfaceProps) {
             </Button>
           ) : (
             <Button
-              className="w-full bg-gradient-to-r from-blue-600 to-orange-600"
+              className="w-full bg-linear-to-r from-blue-600 to-orange-600"
               disabled={!videoWatched || !quizSubmitted || quizScore < 70}
             >
               Next Task

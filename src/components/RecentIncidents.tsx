@@ -13,10 +13,10 @@ export function RecentIncidents() {
     <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6 break-words">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6 wrap-break-word">
             {t('landing.disasters.title')}
           </h2>
-          <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto break-words">
+          <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto wrap-break-word">
             {t('landing.disasters.subtitle')}
           </p>
         </div>
@@ -34,7 +34,7 @@ export function RecentIncidents() {
                 <AlertTriangle className="inline w-4 h-4 mr-2" />
                 {t('landing.disasters.cycloneEmergency')}
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6">
                 <h3 className="text-2xl font-bold text-white mb-2">{t('landing.disasters.cycloneFani')}</h3>
                 <p className="text-gray-200">{t('landing.disasters.cycloneFaniDesc')}</p>
               </div>
@@ -76,7 +76,7 @@ export function RecentIncidents() {
                 <AlertTriangle className="inline w-4 h-4 mr-2" />
                 {t('landing.disasters.floodEmergency')}
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6">
                 <h3 className="text-2xl font-bold text-white mb-2">{t('landing.disasters.punjabFloods')}</h3>
                 <p className="text-gray-200">{t('landing.disasters.punjabFloodsDesc')}</p>
               </div>
@@ -118,7 +118,7 @@ export function RecentIncidents() {
                 <AlertTriangle className="inline w-4 h-4 mr-2" />
                 {t('landing.disasters.majorEarthquake')}
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6">
                 <h3 className="text-2xl font-bold text-white mb-2">{t('landing.disasters.gujarateEarthquake')}</h3>
                 <p className="text-gray-200">{t('landing.disasters.gujarateEarthquakeDesc')}</p>
               </div>
@@ -160,7 +160,7 @@ export function RecentIncidents() {
                 <AlertTriangle className="inline w-4 h-4 mr-2" />
                 {t('landing.disasters.tsunamiEmergency')}
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6">
                 <h3 className="text-2xl font-bold text-white mb-2">{t('landing.disasters.indianOceanTsunami')}</h3>
                 <p className="text-gray-200">{t('landing.disasters.indianOceanTsunamiDesc')}</p>
               </div>
@@ -192,12 +192,12 @@ export function RecentIncidents() {
         </div>
 
         <div className="text-center mt-12 sm:mt-16">
-          <div className="bg-gradient-to-r from-blue-600 to-orange-600 rounded-2xl p-8 text-white">
+          <div className="bg-linear-to-r from-blue-600 to-orange-600 rounded-2xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">{t('landing.disasters.buildPreparedness')}</h3>
             <p className="text-lg mb-6 opacity-90">{t('landing.disasters.joinInstitutions')}</p>
             <Link to="/modules" className="inline-block">
               <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-4 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold flex items-center justify-center text-center">
-                <BookOpen className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                <BookOpen className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
                 <span className="whitespace-normal leading-tight">{t('landing.disasters.startTraining')}</span>
               </Button>
             </Link>

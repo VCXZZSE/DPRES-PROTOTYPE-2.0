@@ -166,11 +166,11 @@ export function ModulesPage({ userData }: ModulesPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 transition-colors duration-200">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 animate-fadeInUp">
-          <h1 className="text-3xl sm:text-4xl mb-2 bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl mb-2 bg-linear-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
             {t('modules.title')}
           </h1>
           <p className="text-muted-foreground">{t('modules.subtitle')}</p>
@@ -178,10 +178,10 @@ export function ModulesPage({ userData }: ModulesPageProps) {
 
         {/* Progress Dashboard */}
         <div className="mb-8 animate-fadeInUp delay-100">
-          <Card className="bg-gradient-to-br from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-blue-950/20 dark:to-slate-900 border border-blue-100 dark:border-blue-900/30 shadow-lg hover:shadow-xl transition-all duration-300">
+          <Card className="bg-linear-to-br from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-blue-950/20 dark:to-slate-900 border border-blue-100 dark:border-blue-900/30 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader className="pb-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg shadow-md">
+                <div className="p-2 bg-linear-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg shadow-md">
                   <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
@@ -278,14 +278,14 @@ export function ModulesPage({ userData }: ModulesPageProps) {
           {modules.map((module, index) => (
             <Card 
               key={module.id}
-              className="bg-gradient-to-br from-white via-gray-50/50 to-white dark:from-slate-900 dark:via-slate-800/30 dark:to-slate-900 border border-gray-200 dark:border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] animate-fadeInUp"
+              className="bg-linear-to-br from-white via-gray-50/50 to-white dark:from-slate-900 dark:via-slate-800/30 dark:to-slate-900 border border-gray-200 dark:border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] animate-fadeInUp"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg text-sm font-medium shadow-sm text-blue-700 dark:text-blue-300">
+                      <div className="flex items-center justify-center w-8 h-8 bg-linear-to-br from-blue-100 to-blue-200 dark:from-blue-950/50 dark:to-blue-900/30 rounded-lg text-sm font-medium shadow-sm text-blue-700 dark:text-blue-300">
                         {module.id}
                       </div>
                       <Badge className={`${getStatusColor(module.status)} border-0 text-xs`}>
@@ -366,7 +366,7 @@ export function ModulesPage({ userData }: ModulesPageProps) {
                   {module.status === 'completed' ? (
                     <Button 
                       variant="outline" 
-                      className="w-full group/btn border-green-200 dark:border-green-800 bg-gradient-to-r from-green-50 to-green-100/50 dark:from-green-950/30 dark:to-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 text-green-700 dark:text-green-300 shadow-md hover:shadow-lg transition-all duration-300"
+                      className="w-full group/btn border-green-200 dark:border-green-800 bg-linear-to-r from-green-50 to-green-100/50 dark:from-green-950/30 dark:to-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 text-green-700 dark:text-green-300 shadow-md hover:shadow-lg transition-all duration-300"
                       onClick={() => module.slug && navigate(`/modules/${module.slug}?mode=review`)}
                     >
                       <CheckCircle className="h-4 w-4 mr-2" />
@@ -375,7 +375,7 @@ export function ModulesPage({ userData }: ModulesPageProps) {
                     </Button>
                   ) : module.status === 'in-progress' ? (
                     <Button 
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 group/btn animate-subtleGlow"
+                      className="w-full bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 group/btn animate-subtleGlow"
                       onClick={() => module.slug && navigate(`/modules/${module.slug}`)}
                     >
                       <Play className="h-4 w-4 mr-2" />
@@ -400,10 +400,10 @@ export function ModulesPage({ userData }: ModulesPageProps) {
 
         {/* Additional Resources */}
         <div className="mt-8 animate-fadeInUp delay-400">
-          <Card className="bg-gradient-to-br from-white via-orange-50/30 to-white dark:from-slate-900 dark:via-orange-950/10 dark:to-slate-900 border border-orange-100 dark:border-orange-900/30 shadow-lg hover:shadow-xl transition-all duration-300">
+          <Card className="bg-linear-to-br from-white via-orange-50/30 to-white dark:from-slate-900 dark:via-orange-950/10 dark:to-slate-900 border border-orange-100 dark:border-orange-900/30 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader>
               <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 rounded-lg shadow-md">
+                <div className="p-2 bg-linear-to-br from-orange-100 to-orange-200 dark:from-orange-950/50 dark:to-orange-900/30 rounded-lg shadow-md">
                   <BookOpen className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
                 <CardTitle className="text-xl">
@@ -426,7 +426,7 @@ export function ModulesPage({ userData }: ModulesPageProps) {
                   >
                     <Button 
                       variant="outline" 
-                      className={`h-20 flex flex-col items-center justify-center gap-2 border-${resource.color}-200 dark:border-${resource.color}-800 bg-gradient-to-br from-${resource.color}-50 to-${resource.color}-100/50 dark:from-${resource.color}-950/30 dark:to-${resource.color}-900/20 hover:bg-${resource.color}-100 dark:hover:bg-${resource.color}-900/40 shadow-md hover:shadow-lg transition-all duration-300 w-full`}
+                      className={`h-20 flex flex-col items-center justify-center gap-2 border-${resource.color}-200 dark:border-${resource.color}-800 bg-linear-to-br from-${resource.color}-50 to-${resource.color}-100/50 dark:from-${resource.color}-950/30 dark:to-${resource.color}-900/20 hover:bg-${resource.color}-100 dark:hover:bg-${resource.color}-900/40 shadow-md hover:shadow-lg transition-all duration-300 w-full`}
                     >
                       <resource.icon className={`h-6 w-6 text-${resource.color}-600 dark:text-${resource.color}-400`} />
                       <span className={`font-medium text-sm text-${resource.color}-700 dark:text-${resource.color}-300`}>{resource.label}</span>

@@ -195,7 +195,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-emerald-50 to-indigo-100 relative overflow-hidden transition-colors duration-200">
+    <div className="min-h-screen bg-linear-to-br from-orange-50 via-emerald-50 to-indigo-100 relative overflow-hidden transition-colors duration-200">
       {/* Enhanced Background Patterns */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Large Mandala with Indian Geometric Patterns */}
@@ -260,13 +260,13 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
         </div>
 
         {/* Floating Abstract Elements with Disaster Theme */}
-        <div className="absolute top-32 left-8 sm:left-16 w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full opacity-20 animate-float shadow-lg"></div>
-        <div className="absolute top-48 right-16 sm:right-32 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-full opacity-30 animate-float delay-300"></div>
-        <div className="absolute bottom-48 left-16 sm:left-32 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full opacity-15 animate-float delay-600"></div>
+        <div className="absolute top-32 left-8 sm:left-16 w-8 h-8 sm:w-12 sm:h-12 bg-linear-to-br from-orange-400 to-orange-600 rounded-full opacity-20 animate-float shadow-lg"></div>
+        <div className="absolute top-48 right-16 sm:right-32 w-6 h-6 sm:w-8 sm:h-8 bg-linear-to-br from-indigo-400 to-indigo-600 rounded-full opacity-30 animate-float delay-300"></div>
+        <div className="absolute bottom-48 left-16 sm:left-32 w-12 h-12 sm:w-16 sm:h-16 bg-linear-to-br from-emerald-400 to-emerald-600 rounded-full opacity-15 animate-float delay-600"></div>
         
         {/* Jali Pattern Border */}
-        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-orange-500 via-emerald-500 to-indigo-500 opacity-20"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-indigo-500 via-emerald-500 to-orange-500 opacity-20"></div>
+        <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-orange-500 via-emerald-500 to-indigo-500 opacity-20"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-2 bg-linear-to-r from-indigo-500 via-emerald-500 to-orange-500 opacity-20"></div>
 
         {/* Subtle Disaster Safety Elements */}
         <div className="absolute top-1/3 left-4 sm:left-8 opacity-8">
@@ -291,16 +291,16 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
       <div className="relative z-10 min-h-screen flex justify-center p-4 sm:p-6 py-8 sm:py-12 overflow-y-auto">
         <Card className="w-full max-w-lg h-fit shadow-2xl border-0 bg-white/90 backdrop-blur-md">
           <CardHeader className="text-center space-y-4 sm:space-y-6 pb-6 sm:pb-8 px-4 sm:px-6">
-            <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-orange-500 via-emerald-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+            <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-linear-to-br from-orange-500 via-emerald-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-linear-to-br from-white/20 to-transparent"></div>
               <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-white relative z-10" />
             </div>
             
             <div className="space-y-2 sm:space-y-3">
-              <CardTitle className="text-2xl sm:text-3xl bg-gradient-to-r from-orange-600 via-emerald-600 to-indigo-600 bg-clip-text text-transparent break-words">
+              <CardTitle className="text-2xl sm:text-3xl bg-linear-to-r from-orange-600 via-emerald-600 to-indigo-600 bg-clip-text text-transparent wrap-break-word">
                 {t('login.title')}
               </CardTitle>
-              <CardDescription className="text-base sm:text-lg text-gray-600 break-words">
+              <CardDescription className="text-base sm:text-lg text-gray-600 wrap-break-word">
                 {t('login.subtitle')}
               </CardDescription>
               <div className="flex items-center justify-center space-x-2 flex-wrap">
@@ -335,7 +335,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
             </div>
 
             {/* Step Labels */}
-            <div className="text-center text-xs sm:text-sm text-gray-500 mb-2 sm:mb-4 break-words">
+            <div className="text-center text-xs sm:text-sm text-gray-500 mb-2 sm:mb-4 wrap-break-word">
               {currentStep === 'userType' && t('login.step1')}
               {currentStep === 'institutionType' && t('login.step2')}
               {currentStep === 'details' && t('login.step3')}
@@ -347,8 +347,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
             {currentStep === 'userType' && (
               <div className="space-y-4 sm:space-y-6">
                 <div className="text-center space-y-2">
-                  <h3 className="text-base sm:text-lg font-medium text-gray-800 break-words">{t('login.welcome')}</h3>
-                  <p className="text-sm text-gray-600 break-words">{t('login.selectType')}</p>
+                  <h3 className="text-base sm:text-lg font-medium text-gray-800 wrap-break-word">{t('login.welcome')}</h3>
+                  <p className="text-sm text-gray-600 wrap-break-word">{t('login.selectType')}</p>
                 </div>
                 
                 <div className="space-y-3">
@@ -361,10 +361,10 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                     }`}
                   >
                     <div className="flex items-center space-x-3">
-                      <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+                      <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
                       <div className="min-w-0 flex-1">
-                        <div className="font-medium text-sm sm:text-base break-words">{t('login.student')}</div>
-                        <div className="text-xs sm:text-sm opacity-75 break-words">{t('login.studentDesc')}</div>
+                        <div className="font-medium text-sm sm:text-base wrap-break-word">{t('login.student')}</div>
+                        <div className="text-xs sm:text-sm opacity-75 wrap-break-word">{t('login.studentDesc')}</div>
                       </div>
                     </div>
                   </button>
@@ -374,12 +374,12 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                     className="w-full p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 text-left border-green-200 text-green-600 hover:border-green-300 hover:bg-green-50"
                   >
                     <div className="flex items-center space-x-3">
-                      <Building className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+                      <Building className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
                       <div className="min-w-0 flex-1">
                         <div className="font-medium text-sm sm:text-base flex items-center flex-wrap">
-                          <span className="break-words">Institution Admin</span>
+                          <span className="wrap-break-word">Institution Admin</span>
                         </div>
-                        <div className="text-xs sm:text-sm opacity-75 break-words">
+                        <div className="text-xs sm:text-sm opacity-75 wrap-break-word">
                           Track preparedness scores & drills
                         </div>
                       </div>
@@ -396,13 +396,13 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                     }`}
                   >
                     <div className="flex items-center space-x-3">
-                      <Users className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+                      <Users className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
                       <div className="min-w-0 flex-1">
                         <div className="font-medium text-sm sm:text-base flex items-center flex-wrap">
-                          <span className="break-words">SDMA Admin Access</span>
-                          <Lock className="w-3 h-3 sm:w-4 sm:h-4 ml-2 flex-shrink-0" />
+                          <span className="wrap-break-word">SDMA Admin Access</span>
+                          <Lock className="w-3 h-3 sm:w-4 sm:h-4 ml-2 shrink-0" />
                         </div>
-                        <div className="text-xs sm:text-sm opacity-75 break-words">
+                        <div className="text-xs sm:text-sm opacity-75 wrap-break-word">
                           {isMobile 
                             ? 'Desktop access required (1024px+ screen width)' 
                             : 'Access administrator dashboard'
@@ -416,11 +416,11 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                 <Button
                   onClick={handleNext}
                   disabled={userType !== 'student'}
-                  className="w-full h-10 sm:h-12 bg-gradient-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-10 sm:h-12 bg-linear-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="flex items-center justify-center space-x-2">
-                    <span className="break-words">{t('login.continue')}</span>
-                    <ArrowRight className="w-4 h-4 flex-shrink-0" />
+                    <span className="wrap-break-word">{t('login.continue')}</span>
+                    <ArrowRight className="w-4 h-4 shrink-0" />
                   </span>
                 </Button>
               </div>
@@ -430,8 +430,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
             {currentStep === 'institutionType' && (
               <div className="space-y-4 sm:space-y-6">
                 <div className="text-center space-y-2">
-                  <h3 className="text-base sm:text-lg font-medium text-gray-800 break-words">{t('login.selectInstitution')}</h3>
-                  <p className="text-sm text-gray-600 break-words">{t('login.institutionQuestion')}</p>
+                  <h3 className="text-base sm:text-lg font-medium text-gray-800 wrap-break-word">{t('login.selectInstitution')}</h3>
+                  <p className="text-sm text-gray-600 wrap-break-word">{t('login.institutionQuestion')}</p>
                 </div>
                 
                 <div className="space-y-3">
@@ -444,10 +444,10 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                     }`}
                   >
                     <div className="flex items-center space-x-3">
-                      <School className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+                      <School className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
                       <div className="min-w-0 flex-1">
-                        <div className="font-medium text-sm sm:text-base break-words">{t('login.school')}</div>
-                        <div className="text-xs sm:text-sm opacity-75 break-words">{t('login.schoolDesc')}</div>
+                        <div className="font-medium text-sm sm:text-base wrap-break-word">{t('login.school')}</div>
+                        <div className="text-xs sm:text-sm opacity-75 wrap-break-word">{t('login.schoolDesc')}</div>
                       </div>
                     </div>
                   </button>
@@ -461,10 +461,10 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                     }`}
                   >
                     <div className="flex items-center space-x-3">
-                      <Building2 className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+                      <Building2 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
                       <div className="min-w-0 flex-1">
-                        <div className="font-medium text-sm sm:text-base break-words">{t('login.college')}</div>
-                        <div className="text-xs sm:text-sm opacity-75 break-words">{t('login.collegeDesc')}</div>
+                        <div className="font-medium text-sm sm:text-base wrap-break-word">{t('login.college')}</div>
+                        <div className="text-xs sm:text-sm opacity-75 wrap-break-word">{t('login.collegeDesc')}</div>
                       </div>
                     </div>
                   </button>
@@ -476,15 +476,15 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                     variant="outline"
                     className="flex-1 h-10 sm:h-12 text-sm sm:text-base"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2 flex-shrink-0" />
-                    <span className="break-words">{t('login.back')}</span>
+                    <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2 shrink-0" />
+                    <span className="wrap-break-word">{t('login.back')}</span>
                   </Button>
                   <Button
                     onClick={handleNext}
-                    className="flex-1 h-10 sm:h-12 bg-gradient-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white text-sm sm:text-base"
+                    className="flex-1 h-10 sm:h-12 bg-linear-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white text-sm sm:text-base"
                   >
-                    <span className="break-words">{t('login.continue')}</span>
-                    <ArrowRight className="w-4 h-4 ml-1 sm:ml-2 flex-shrink-0" />
+                    <span className="wrap-break-word">{t('login.continue')}</span>
+                    <ArrowRight className="w-4 h-4 ml-1 sm:ml-2 shrink-0" />
                   </Button>
                 </div>
               </div>
@@ -494,15 +494,15 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
             {currentStep === 'details' && (
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div className="text-center space-y-2">
-                  <h3 className="text-base sm:text-lg font-medium text-gray-800 break-words">{t('login.enterDetails')}</h3>
-                  <p className="text-sm text-gray-600 break-words">
+                  <h3 className="text-base sm:text-lg font-medium text-gray-800 wrap-break-word">{t('login.enterDetails')}</h3>
+                  <p className="text-sm text-gray-600 wrap-break-word">
                     {t('login.provideInfo')} {institutionType === 'school' ? t('login.school').toLowerCase() : t('login.college').toLowerCase()} information
                   </p>
                 </div>
 
                 {/* Institution Selector */}
                 <div className="space-y-2">
-                  <Label htmlFor="institution-selector" className="text-gray-700 font-medium text-sm sm:text-base break-words">
+                  <Label htmlFor="institution-selector" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">
                     {institutionType === 'school' ? t('login.selectSchool') : t('login.selectCollege')}
                   </Label>
                   <Select value={selectedSchool} onValueChange={handleInstitutionSelect}>
@@ -520,8 +520,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                             value={institution.id}
                           >
                             <div className="flex flex-col gap-2 py-2">
-                              <div className="break-words font-medium leading-snug">{cleanName}</div>
-                              <div className="text-gray-500 break-words leading-relaxed" style={{ fontSize: '0.8125rem' }}>
+                              <div className="wrap-break-word font-medium leading-snug">{cleanName}</div>
+                              <div className="text-gray-500 wrap-break-word leading-relaxed" style={{ fontSize: '0.8125rem' }}>
                                 {institution.district}, {institution.state}
                               </div>
                             </div>
@@ -536,7 +536,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                   <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="institutionCode" className="text-gray-700 font-medium text-sm sm:text-base break-words">
+                        <Label htmlFor="institutionCode" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">
                           {institutionType === 'school' ? t('login.schoolCode') : t('login.collegeCode')}
                         </Label>
                         <Input
@@ -548,7 +548,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="age" className="text-gray-700 font-medium text-sm sm:text-base break-words">{t('login.age')}</Label>
+                        <Label htmlFor="age" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">{t('login.age')}</Label>
                         <Input
                           id="age"
                           type="number"
@@ -564,7 +564,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="studentName" className="text-gray-700 font-medium text-sm sm:text-base break-words">{t('login.fullName')}</Label>
+                      <Label htmlFor="studentName" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">{t('login.fullName')}</Label>
                       <Input
                         id="studentName"
                         placeholder={t('login.enterName')}
@@ -582,18 +582,18 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                         variant="outline"
                         className="w-full sm:flex-1 h-10 sm:h-12 text-sm sm:text-base"
                       >
-                        <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2 flex-shrink-0" />
-                        <span className="break-words">{t('login.back')}</span>
+                        <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2 shrink-0" />
+                        <span className="wrap-break-word">{t('login.back')}</span>
                       </Button>
                       <Button
                         type="submit"
-                        className="w-full sm:flex-1 h-10 sm:h-12 bg-gradient-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group text-sm sm:text-base"
+                        className="w-full sm:flex-1 h-10 sm:h-12 bg-linear-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group text-sm sm:text-base"
                       >
                         <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         <span className="relative z-10 flex items-center justify-center space-x-2">
-                          <Shield className="w-4 h-4 flex-shrink-0" />
-                          <span className="break-words">{t('login.startTraining')}</span>
+                          <Shield className="w-4 h-4 shrink-0" />
+                          <span className="wrap-break-word">{t('login.startTraining')}</span>
                         </span>
                       </Button>
                     </div>
@@ -621,7 +621,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
             </button>
 
             <div className="text-center space-y-3">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="mx-auto w-16 h-16 bg-linear-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center shadow-lg">
                 <Lock className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-gray-800">SDMA Admin Portal</h2>
@@ -666,13 +666,13 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
 
               {adminError && (
                 <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-sm text-red-600 break-words">{adminError}</p>
+                  <p className="text-sm text-red-600 wrap-break-word">{adminError}</p>
                 </div>
               )}
 
               <Button
                 type="submit"
-                className="w-full h-12 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                className="w-full h-12 bg-linear-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <span className="flex items-center justify-center space-x-2">
                   <Lock className="w-4 h-4" />
@@ -686,7 +686,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
 
       {/* Institution Admin Flow */}
       {showInstitutionAdminFlow && (
-        <div className="fixed inset-0 z-50 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="fixed inset-0 z-50 bg-linear-to-br from-blue-50 via-white to-purple-50">
           <InstitutionAdminLogin
             onLogin={onInstitutionAdminLogin}
             onBack={() => setShowInstitutionAdminFlow(false)}
