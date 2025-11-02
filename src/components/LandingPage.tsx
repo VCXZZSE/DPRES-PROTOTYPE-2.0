@@ -62,7 +62,7 @@ export function LandingPage({ userData }: LandingPageProps) {
             <div className="absolute bottom-5 left-5 sm:bottom-10 sm:left-10 w-20 h-20 sm:w-32 sm:h-32 lg:w-40 lg:h-40 opacity-30">
               <div className="w-32 h-32 bg-linear-to-br from-orange-400/50 to-transparent rounded-full transform rotate-45 animate-pulse"></div>
               <div className="absolute top-2 left-4 w-24 h-24 bg-linear-to-tr from-white/40 to-transparent rounded-full transform -rotate-12"></div>
-              <div className="absolute top-4 left-6 w-16 h-16 bg-gradient-to-bl from-orange-300/40 to-transparent rounded-full transform rotate-30"></div>
+              <div className="absolute top-4 left-6 w-16 h-16 bg-linear-to-bl from-orange-300/40 to-transparent rounded-full transform rotate-30"></div>
             </div>
             
             {/* Traditional diamond pattern - positioned away from text */}
