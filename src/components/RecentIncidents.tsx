@@ -24,7 +24,7 @@ export function RecentIncidents() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Cyclone Fani 2019 - Odisha */}
           <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700 bg-white flex flex-col h-full">
-            <div className="aspect-[16/10] relative">
+            <div className="aspect-16/10 relative">
               <ImageWithFallback 
                 src="https://images.unsplash.com/photo-1723551909082-866e0e48afb4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjeWNsb25lJTIwZGlzYXN0ZXIlMjBmbG9vZGluZyUyMGRhbWFnZXxlbnwxfHx8fDE3NTg4NjkyMzJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt="Cyclone Fani impact on schools"
@@ -66,7 +66,7 @@ export function RecentIncidents() {
 
           {/* Punjab Floods 2023 */}
           <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700 bg-white flex flex-col h-full">
-            <div className="aspect-[16/10] relative">
+            <div className="aspect-16/10 relative">
               <ImageWithFallback 
                 src="https://images.unsplash.com/photo-1660458074355-89e4281dd62d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYSUyMGZsb29kJTIwbW9uc29vbiUyMGRpc2FzdGVyfGVufDF8fHx8MTc1ODg2OTI0MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt="Punjab floods affecting schools"
@@ -108,7 +108,7 @@ export function RecentIncidents() {
 
           {/* Gujarat Earthquake 2001 */}
           <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700 bg-white flex flex-col h-full">
-            <div className="aspect-[16/10] relative">
+            <div className="aspect-16/10 relative">
               <ImageWithFallback 
                 src="https://images.unsplash.com/photo-1582617012849-36e9c476245a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlYXJ0aHF1YWtlJTIwZGlzYXN0ZXIlMjByZXNjdWV8ZW58MXx8fHwxNzU4ODY5MjM1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt="Gujarat earthquake school rescue"
@@ -150,7 +150,7 @@ export function RecentIncidents() {
 
           {/* Indian Ocean Tsunami 2004 */}
           <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700 bg-white flex flex-col h-full">
-            <div className="aspect-[16/10] relative">
+            <div className="aspect-16/10 relative">
               <ImageWithFallback 
                 src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0c3VuYW1pJTIwZGlzYXN0ZXIlMjBjb2FzdGFsJTIwZGFtYWdlfGVufDF8fHx8MTc1ODg4NDQ2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt="Tamil Nadu tsunami 2004 coastal flooding damage"

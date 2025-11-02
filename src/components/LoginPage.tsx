@@ -590,7 +590,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                         className="w-full sm:flex-1 h-10 sm:h-12 bg-linear-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group text-sm sm:text-base"
                       >
                         <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         <span className="relative z-10 flex items-center justify-center space-x-2">
                           <Shield className="w-4 h-4 shrink-0" />
                           <span className="wrap-break-word">{t('login.startTraining')}</span>
