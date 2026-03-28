@@ -565,7 +565,7 @@ export function Dashboard({ userData }: DashboardProps) {
 
       {/* Quick Contacts Sheet */}
       <Sheet open={contactsSheetOpen} onOpenChange={setContactsSheetOpen}>
-        <SheetContent side="right" className="w-full sm:w-[400px]">
+        <SheetContent side="right" className="w-full sm:w-100">
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
               <Phone className="h-5 w-5 text-blue-600 dark:text-blue-500" />
