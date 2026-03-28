@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Badge } from './ui/badge';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Badge } from '../components/ui/badge';
 import { 
   Shield, 
   GraduationCap, 
@@ -23,9 +23,9 @@ import {
   Building
 } from 'lucide-react';
 import { InstitutionAdminLogin } from './InstitutionAdminLogin';
-import { useLanguage } from './LanguageContext';
-import { useIsMobile } from './hooks/useIsMobile';
-import { schools, colleges } from './shared/institutionsData';
+import { useLanguage } from '../components/LanguageContext';
+import { useIsMobile } from '../components/hooks/useIsMobile';
+import { schools, colleges } from '../components/shared/institutionsData';
 
 interface LoginPageProps {
   onLogin: (userData: {

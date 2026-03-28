@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Progress } from './ui/progress';
-import { Alert, AlertDescription } from './ui/alert';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from './ui/sheet';
-import { EmergencySOS } from './EmergencySOS';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Progress } from '../components/ui/progress';
+import { Alert, AlertDescription } from '../components/ui/alert';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../components/ui/dialog';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '../components/ui/sheet';
+import { EmergencySOS } from '../components/features/EmergencySOS';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Textarea } from '../components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { 
   AlertTriangle, 
   Phone, 
@@ -30,9 +30,9 @@ import {
   TrendingUp,
   Bell
 } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
-import { useAlerts } from './shared/AlertContext';
-import { getInstitutionById } from './shared/institutionsData';
+import { useLanguage } from '../components/LanguageContext';
+import { useAlerts } from '../components/shared/AlertContext';
+import { getInstitutionById } from '../components/shared/institutionsData';
 
 interface DashboardProps {
   userData?: {

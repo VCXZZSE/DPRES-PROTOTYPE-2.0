@@ -18,20 +18,20 @@ import {
   Radio,
   Zap
 } from 'lucide-react';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { schools, colleges, allInstitutions } from './shared/institutionsData';
-import { useAlerts } from './shared/AlertContext';
-import { DashboardOverview } from './admin/DashboardOverview';
-import { InstitutionsTable } from './admin/InstitutionsTable';
-import { ReportsAnalytics } from './admin/ReportsAnalytics';
-import { EmergencyAlertsManager } from './admin/EmergencyAlertsManager';
-import { AdminSettings } from './admin/AdminSettings';
-import { CertificateManager } from './CertificateManager';
-import { SMSIVRManager } from './SMSIVRManager';
-import { CommunityOversight } from './admin/CommunityOversight';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
+import { schools, colleges, allInstitutions } from '../components/shared/institutionsData';
+import { useAlerts } from '../components/shared/AlertContext';
+import { DashboardOverview } from '../components/admin/DashboardOverview';
+import { InstitutionsTable } from '../components/admin/InstitutionsTable';
+import { ReportsAnalytics } from '../components/admin/ReportsAnalytics';
+import { EmergencyAlertsManager } from '../components/admin/EmergencyAlertsManager';
+import { AdminSettings } from '../components/admin/AdminSettings';
+import { CertificateManager } from '../components/features/CertificateManager';
+import { SMSIVRManager } from '../components/features/SMSIVRManager';
+import { CommunityOversight } from '../components/admin/CommunityOversight';
 
 interface AdminDashboardProps {
   adminData?: {

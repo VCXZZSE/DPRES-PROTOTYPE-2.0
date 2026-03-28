@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+
 import { 
   Shield, 
   LayoutDashboard, 
@@ -13,9 +13,9 @@ import {
   Target,
   Globe
 } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
-import { RecentIncidents } from './RecentIncidents';
-import { FAQSection } from './FAQSection';
+import { useLanguage } from '../components/LanguageContext';
+import { RecentIncidents } from '../components/features/RecentIncidents';
+import { FAQSection } from '../components/features/FAQSection';
 
 interface UserData {
   schoolName: string;
@@ -158,8 +158,8 @@ export function LandingPage({ userData }: LandingPageProps) {
             </div>
             
             <div className="relative">
-              <ImageWithFallback 
-                src="https://images.unsplash.com/photo-1755548413928-4aaeba7c740e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbWVyZ2VuY3klMjB0cmFpbmluZyUyMGRyaWxsJTIwc2Nob29sJTIwc3R1ZGVudHN8ZW58MXx8fHwxNzU3ODM0MjM2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              <img 
+                src="https://images.unsplash.com/photo-1755548413928-4aaeba7c740e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbWVyZ2VuY3klMjB0cmFpbmluZyUyMGRyaWxsJTIwc2Nob29sJTIwc3R1ZGVudHN8ZW58MXx8fHwxNzU3ODM0MjM2fDA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Disaster preparedness education"
                 className="rounded-lg shadow-2xl w-full h-64 sm:h-80 lg:h-96 object-cover"
               />

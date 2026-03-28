@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Switch } from './ui/switch';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from './ui/sheet';
 import { Alert, AlertDescription } from './ui/alert';
-import { EmergencySOS } from './EmergencySOS';
+import { EmergencySOS } from './features/EmergencySOS';
 import { 
   Shield, 
   LayoutDashboard, 

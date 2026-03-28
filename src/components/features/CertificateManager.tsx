@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { Progress } from './ui/progress';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { Progress } from '../ui/progress';
 import { 
   Award, 
   Download, 
@@ -25,8 +25,8 @@ import {
   Mail,
   ExternalLink
 } from 'lucide-react';
-import { allInstitutions, ComplianceCertificate } from './shared/institutionsData';
-import { useCommunication } from './shared/CommunicationContext';
+import { allInstitutions, ComplianceCertificate } from '../shared/institutionsData';
+import { useCommunication } from '../shared/CommunicationContext';
 
 export function CertificateManager() {
   const { certificates } = useCommunication();
@@ -77,14 +77,12 @@ export function CertificateManager() {
   };
 
   const generateCertificate = (institutionId: string) => {
-    console.log('Generating certificate for institution:', institutionId);
-    // Mock certificate generation
+    // Certificate generation initiated
     alert('Certificate generation initiated. Institution will be notified once ready for download.');
   };
 
   const downloadCertificate = (certificateId: string) => {
-    console.log('Downloading certificate:', certificateId);
-    // Mock download
+    // Download certificate
     const link = document.createElement('a');
     link.href = `data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iajw...`; // Mock PDF data
     link.download = `${certificateId}.pdf`;

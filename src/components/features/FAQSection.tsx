@@ -4,11 +4,11 @@ import {
   AccordionContent, 
   AccordionItem, 
   AccordionTrigger 
-} from './ui/accordion';
-import { Input } from './ui/input';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
+} from '../ui/accordion';
+import { Input } from '../ui/input';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Textarea } from '../ui/textarea';
 import { 
   Dialog, 
   DialogContent, 
@@ -17,15 +17,15 @@ import {
   DialogTitle, 
   DialogTrigger,
   DialogFooter 
-} from './ui/dialog';
-import { Label } from './ui/label';
+} from '../ui/dialog';
+import { Label } from '../ui/label';
 import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select';
+} from '../ui/select';
 import { 
   HelpCircle, 
   BookOpen, 
@@ -37,7 +37,7 @@ import {
   Send,
   MessageSquare
 } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from '../LanguageContext';
 import { toast } from 'sonner';
 
 interface FAQ {

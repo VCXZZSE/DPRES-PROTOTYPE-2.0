@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { SMSIVRLog, ComplianceCertificate, mockSMSIVRLogs, mockCertificates } from './institutionsData';
+import { SMSIVRLog, ComplianceCertificate, allInstitutions, mockSMSIVRLogs, mockCertificates } from './institutionsData';
 
 interface CommunicationContextType {
   // SMS/IVR Management
@@ -62,53 +62,50 @@ export function CommunicationProvider({ children }: { children: ReactNode }) {
     message: string;
     priority: 'high' | 'medium' | 'low';
   }) => {
-    // Find institution from allInstitutions
-    import('./institutionsData').then(({ allInstitutions }) => {
-      const institution = allInstitutions.find(inst => inst.id === alertData.institutionId);
-      if (!institution) return;
+    const institution = allInstitutions.find(inst => inst.id === alertData.institutionId);
+    if (!institution) return;
 
-      // Calculate recipients
-      const totalRecipients = institution.contacts.students.length + 
-                             institution.contacts.parents.length + 
-                             institution.contacts.staff.length + 
-                             institution.contacts.emergency.length;
+    // Calculate recipients
+    const totalRecipients = institution.contacts.students.length + 
+                           institution.contacts.parents.length + 
+                           institution.contacts.staff.length + 
+                           institution.contacts.emergency.length;
 
-      // Create automatic SMS/IVR log
-      const emergencyLog: Omit<SMSIVRLog, 'id' | 'timestamp'> = {
-        alertId: `alert-${Date.now()}`,
-        institutionId: institution.id,
-        institutionName: institution.name,
-        messageType: 'both',
-        alertType: 'emergency',
-        title: `Emergency Alert - ${alertData.alertType}`,
-        message: alertData.message,
-        language: 'en', // Default to English, could be made configurable
-        recipients: {
-          students: institution.contacts.students.length,
-          parents: institution.contacts.parents.length,
-          staff: institution.contacts.staff.length,
-          emergency: institution.contacts.emergency.length,
-          total: totalRecipients
-        },
-        delivery: {
-          sent: totalRecipients,
-          delivered: Math.floor(totalRecipients * 0.95), // 95% delivery rate
-          failed: Math.floor(totalRecipients * 0.03), // 3% failure rate
-          pending: Math.floor(totalRecipients * 0.02) // 2% pending
-        },
-        responses: {
-          acknowledged: Math.floor(totalRecipients * 0.7), // 70% acknowledgment rate
-          callbacks: Math.floor(totalRecipients * 0.05), // 5% callback rate
-          unsubscribed: 0
-        },
-        priority: alertData.priority,
-        status: 'sent',
-        cost: totalRecipients * 0.80, // ₹0.30 SMS + ₹0.50 IVR
-        campaignId: `EMRG-${institution.code}-${Date.now()}`
-      };
+    // Create automatic SMS/IVR log
+    const emergencyLog: Omit<SMSIVRLog, 'id' | 'timestamp'> = {
+      alertId: `alert-${Date.now()}`,
+      institutionId: institution.id,
+      institutionName: institution.name,
+      messageType: 'both',
+      alertType: 'emergency',
+      title: `Emergency Alert - ${alertData.alertType}`,
+      message: alertData.message,
+      language: 'en', // Default to English, could be made configurable
+      recipients: {
+        students: institution.contacts.students.length,
+        parents: institution.contacts.parents.length,
+        staff: institution.contacts.staff.length,
+        emergency: institution.contacts.emergency.length,
+        total: totalRecipients
+      },
+      delivery: {
+        sent: totalRecipients,
+        delivered: Math.floor(totalRecipients * 0.95), // 95% delivery rate
+        failed: Math.floor(totalRecipients * 0.03), // 3% failure rate
+        pending: Math.floor(totalRecipients * 0.02) // 2% pending
+      },
+      responses: {
+        acknowledged: Math.floor(totalRecipients * 0.7), // 70% acknowledgment rate
+        callbacks: Math.floor(totalRecipients * 0.05), // 5% callback rate
+        unsubscribed: 0
+      },
+      priority: alertData.priority,
+      status: 'sent',
+      cost: totalRecipients * 0.80, // ₹0.30 SMS + ₹0.50 IVR
+      campaignId: `EMRG-${institution.code}-${Date.now()}`
+    };
 
-      addSMSIVRLog(emergencyLog);
-    });
+    addSMSIVRLog(emergencyLog);
   };
 
   const value: CommunicationContextType = {

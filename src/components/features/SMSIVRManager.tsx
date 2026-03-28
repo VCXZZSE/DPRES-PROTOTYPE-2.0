@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Progress } from './ui/progress';
-import { Switch } from './ui/switch';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Progress } from '../ui/progress';
+import { Switch } from '../ui/switch';
 import { 
   MessageSquare, 
   Phone, 
@@ -36,9 +36,9 @@ import {
   Calendar,
   Download
 } from 'lucide-react';
-import { allInstitutions, mockSMSTemplates, SMSIVRLog, SMSTemplate } from './shared/institutionsData';
-import { useAlerts } from './shared/AlertContext';
-import { useCommunication } from './shared/CommunicationContext';
+import { allInstitutions, mockSMSTemplates, SMSIVRLog, SMSTemplate } from '../shared/institutionsData';
+import { useAlerts } from '../shared/AlertContext';
+import { useCommunication } from '../shared/CommunicationContext';
 
 interface BulkMessage {
   institutions: string[];

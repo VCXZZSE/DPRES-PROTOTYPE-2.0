@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
-import { Progress } from './ui/progress';
-import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { Label } from './ui/label';
-import { Alert, AlertDescription } from './ui/alert';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { Progress } from '../ui/progress';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { Label } from '../ui/label';
+import { Alert, AlertDescription } from '../ui/alert';
 import { 
   CheckCircle, 
   Lock, 
@@ -24,7 +24,7 @@ import {
   Award,
   MessageSquare
 } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from '../LanguageContext';
 import { toast } from 'sonner';
 import { CommunityHub } from './CommunityHub';
 

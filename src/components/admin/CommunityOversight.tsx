@@ -139,7 +139,6 @@ export function CommunityOversight() {
 
   const handleOfficialReply = () => {
     if (officialReply.trim()) {
-      console.log('Posting official reply:', officialReply);
       setOfficialReply('');
       setShowPostDetail(false);
     }

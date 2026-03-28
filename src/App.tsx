@@ -1,28 +1,29 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { LoginPage } from "./components/LoginPage";
-import { LandingPage } from "./components/LandingPage";
-import { Dashboard } from "./components/Dashboard";
-import { ModulesPage } from "./components/ModulesPage";
-import { VRTrainingPage } from "./components/VRTrainingPage";
-import { LearningInterface } from "./components/LearningInterface";
-import { AdminDashboard } from "./components/AdminDashboard";
-import { InstitutionAdminDashboard } from "./components/InstitutionAdminDashboard";
-import { DesktopOnlyScreen } from "./components/DesktopOnlyScreen";
 import { Navigation } from "./components/Navigation";
-import { WelcomeAnimation } from "./components/WelcomeAnimation";
-import { AdminWelcomeAnimation } from "./components/AdminWelcomeAnimation";
-import { CommunityHub } from "./components/CommunityHub";
 import { LanguageProvider, useLanguage } from "./components/LanguageContext";
 import { AlertProvider } from "./components/shared/AlertContext";
 import { CommunicationProvider } from "./components/shared/CommunicationContext";
 import { useIsMobile } from "./components/hooks/useIsMobile";
 import { Toaster } from "./components/ui/sonner";
+
+const LoginPage = lazy(() => import("./pages/LoginPage").then((m) => ({ default: m.LoginPage })));
+const LandingPage = lazy(() => import("./pages/LandingPage").then((m) => ({ default: m.LandingPage })));
+const Dashboard = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.Dashboard })));
+const ModulesPage = lazy(() => import("./pages/ModulesPage").then((m) => ({ default: m.ModulesPage })));
+const VRTrainingPage = lazy(() => import("./pages/VRTrainingPage").then((m) => ({ default: m.VRTrainingPage })));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard").then((m) => ({ default: m.AdminDashboard })));
+const InstitutionAdminDashboard = lazy(() => import("./pages/InstitutionAdminDashboard").then((m) => ({ default: m.InstitutionAdminDashboard })));
+const DesktopOnlyScreen = lazy(() => import("./pages/DesktopOnlyScreen").then((m) => ({ default: m.DesktopOnlyScreen })));
+const WelcomeAnimation = lazy(() => import("./pages/WelcomeAnimation").then((m) => ({ default: m.WelcomeAnimation })));
+const AdminWelcomeAnimation = lazy(() => import("./pages/AdminWelcomeAnimation").then((m) => ({ default: m.AdminWelcomeAnimation })));
+const LearningInterface = lazy(() => import("./components/features/LearningInterface").then((m) => ({ default: m.LearningInterface })));
+const CommunityHub = lazy(() => import("./components/features/CommunityHub").then((m) => ({ default: m.CommunityHub })));
 
 interface UserData {
   schoolName: string;
@@ -75,6 +76,12 @@ function AppContent() {
   const handleAdminAnimationComplete = React.useCallback(() => {
     setShowAdminWelcomeAnimation(false);
   }, []);
+
+  const loadingScreen = (
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+      <div className="text-sm text-muted-foreground">Loading...</div>
+    </div>
+  );
 
   const handleLogin = (data: UserData) => {
     setUserData(data);
@@ -156,112 +163,114 @@ function AppContent() {
       <CommunicationProvider>
         <Router>
           <Toaster position="top-right" richColors />
-          {!isLoggedIn && !isAdminLoggedIn && !isInstitutionAdminLoggedIn ? (
-            <LoginPage
-              onLogin={handleLogin}
-              onAdminLogin={handleAdminLogin}
-              onInstitutionAdminLogin={handleInstitutionAdminLogin}
-            />
-          ) : showWelcomeAnimation && userData ? (
-            <WelcomeAnimation
-              studentName={userData.studentName}
-              schoolName={userData.schoolName}
-              onComplete={handleAnimationComplete}
-            />
-          ) : showAdminWelcomeAnimation && adminData ? (
-            <AdminWelcomeAnimation
-              adminEmail={adminData.email}
-              onComplete={handleAdminAnimationComplete}
-            />
-          ) : (
-            <div className="min-h-screen bg-background text-foreground">
-              {/* Show Navigation only for regular users, not admin */}
-              {isLoggedIn && !isAdminLoggedIn && !isInstitutionAdminLoggedIn && (
-                <header role="banner">
-                  <Navigation
-                    userData={userData}
-                    onLogout={handleLogout}
-                    isFirstLogin={isFirstLogin}
-                  />
-                </header>
-              )}
+          <Suspense fallback={loadingScreen}>
+            {!isLoggedIn && !isAdminLoggedIn && !isInstitutionAdminLoggedIn ? (
+              <LoginPage
+                onLogin={handleLogin}
+                onAdminLogin={handleAdminLogin}
+                onInstitutionAdminLogin={handleInstitutionAdminLogin}
+              />
+            ) : showWelcomeAnimation && userData ? (
+              <WelcomeAnimation
+                studentName={userData.studentName}
+                schoolName={userData.schoolName}
+                onComplete={handleAnimationComplete}
+              />
+            ) : showAdminWelcomeAnimation && adminData ? (
+              <AdminWelcomeAnimation
+                adminEmail={adminData.email}
+                onComplete={handleAdminAnimationComplete}
+              />
+            ) : (
+              <div className="min-h-screen bg-background text-foreground">
+                {/* Show Navigation only for regular users, not admin */}
+                {isLoggedIn && !isAdminLoggedIn && !isInstitutionAdminLoggedIn && (
+                  <header role="banner">
+                    <Navigation
+                      userData={userData}
+                      onLogout={handleLogout}
+                      isFirstLogin={isFirstLogin}
+                    />
+                  </header>
+                )}
 
-              {/* Institution Admin Dashboard */}
-              {isInstitutionAdminLoggedIn ? (
-                <main id="main-content" role="main">
-                  <InstitutionAdminDashboard
-                    adminData={institutionAdminData}
-                    onLogout={handleLogout}
-                  />
-                </main>
-              ) : /* SDMA Admin Dashboard - Direct access for admin users (Desktop only) */
-              isAdminLoggedIn ? (
-                isMobile ? (
+                {/* Institution Admin Dashboard */}
+                {isInstitutionAdminLoggedIn ? (
                   <main id="main-content" role="main">
-                    <DesktopOnlyScreen onBack={handleAdminLogout} />
-                  </main>
-                ) : (
-                  <main id="main-content" role="main">
-                    <AdminDashboard
-                      adminData={adminData}
+                    <InstitutionAdminDashboard
+                      adminData={institutionAdminData}
                       onLogout={handleLogout}
                     />
                   </main>
-                )
-              ) : (
-                /* Regular user routes */
-                <main id="main-content" role="main">
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={
-                        <LandingPage userData={userData} />
-                      }
-                    />
-                    <Route
-                      path="/dashboard"
-                      element={
-                        <Dashboard userData={userData} />
-                      }
-                    />
-                    <Route
-                      path="/modules"
-                      element={
-                        <ModulesPage userData={userData} />
-                      }
-                    />
-                    <Route
-                      path="/modules/:moduleId"
-                      element={
-                        <LearningInterface userData={userData} />
-                      }
-                    />
-                    <Route
-                      path="/vr-training"
-                      element={<VRTrainingPage />}
-                    />
-                    <Route
-                      path="/community"
-                      element={<CommunityHub userData={userData} />}
-                    />
-                    {/* Block admin access for regular users */}
-                    <Route
-                      path="/admin"
-                      element={<Navigate to="/" replace />}
-                    />
-                    <Route
-                      path="/preview_page.html"
-                      element={<Navigate to="/" replace />}
-                    />
-                    <Route
-                      path="*"
-                      element={<Navigate to="/" replace />}
-                    />
-                  </Routes>
-                </main>
-              )}
-            </div>
-          )}
+                ) : /* SDMA Admin Dashboard - Direct access for admin users (Desktop only) */
+                isAdminLoggedIn ? (
+                  isMobile ? (
+                    <main id="main-content" role="main">
+                      <DesktopOnlyScreen onBack={handleAdminLogout} />
+                    </main>
+                  ) : (
+                    <main id="main-content" role="main">
+                      <AdminDashboard
+                        adminData={adminData}
+                        onLogout={handleLogout}
+                      />
+                    </main>
+                  )
+                ) : (
+                  /* Regular user routes */
+                  <main id="main-content" role="main">
+                    <Routes>
+                      <Route
+                        path="/"
+                        element={
+                          <LandingPage userData={userData} />
+                        }
+                      />
+                      <Route
+                        path="/dashboard"
+                        element={
+                          <Dashboard userData={userData} />
+                        }
+                      />
+                      <Route
+                        path="/modules"
+                        element={
+                          <ModulesPage userData={userData} />
+                        }
+                      />
+                      <Route
+                        path="/modules/:moduleId"
+                        element={
+                          <LearningInterface userData={userData} />
+                        }
+                      />
+                      <Route
+                        path="/vr-training"
+                        element={<VRTrainingPage />}
+                      />
+                      <Route
+                        path="/community"
+                        element={<CommunityHub userData={userData} />}
+                      />
+                      {/* Block admin access for regular users */}
+                      <Route
+                        path="/admin"
+                        element={<Navigate to="/" replace />}
+                      />
+                      <Route
+                        path="/preview_page.html"
+                        element={<Navigate to="/" replace />}
+                      />
+                      <Route
+                        path="*"
+                        element={<Navigate to="/" replace />}
+                      />
+                    </Routes>
+                  </main>
+                )}
+              </div>
+            )}
+          </Suspense>
         </Router>
       </CommunicationProvider>
     </AlertProvider>

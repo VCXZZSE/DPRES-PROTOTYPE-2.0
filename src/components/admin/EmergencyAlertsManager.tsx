@@ -172,7 +172,6 @@ export function EmergencyAlertsManager() {
       actions: ['Alert created and distributed']
     };
     
-    console.log('Creating new emergency alert:', alertData);
     alert('Emergency alert created and sent to all selected institutions.');
     setShowCreateAlert(false);
     

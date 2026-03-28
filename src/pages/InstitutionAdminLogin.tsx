@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Card } from './ui/card';
-import { Badge } from './ui/badge';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Card } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { 
   Building2, 
   School, 
@@ -17,8 +17,8 @@ import {
   Sparkles,
   ChevronRight
 } from 'lucide-react';
-import { schools, colleges } from './shared/institutionsData';
-import { useIsMobile } from './hooks/useIsMobile';
+import { schools, colleges } from '../components/shared/institutionsData';
+import { useIsMobile } from '../components/hooks/useIsMobile';
 
 interface InstitutionAdminLoginProps {
   onLogin: (data: {
