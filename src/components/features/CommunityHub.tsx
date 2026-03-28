@@ -1022,7 +1022,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
     <div className="flex flex-col h-screen w-full bg-linear-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Top Navigation Bar */}
       <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 px-6 py-3 shrink-0 shadow-sm">
-        <div className="flex items-center justify-between max-w-[1800px] mx-auto">
+        <div className="flex items-center justify-between max-w-450 mx-auto">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
@@ -1081,7 +1081,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
                     </Button>
                   )}
                 </div>
-                <ScrollArea className="h-[400px]">
+                <ScrollArea className="h-100">
                   <div className="p-2">
                     {notifications.length === 0 ? (
                       <div className="py-8 text-center text-sm text-slate-500">
@@ -1147,7 +1147,7 @@ export function CommunityHub({ userData, moduleFilter, onClose }: CommunityHubPr
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden w-full max-w-[1800px] mx-auto">
+      <div className="flex-1 flex overflow-hidden w-full max-w-450 mx-auto">
         {/* Left Sidebar */}
         <div className="w-72 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-r border-slate-200/50 dark:border-slate-700/50 overflow-y-auto shrink-0">
           <ScrollArea className="h-full">
