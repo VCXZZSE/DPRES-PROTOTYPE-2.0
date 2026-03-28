@@ -353,7 +353,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
       <div className="flex">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:block w-64 border-r border-slate-800 bg-slate-900 min-h-screen sticky top-[73px]">
+        <div className="hidden lg:block w-64 border-r border-slate-800 bg-slate-900 min-h-screen sticky top-18.25">
           <div className="p-4">
             {/* Quick stats in sidebar */}
             <div className="mb-6 space-y-3">
