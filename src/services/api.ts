@@ -18,8 +18,8 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-const AUTH_BASE_URL = import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8000/api/auth';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://dpres-backend.onrender.com/api';
+const AUTH_BASE_URL = import.meta.env.VITE_AUTH_API_URL || 'https://dpres-backend.onrender.com/api/auth';
 
 interface ApiErrorPayload {
   detail?: string;
