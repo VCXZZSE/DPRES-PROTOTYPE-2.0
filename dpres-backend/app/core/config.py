@@ -30,4 +30,4 @@ class Settings(BaseSettings):
         return bool(self.SMTP_HOST and self.SMTP_FROM_EMAIL)
 
 
-settings = Settings()
+settings = Settings()  # type: ignore
