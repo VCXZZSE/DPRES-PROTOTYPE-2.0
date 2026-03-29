@@ -89,6 +89,11 @@ export interface StudentLoginPayload {
   password: string;
 }
 
+export interface SdmaAdminLoginPayload {
+  email: string;
+  password: string;
+}
+
 export interface SignupInitiatePayload {
   institution_id: number;
   email: string;
@@ -105,6 +110,13 @@ export interface SignupInitiateApiResponse {
 export interface AuthTokenResponse {
   access_token: string;
   token_type: string;
+}
+
+export interface SdmaAdminLoginResponse {
+  access_token: string;
+  token_type: string;
+  email: string;
+  display_name: string;
 }
 
 export interface MeResponse {
@@ -164,6 +176,12 @@ export const authService = {
   // Backward compatible alias while login UI migration is in progress.
   studentLogin: (email: string, password: string) =>
     authService.loginStudent({ email, password }),
+
+  sdmaAdminLogin: (payload: SdmaAdminLoginPayload) =>
+    authRequest<SdmaAdminLoginResponse>('/login-sdma-admin', 'POST', payload).then((data) => {
+      localStorage.setItem('dpres_access_token', data.access_token);
+      return data;
+    }),
 
   adminLogin: (email: string, password: string) =>
     fetch(`${API_BASE_URL}/auth/admin-login`, {

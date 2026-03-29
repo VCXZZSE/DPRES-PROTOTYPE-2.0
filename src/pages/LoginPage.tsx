@@ -23,6 +23,7 @@ import {
   Building
 } from 'lucide-react';
 import { InstitutionAdminLogin } from './InstitutionAdminLogin';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../components/LanguageContext';
 import { useIsMobile } from '../components/hooks/useIsMobile';
 import { schools, colleges } from '../components/shared/institutionsData';
@@ -51,6 +52,7 @@ interface LoginPageProps {
 }
 
 export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: LoginPageProps) {
+  const navigate = useNavigate();
   const { t } = useLanguage();
   const isMobile = useIsMobile(1024);
   const [currentStep, setCurrentStep] = useState<'userType' | 'institutionType' | 'details'>('userType');
@@ -63,6 +65,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
   const [showStudentPassword, setShowStudentPassword] = useState(false);
   const [adminCredentials, setAdminCredentials] = useState({ email: '', password: '' });
   const [adminError, setAdminError] = useState('');
+  const [adminLoading, setAdminLoading] = useState(false);
   const [studentAuthMode, setStudentAuthMode] = useState<StudentAuthMode>('signin');
   const [studentCredentials, setStudentCredentials] = useState({ email: '', password: '' });
   const [signupDraft, setSignupDraft] = useState({
@@ -305,49 +308,47 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
     }
   };
 
-  // Authorized admin users with their display names
-  const authorizedAdmins = {
-    'repomerm23@gmail.com': 'Repome',
-    'pratyasaha23@gmail.com': 'Pratya',
-    'sayanpal066@gmail.com': 'Sayan',
-    'muskankhatun0905@gmail.com': 'Muskan',
-    'soumyarajnandi241@gmail.com': 'Soumyaraj',
-    'sih@gmail.com': 'SIH'
-  };
-
-  const handleAdminSubmit = (e: React.FormEvent) => {
+  const handleAdminSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAdminError('');
+    setAdminLoading(true);
     
     // Check if user is on mobile device
     if (isMobile) {
       setAdminError('Admin portal access is restricted to desktop devices only. Please use a computer with screen width of 1024px or larger for administrative functions.');
+      setAdminLoading(false);
       return;
     }
     
-    // Validate admin credentials - password must be "9999" and email is required
-    if (adminCredentials.password !== '9999') {
-      setAdminError('Invalid password. Please enter the correct admin password.');
-      return;
-    }
-    
-    if (!adminCredentials.email) {
+    const email = adminCredentials.email.trim().toLowerCase();
+    const password = adminCredentials.password;
+
+    if (!email) {
       setAdminError('Email is required.');
+      setAdminLoading(false);
       return;
     }
-    
-    // Check if email is in the authorized list
-    if (!authorizedAdmins[adminCredentials.email as keyof typeof authorizedAdmins]) {
-      setAdminError('Access denied. This email is not authorized for admin access.');
+
+    if (!password) {
+      setAdminError('Password is required.');
+      setAdminLoading(false);
       return;
     }
-    
-    // If validation passes, call the onAdminLogin function with display name
-    const displayName = authorizedAdmins[adminCredentials.email as keyof typeof authorizedAdmins];
-    onAdminLogin({ 
-      ...adminCredentials, 
-      displayName 
-    });
+
+    try {
+      const response = await authService.sdmaAdminLogin({ email, password });
+      onAdminLogin({
+        email: response.email,
+        password,
+        displayName: response.display_name,
+      });
+      setShowAdminLogin(false);
+      navigate('/sdma-dashboard');
+    } catch (error) {
+      setAdminError(error instanceof Error ? error.message : 'Admin authentication failed. Please try again.');
+    } finally {
+      setAdminLoading(false);
+    }
   };
 
   const handleAdminCredentialChange = (field: 'email' | 'password', value: string) => {
@@ -1150,11 +1151,12 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
 
               <Button
                 type="submit"
+                disabled={adminLoading}
                 className="w-full h-12 bg-linear-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <span className="flex items-center justify-center space-x-2">
                   <Lock className="w-4 h-4" />
-                  <span>Access Admin Dashboard</span>
+                  <span>{adminLoading ? 'Signing in...' : 'Access Admin Dashboard'}</span>
                 </span>
               </Button>
             </form>

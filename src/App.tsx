@@ -96,7 +96,6 @@ function AppContent() {
   };
 
   const handleAdminLogin = (data: AdminData) => {
-    authService.clearToken();
     // Check if user is on mobile - if so, don't allow admin login
     if (isMobile) {
       // Don't proceed with admin login on mobile
@@ -126,6 +125,7 @@ function AppContent() {
   };
 
   const handleAdminLogout = () => {
+    authService.clearToken();
     setAdminData(null);
     setIsAdminLoggedIn(false);
     setIsFirstLogin(true);
@@ -166,7 +166,7 @@ function AppContent() {
   React.useEffect(() => {
     let isMounted = true;
 
-    const restoreStudentSession = async () => {
+    const restoreSession = async () => {
       const token = authService.getToken();
       if (!token) {
         if (isMounted) {
@@ -181,16 +181,29 @@ function AppContent() {
           return;
         }
 
-        setUserData({
-          schoolName: "Connected Institution",
-          schoolCode: String(me.institution_id),
-          studentName: me.full_name,
-          age: "",
-          institutionType: "college",
-        });
-        setIsLoggedIn(true);
-        setIsAdminLoggedIn(false);
-        setIsInstitutionAdminLoggedIn(false);
+        if (me.role === 'sdma_admin') {
+          setAdminData({
+            email: me.email,
+            password: '',
+            displayName: me.full_name || 'SDMA Admin',
+          });
+          setIsAdminLoggedIn(true);
+          setIsLoggedIn(false);
+          setIsInstitutionAdminLoggedIn(false);
+          window.history.replaceState({}, '', '/sdma-dashboard');
+        } else {
+          setUserData({
+            schoolName: "Connected Institution",
+            schoolCode: String(me.institution_id),
+            studentName: me.full_name,
+            age: "",
+            institutionType: "college",
+          });
+          setIsLoggedIn(true);
+          setIsAdminLoggedIn(false);
+          setIsInstitutionAdminLoggedIn(false);
+        }
+
         setShowWelcomeAnimation(false);
         setShowAdminWelcomeAnimation(false);
         setIsFirstLogin(false);
@@ -203,7 +216,7 @@ function AppContent() {
       }
     };
 
-    restoreStudentSession();
+    restoreSession();
 
     return () => {
       isMounted = false;
@@ -260,18 +273,24 @@ function AppContent() {
                   </main>
                 ) : /* SDMA Admin Dashboard - Direct access for admin users (Desktop only) */
                 isAdminLoggedIn ? (
-                  isMobile ? (
-                    <main id="main-content" role="main">
-                      <DesktopOnlyScreen onBack={handleAdminLogout} />
-                    </main>
-                  ) : (
-                    <main id="main-content" role="main">
-                      <AdminDashboard
-                        adminData={adminData}
-                        onLogout={handleLogout}
+                  <main id="main-content" role="main">
+                    <Routes>
+                      <Route
+                        path="/sdma-dashboard"
+                        element={
+                          isMobile ? (
+                            <DesktopOnlyScreen onBack={handleAdminLogout} />
+                          ) : (
+                            <AdminDashboard
+                              adminData={adminData}
+                              onLogout={handleLogout}
+                            />
+                          )
+                        }
                       />
-                    </main>
-                  )
+                      <Route path="*" element={<Navigate to="/sdma-dashboard" replace />} />
+                    </Routes>
+                  </main>
                 ) : (
                   /* Regular user routes */
                   <main id="main-content" role="main">
