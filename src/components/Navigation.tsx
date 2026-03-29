@@ -204,13 +204,13 @@ export function Navigation({ userData, onLogout, isFirstLogin = false }: Navigat
                 
                 {/* Dark Mode Toggle */}
                 <div className="flex items-center space-x-1">
-                  <Sun className="h-3 w-3 text-gray-500 dark:text-gray-400" />
+                  <Sun className="h-3 w-3 text-gray-700 dark:text-gray-400" />
                   <Switch 
                     checked={darkMode} 
                     onCheckedChange={toggleDarkMode}
-                    className="data-[state=checked]:bg-indigo-600 scale-75"
+                    className="scale-75 border border-slate-400/70 data-[state=unchecked]:bg-slate-300 data-[state=checked]:bg-indigo-600 dark:border-slate-600 dark:data-[state=unchecked]:bg-slate-700"
                   />
-                  <Moon className="h-3 w-3 text-gray-500 dark:text-gray-400" />
+                  <Moon className="h-3 w-3 text-gray-700 dark:text-gray-300" />
                 </div>
                 
                 <Button 
@@ -312,13 +312,13 @@ export function Navigation({ userData, onLogout, isFirstLogin = false }: Navigat
                     <div className="flex items-center justify-between px-3 py-2">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('nav.darkMode')}</span>
                       <div className="flex items-center space-x-2">
-                        <Sun className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                        <Sun className="h-4 w-4 text-gray-700 dark:text-gray-400" />
                         <Switch 
                           checked={darkMode} 
                           onCheckedChange={toggleDarkMode}
-                          className="data-[state=checked]:bg-indigo-600"
+                          className="border border-slate-400/70 data-[state=unchecked]:bg-slate-300 data-[state=checked]:bg-indigo-600 dark:border-slate-600 dark:data-[state=unchecked]:bg-slate-700"
                         />
-                        <Moon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                        <Moon className="h-4 w-4 text-gray-700 dark:text-gray-300" />
                       </div>
                     </div>
 

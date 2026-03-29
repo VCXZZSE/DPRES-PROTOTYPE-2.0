@@ -11,6 +11,7 @@ import { AlertProvider } from "./components/shared/AlertContext";
 import { CommunicationProvider } from "./components/shared/CommunicationContext";
 import { useIsMobile } from "./components/hooks/useIsMobile";
 import { Toaster } from "./components/ui/sonner";
+import { authService } from "./services/api";
 
 const LoginPage = lazy(() => import("./pages/LoginPage").then((m) => ({ default: m.LoginPage })));
 const LandingPage = lazy(() => import("./pages/LandingPage").then((m) => ({ default: m.LandingPage })));
@@ -56,6 +57,7 @@ function AppContent() {
     null,
   );
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [isInstitutionAdminLoggedIn, setIsInstitutionAdminLoggedIn] = useState(false);
   const [isFirstLogin, setIsFirstLogin] = useState(true);
@@ -94,6 +96,7 @@ function AppContent() {
   };
 
   const handleAdminLogin = (data: AdminData) => {
+    authService.clearToken();
     // Check if user is on mobile - if so, don't allow admin login
     if (isMobile) {
       // Don't proceed with admin login on mobile
@@ -109,6 +112,7 @@ function AppContent() {
   };
 
   const handleInstitutionAdminLogin = (data: InstitutionAdminData) => {
+    authService.clearToken();
     // Check if user is on mobile - if so, don't allow institution admin login
     if (isMobile) {
       // Don't proceed with institution admin login on mobile
@@ -132,6 +136,7 @@ function AppContent() {
   };
 
   const handleLogout = () => {
+    authService.clearToken();
     setUserData(null);
     setAdminData(null);
     setInstitutionAdminData(null);
@@ -157,6 +162,57 @@ function AppContent() {
       return () => clearTimeout(timer);
     }
   }, [isLoggedIn, isFirstLogin]);
+
+  React.useEffect(() => {
+    let isMounted = true;
+
+    const restoreStudentSession = async () => {
+      const token = authService.getToken();
+      if (!token) {
+        if (isMounted) {
+          setIsAuthChecking(false);
+        }
+        return;
+      }
+
+      try {
+        const me = await authService.getMe(token);
+        if (!isMounted) {
+          return;
+        }
+
+        setUserData({
+          schoolName: "Connected Institution",
+          schoolCode: String(me.institution_id),
+          studentName: me.full_name,
+          age: "",
+          institutionType: "college",
+        });
+        setIsLoggedIn(true);
+        setIsAdminLoggedIn(false);
+        setIsInstitutionAdminLoggedIn(false);
+        setShowWelcomeAnimation(false);
+        setShowAdminWelcomeAnimation(false);
+        setIsFirstLogin(false);
+      } catch {
+        authService.clearToken();
+      } finally {
+        if (isMounted) {
+          setIsAuthChecking(false);
+        }
+      }
+    };
+
+    restoreStudentSession();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (isAuthChecking) {
+    return loadingScreen;
+  }
 
   return (
     <AlertProvider>

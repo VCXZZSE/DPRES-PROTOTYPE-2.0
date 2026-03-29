@@ -11,6 +11,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_URL?: string;
+  readonly VITE_AUTH_API_URL?: string;
 }
 
 interface ImportMeta {
@@ -18,16 +19,151 @@ interface ImportMeta {
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const AUTH_BASE_URL = import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8000/api/auth';
+
+interface ApiErrorPayload {
+  detail?: string;
+  message?: string;
+}
+
+class ApiError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
+
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+async function parseJsonResponse<T>(response: Response): Promise<T> {
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    return {} as T;
+  }
+  return response.json() as Promise<T>;
+}
+
+async function authRequest<T>(
+  path: string,
+  method: HttpMethod,
+  body?: unknown,
+  token?: string,
+): Promise<T> {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${AUTH_BASE_URL}${path}`, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  const payload = await parseJsonResponse<ApiErrorPayload & T>(response);
+
+  if (!response.ok) {
+    const errorMessage = payload?.detail || payload?.message || 'Request failed';
+    throw new ApiError(errorMessage, response.status);
+  }
+
+  return payload as T;
+}
+
+export interface StudentRegisterPayload {
+  email: string;
+  password: string;
+  institution_id: number;
+  full_name: string;
+  age?: number;
+}
+
+export interface StudentLoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface SignupInitiatePayload {
+  institution_id: number;
+  email: string;
+  id_card_number: string;
+  full_name: string;
+  age: number;
+}
+
+export interface SignupInitiateApiResponse {
+  message: string;
+  verification_token?: string;
+}
+
+export interface AuthTokenResponse {
+  access_token: string;
+  token_type: string;
+}
+
+export interface MeResponse {
+  id: number;
+  email: string;
+  full_name: string;
+  role: string;
+  institution_id: number;
+  email_verified_at: string | null;
+}
 
 // ==================== Authentication Services ====================
 
 export const authService = {
-  studentLogin: (schoolCode: string, studentName: string, age: string, institutionType: 'school' | 'college') =>
-    fetch(`${API_BASE_URL}/auth/student-login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ schoolCode, studentName, age, institutionType }),
-    }).then(res => res.json()),
+  signupInitiate: (payload: SignupInitiatePayload) =>
+    authRequest<SignupInitiateApiResponse>('/signup-initiate', 'POST', payload),
+
+  verifyEmail: (token: string) =>
+    authRequest<{ message: string }>('/verify-email', 'POST', { token }),
+
+  completeSignup: (token: string, password: string) =>
+    authRequest<{ message: string; user_id: number }>('/complete-signup', 'POST', { token, password }),
+
+  registerStudent: (payload: StudentRegisterPayload) =>
+    authRequest<{ message: string; user_id: number }>('/register-student', 'POST', payload),
+
+  loginStudent: async (payload: StudentLoginPayload) => {
+    const data = await authRequest<AuthTokenResponse>('/login-student', 'POST', payload);
+    localStorage.setItem('dpres_access_token', data.access_token);
+    return data;
+  },
+
+  getMe: (token?: string) => {
+    const accessToken = token || localStorage.getItem('dpres_access_token') || '';
+    return authRequest<MeResponse>('/me', 'GET', undefined, accessToken);
+  },
+
+  forgotPassword: (payload: { email: string; idCardNumber: string }) =>
+    authRequest<{ message: string }>('/forgot-password', 'POST', {
+      email: payload.email,
+      id_card_number: payload.idCardNumber,
+    }),
+
+  resetPassword: (token: string, newPassword: string) =>
+    authRequest<{ message: string }>('/reset-password', 'POST', { token, new_password: newPassword }),
+
+  setToken: (token: string) => {
+    localStorage.setItem('dpres_access_token', token);
+  },
+
+  getToken: () => localStorage.getItem('dpres_access_token'),
+
+  clearToken: () => {
+    localStorage.removeItem('dpres_access_token');
+  },
+
+  // Backward compatible alias while login UI migration is in progress.
+  studentLogin: (email: string, password: string) =>
+    authService.loginStudent({ email, password }),
 
   adminLogin: (email: string, password: string) =>
     fetch(`${API_BASE_URL}/auth/admin-login`, {
@@ -43,8 +179,10 @@ export const authService = {
       body: JSON.stringify({ institutionId, email, password }),
     }).then(res => res.json()),
 
-  logout: () =>
-    fetch(`${API_BASE_URL}/auth/logout`, { method: 'POST' }).then(res => res.json()),
+  logout: () => {
+    authService.clearToken();
+    return Promise.resolve({ message: 'Logged out locally' });
+  },
 };
 
 // ==================== Institution Services ====================

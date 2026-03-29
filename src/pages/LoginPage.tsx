@@ -26,6 +26,9 @@ import { InstitutionAdminLogin } from './InstitutionAdminLogin';
 import { useLanguage } from '../components/LanguageContext';
 import { useIsMobile } from '../components/hooks/useIsMobile';
 import { schools, colleges } from '../components/shared/institutionsData';
+import { authService } from '../services/api';
+
+type StudentAuthMode = 'signin' | 'signup' | 'forgot' | 'forgotVerification' | 'verification';
 
 interface LoginPageProps {
   onLogin: (userData: {
@@ -57,8 +60,27 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [showInstitutionAdminFlow, setShowInstitutionAdminFlow] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showStudentPassword, setShowStudentPassword] = useState(false);
   const [adminCredentials, setAdminCredentials] = useState({ email: '', password: '' });
   const [adminError, setAdminError] = useState('');
+  const [studentAuthMode, setStudentAuthMode] = useState<StudentAuthMode>('signin');
+  const [studentCredentials, setStudentCredentials] = useState({ email: '', password: '' });
+  const [signupDraft, setSignupDraft] = useState({
+    email: '',
+    idCardNumber: '',
+    verificationToken: '',
+    newPassword: '',
+    confirmNewPassword: '',
+  });
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [authInfo, setAuthInfo] = useState('');
+  const [idCardForgot, setIdCardForgot] = useState('');
+  const [forgotResetDraft, setForgotResetDraft] = useState({
+    token: '',
+    newPassword: '',
+    confirmNewPassword: '',
+  });
   const [formData, setFormData] = useState({
     schoolName: '',
     schoolCode: '',
@@ -111,9 +133,124 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const getSelectedInstitutionId = () => {
+    const parsed = Number(selectedSchool);
+    if (!Number.isNaN(parsed) && Number.isFinite(parsed)) {
+      return parsed;
+    }
+    return 1;
+  };
+
+  const loginAndContinue = async (email: string, password: string) => {
+    await authService.loginStudent({ email, password });
+    const me = await authService.getMe();
+    onLogin({
+      ...formData,
+      studentName: me.full_name || formData.studentName,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(formData);
+    setAuthError('');
+    setAuthInfo('');
+    setAuthLoading(true);
+
+    try {
+      if (studentAuthMode === 'signin') {
+        const email = studentCredentials.email.trim().toLowerCase();
+        if (!email || !studentCredentials.password) {
+          throw new Error('Email and password are required.');
+        }
+        await loginAndContinue(email, studentCredentials.password);
+      }
+
+      if (studentAuthMode === 'forgot') {
+        const email = studentCredentials.email.trim().toLowerCase();
+        const idCardNumber = idCardForgot.trim();
+        if (!email) {
+          throw new Error('Email is required.');
+        }
+        if (!idCardNumber) {
+          throw new Error('ID Card Number is required.');
+        }
+        const forgotResponse = await authService.forgotPassword({ email, idCardNumber });
+        setStudentAuthMode('forgotVerification');
+        setAuthInfo(forgotResponse.message);
+      }
+
+      if (studentAuthMode === 'forgotVerification') {
+        const email = studentCredentials.email.trim().toLowerCase();
+        if (!forgotResetDraft.token.trim()) {
+          throw new Error('Verification token is required.');
+        }
+        if (!forgotResetDraft.newPassword) {
+          throw new Error('New password is required.');
+        }
+        if (forgotResetDraft.newPassword !== forgotResetDraft.confirmNewPassword) {
+          throw new Error('Passwords do not match.');
+        }
+
+        await authService.resetPassword(forgotResetDraft.token.trim(), forgotResetDraft.newPassword);
+        await loginAndContinue(email, forgotResetDraft.newPassword);
+      }
+
+      if (studentAuthMode === 'signup') {
+        if (institutionType !== 'college') {
+          throw new Error('Account creation is currently restricted to college institutions.');
+        }
+        if (!formData.studentName.trim()) {
+          throw new Error('Full name is required for sign up.');
+        }
+        if (!formData.age || Number.isNaN(Number(formData.age))) {
+          throw new Error('Valid age is required for sign up.');
+        }
+        const email = signupDraft.email.trim().toLowerCase();
+        if (!email) {
+          throw new Error('Email is required for sign up.');
+        }
+        if (!signupDraft.idCardNumber.trim()) {
+          throw new Error('ID Card Number is required.');
+        }
+
+        const result = await authService.signupInitiate({
+          institution_id: getSelectedInstitutionId(),
+          email,
+          id_card_number: signupDraft.idCardNumber.trim(),
+          full_name: formData.studentName.trim(),
+          age: Number(formData.age),
+        });
+
+        setSignupDraft((prev) => ({
+          ...prev,
+          email,
+          verificationToken: result.verification_token || prev.verificationToken,
+        }));
+        setStudentAuthMode('verification');
+        setAuthInfo(result.message);
+      }
+
+      if (studentAuthMode === 'verification') {
+        if (!signupDraft.verificationToken.trim()) {
+          throw new Error('Verification token is required.');
+        }
+        if (!signupDraft.newPassword) {
+          throw new Error('New password is required.');
+        }
+        if (signupDraft.newPassword !== signupDraft.confirmNewPassword) {
+          throw new Error('Passwords do not match.');
+        }
+
+        const token = signupDraft.verificationToken.trim();
+        await authService.verifyEmail(token);
+        await authService.completeSignup(token, signupDraft.newPassword);
+        await loginAndContinue(signupDraft.email.trim().toLowerCase(), signupDraft.newPassword);
+      }
+    } catch (error) {
+      setAuthError(error instanceof Error ? error.message : 'Authentication failed. Please try again.');
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   const handleNext = () => {
@@ -142,6 +279,30 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleStudentCredentialsChange = (field: 'email' | 'password', value: string) => {
+    setStudentCredentials(prev => ({ ...prev, [field]: value }));
+    setAuthError('');
+    setAuthInfo('');
+  };
+
+  const handleSignupDraftChange = (
+    field: 'email' | 'idCardNumber' | 'verificationToken' | 'newPassword' | 'confirmNewPassword',
+    value: string,
+  ) => {
+    setSignupDraft((prev) => ({ ...prev, [field]: value }));
+    setAuthError('');
+    setAuthInfo('');
+  };
+
+  const setStudentMode = (mode: 'signin' | 'signup' | 'forgot') => {
+    setStudentAuthMode(mode);
+    setAuthError('');
+    setAuthInfo('');
+    if (mode !== 'forgot') {
+      setForgotResetDraft({ token: '', newPassword: '', confirmNewPassword: '' });
+    }
   };
 
   // Authorized admin users with their display names
@@ -534,46 +695,350 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
 
                 {selectedSchool && (
                   <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="institutionCode" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">
-                          {institutionType === 'school' ? t('login.schoolCode') : t('login.collegeCode')}
-                        </Label>
-                        <Input
-                          id="institutionCode"
-                          value={formData.schoolCode}
-                          disabled
-                          className="bg-gray-50 border-gray-200 text-gray-600 h-10 sm:h-11 text-sm sm:text-base"
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="age" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">{t('login.age')}</Label>
-                        <Input
-                          id="age"
-                          type="number"
-                          placeholder={t('login.enterAge')}
-                          min={institutionType === 'school' ? '10' : '17'}
-                          max={institutionType === 'school' ? '18' : '30'}
-                          value={formData.age}
-                          onChange={(e) => handleChange('age', e.target.value)}
-                          required
-                          className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-10 sm:h-11 text-sm sm:text-base"
-                        />
-                      </div>
+                    <div className="grid grid-cols-3 gap-2 rounded-lg bg-gray-100 p-1">
+                      <button
+                        type="button"
+                        onClick={() => setStudentMode('signin')}
+                        className={`rounded-md px-3 py-2 text-xs sm:text-sm font-medium transition-colors ${
+                          studentAuthMode === 'signin' ? 'bg-white text-indigo-700 shadow-sm' : 'text-gray-600 hover:text-gray-800'
+                        }`}
+                      >
+                        Sign In
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setStudentMode('signup')}
+                        disabled={institutionType !== 'college'}
+                        className={`rounded-md px-3 py-2 text-xs sm:text-sm font-medium transition-colors ${
+                          studentAuthMode === 'signup'
+                            ? 'bg-white text-indigo-700 shadow-sm'
+                            : 'text-gray-600 hover:text-gray-800 disabled:text-gray-400 disabled:cursor-not-allowed'
+                        }`}
+                      >
+                        Sign Up
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setStudentMode('forgot')}
+                        className={`rounded-md px-3 py-2 text-xs sm:text-sm font-medium transition-colors ${
+                          studentAuthMode === 'forgot' ? 'bg-white text-indigo-700 shadow-sm' : 'text-gray-600 hover:text-gray-800'
+                        }`}
+                      >
+                        Forgot
+                      </button>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="studentName" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">{t('login.fullName')}</Label>
-                      <Input
-                        id="studentName"
-                        placeholder={t('login.enterName')}
-                        value={formData.studentName}
-                        onChange={(e) => handleChange('studentName', e.target.value)}
-                        required
-                        className="bg-white/80 border-gray-200 focus:border-orange-400 focus:ring-orange-400/20 h-10 sm:h-11 text-sm sm:text-base"
-                      />
-                    </div>
+                    {institutionType !== 'college' && studentAuthMode === 'signin' && (
+                      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700">
+                        New account creation is available only for college institutions.
+                      </div>
+                    )}
+
+                    {studentAuthMode === 'signin' && (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="institutionCodeSignin" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">
+                            {institutionType === 'school' ? t('login.schoolCode') : t('login.collegeCode')}
+                          </Label>
+                          <Input
+                            id="institutionCodeSignin"
+                            value={formData.schoolCode}
+                            disabled
+                            className="bg-gray-50 border-gray-200 text-gray-600 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="studentEmailSignin" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Email</Label>
+                          <Input
+                            id="studentEmailSignin"
+                            type="email"
+                            placeholder="Enter your college email"
+                            value={studentCredentials.email}
+                            onChange={(e) => handleStudentCredentialsChange('email', e.target.value)}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="studentPasswordSignin" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Password</Label>
+                          <div className="relative">
+                            <Input
+                              id="studentPasswordSignin"
+                              type={showStudentPassword ? 'text' : 'password'}
+                              placeholder="Enter your password"
+                              value={studentCredentials.password}
+                              onChange={(e) => handleStudentCredentialsChange('password', e.target.value)}
+                              required
+                              className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-10 sm:h-11 text-sm sm:text-base pr-10"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowStudentPassword(!showStudentPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showStudentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {studentAuthMode === 'signup' && (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="institutionCodeSignup" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">
+                              {institutionType === 'school' ? t('login.schoolCode') : t('login.collegeCode')}
+                            </Label>
+                            <Input
+                              id="institutionCodeSignup"
+                              value={formData.schoolCode}
+                              disabled
+                              className="bg-gray-50 border-gray-200 text-gray-600 h-10 sm:h-11 text-sm sm:text-base"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="ageSignup" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">{t('login.age')}</Label>
+                            <Input
+                              id="ageSignup"
+                              type="number"
+                              placeholder={t('login.enterAge')}
+                              min={institutionType === 'school' ? '10' : '17'}
+                              max={institutionType === 'school' ? '18' : '30'}
+                              value={formData.age}
+                              onChange={(e) => handleChange('age', e.target.value)}
+                              required
+                              className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="studentNameSignup" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">{t('login.fullName')}</Label>
+                          <Input
+                            id="studentNameSignup"
+                            placeholder={t('login.enterName')}
+                            value={formData.studentName}
+                            onChange={(e) => handleChange('studentName', e.target.value)}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-orange-400 focus:ring-orange-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="studentEmailSignup" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">College Email</Label>
+                          <Input
+                            id="studentEmailSignup"
+                            type="email"
+                            placeholder="name@your-college-domain"
+                            value={signupDraft.email}
+                            onChange={(e) => handleSignupDraftChange('email', e.target.value)}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="idCardNumberSignup" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">ID Card Number</Label>
+                          <Input
+                            id="idCardNumberSignup"
+                            placeholder="Enter your institution ID card number"
+                            value={signupDraft.idCardNumber}
+                            onChange={(e) => handleSignupDraftChange('idCardNumber', e.target.value)}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {studentAuthMode === 'forgot' && (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="studentEmailForgot" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Email</Label>
+                          <Input
+                            id="studentEmailForgot"
+                            type="email"
+                            placeholder="Enter your registered email"
+                            value={studentCredentials.email}
+                            onChange={(e) => handleStudentCredentialsChange('email', e.target.value)}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="studentIdCardForgot" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">ID Card Number</Label>
+                          <Input
+                            id="studentIdCardForgot"
+                            type="text"
+                            placeholder="Enter your registered ID card number"
+                            value={idCardForgot}
+                            onChange={(e) => {
+                              setIdCardForgot(e.target.value);
+                              setAuthError('');
+                              setAuthInfo('');
+                            }}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {studentAuthMode === 'forgotVerification' && (
+                      <div className="space-y-4">
+                        <div className="rounded-lg border border-indigo-200 bg-indigo-50 p-3 text-sm text-indigo-700">
+                          Enter the reset token sent to your email, then set a new password.
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="forgotVerificationEmail" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Email</Label>
+                          <Input
+                            id="forgotVerificationEmail"
+                            value={studentCredentials.email}
+                            disabled
+                            className="bg-gray-50 border-gray-200 text-gray-600 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="forgotVerificationToken" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Verification Token</Label>
+                          <Input
+                            id="forgotVerificationToken"
+                            placeholder="Paste your reset verification token"
+                            value={forgotResetDraft.token}
+                            onChange={(e) => {
+                              setForgotResetDraft((prev) => ({ ...prev, token: e.target.value }));
+                              setAuthError('');
+                              setAuthInfo('');
+                            }}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="forgotNewPassword" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">New Password</Label>
+                          <div className="relative">
+                            <Input
+                              id="forgotNewPassword"
+                              type={showStudentPassword ? 'text' : 'password'}
+                              placeholder="Create a strong password"
+                              value={forgotResetDraft.newPassword}
+                              onChange={(e) => {
+                                setForgotResetDraft((prev) => ({ ...prev, newPassword: e.target.value }));
+                                setAuthError('');
+                                setAuthInfo('');
+                              }}
+                              required
+                              className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-10 sm:h-11 text-sm sm:text-base pr-10"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowStudentPassword(!showStudentPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showStudentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="forgotConfirmNewPassword" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Confirm New Password</Label>
+                          <Input
+                            id="forgotConfirmNewPassword"
+                            type={showStudentPassword ? 'text' : 'password'}
+                            placeholder="Re-enter your new password"
+                            value={forgotResetDraft.confirmNewPassword}
+                            onChange={(e) => {
+                              setForgotResetDraft((prev) => ({ ...prev, confirmNewPassword: e.target.value }));
+                              setAuthError('');
+                              setAuthInfo('');
+                            }}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {studentAuthMode === 'verification' && (
+                      <div className="space-y-4">
+                        <div className="rounded-lg border border-indigo-200 bg-indigo-50 p-3 text-sm text-indigo-700">
+                          Verify your email and set your account password to complete signup.
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="verificationEmail" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Email</Label>
+                          <Input
+                            id="verificationEmail"
+                            value={signupDraft.email}
+                            disabled
+                            className="bg-gray-50 border-gray-200 text-gray-600 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="verificationToken" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Verification Token</Label>
+                          <Input
+                            id="verificationToken"
+                            placeholder="Paste your verification token"
+                            value={signupDraft.verificationToken}
+                            onChange={(e) => handleSignupDraftChange('verificationToken', e.target.value)}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="newPassword" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">New Password</Label>
+                          <div className="relative">
+                            <Input
+                              id="newPassword"
+                              type={showStudentPassword ? 'text' : 'password'}
+                              placeholder="Create a strong password"
+                              value={signupDraft.newPassword}
+                              onChange={(e) => handleSignupDraftChange('newPassword', e.target.value)}
+                              required
+                              className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-10 sm:h-11 text-sm sm:text-base pr-10"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowStudentPassword(!showStudentPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showStudentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="confirmNewPassword" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Confirm New Password</Label>
+                          <Input
+                            id="confirmNewPassword"
+                            type={showStudentPassword ? 'text' : 'password'}
+                            placeholder="Re-enter your password"
+                            value={signupDraft.confirmNewPassword}
+                            onChange={(e) => handleSignupDraftChange('confirmNewPassword', e.target.value)}
+                            required
+                            className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-10 sm:h-11 text-sm sm:text-base"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {authError && (
+                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-sm text-red-600 wrap-break-word">{authError}</p>
+                      </div>
+                    )}
+
+                    {authInfo && (
+                      <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                        <p className="text-sm text-emerald-700 wrap-break-word">{authInfo}</p>
+                      </div>
+                    )}
 
                     <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
                       <Button
@@ -587,13 +1052,26 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                       </Button>
                       <Button
                         type="submit"
+                        disabled={authLoading}
                         className="w-full sm:flex-1 h-10 sm:h-12 bg-linear-to-r from-orange-500 via-emerald-500 to-indigo-600 hover:from-orange-600 hover:via-emerald-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group text-sm sm:text-base"
                       >
                         <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                         <div className="absolute inset-0 bg-linear-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         <span className="relative z-10 flex items-center justify-center space-x-2">
                           <Shield className="w-4 h-4 shrink-0" />
-                          <span className="wrap-break-word">{t('login.startTraining')}</span>
+                          <span className="wrap-break-word">
+                            {authLoading
+                              ? 'Please wait...'
+                              : studentAuthMode === 'signup'
+                              ? 'Request Verification'
+                              : studentAuthMode === 'forgotVerification'
+                              ? 'Reset Password'
+                              : studentAuthMode === 'forgot'
+                              ? 'Send Reset Link'
+                              : studentAuthMode === 'verification'
+                              ? 'Verify & Create Account'
+                              : 'Sign In & Continue'}
+                          </span>
                         </span>
                       </Button>
                     </div>

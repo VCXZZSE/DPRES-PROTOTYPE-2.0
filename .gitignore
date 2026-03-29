@@ -35,3 +35,14 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 .vercel
+
+# Backend safety (nested FastAPI project)
+dpres-backend/.env
+dpres-backend/.env.*
+!dpres-backend/.env.example
+dpres-backend/venv/
+dpres-backend/__pycache__/
+dpres-backend/.pytest_cache/
+dpres-backend/.mypy_cache/
+dpres-backend/*.db
+dpres-backend/*.sqlite
