@@ -199,9 +199,6 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
       }
 
       if (studentAuthMode === 'signup') {
-        if (institutionType !== 'college') {
-          throw new Error('Account creation is currently restricted to college institutions.');
-        }
         if (!formData.studentName.trim()) {
           throw new Error('Full name is required for sign up.');
         }
@@ -709,11 +706,10 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                       <button
                         type="button"
                         onClick={() => setStudentMode('signup')}
-                        disabled={institutionType !== 'college'}
                         className={`rounded-md px-3 py-2 text-xs sm:text-sm font-medium transition-colors ${
                           studentAuthMode === 'signup'
                             ? 'bg-white text-indigo-700 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-800 disabled:text-gray-400 disabled:cursor-not-allowed'
+                            : 'text-gray-600 hover:text-gray-800'
                         }`}
                       >
                         Sign Up
@@ -729,12 +725,6 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                       </button>
                     </div>
 
-                    {institutionType !== 'college' && studentAuthMode === 'signin' && (
-                      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700">
-                        New account creation is available only for college institutions.
-                      </div>
-                    )}
-
                     {studentAuthMode === 'signin' && (
                       <div className="space-y-4">
                         <div className="space-y-2">
@@ -749,11 +739,13 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="studentEmailSignin" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Email</Label>
+                          <Label htmlFor="studentEmailSignin" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">
+                            {institutionType === 'school' ? 'School Email' : 'College Email'}
+                          </Label>
                           <Input
                             id="studentEmailSignin"
                             type="email"
-                            placeholder="Enter your college email"
+                            placeholder={institutionType === 'school' ? 'Enter your school email' : 'Enter your college email'}
                             value={studentCredentials.email}
                             onChange={(e) => handleStudentCredentialsChange('email', e.target.value)}
                             required
@@ -827,11 +819,13 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="studentEmailSignup" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">College Email</Label>
+                          <Label htmlFor="studentEmailSignup" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">
+                            {institutionType === 'school' ? 'School Email' : 'College Email'}
+                          </Label>
                           <Input
                             id="studentEmailSignup"
                             type="email"
-                            placeholder="name@your-college-domain"
+                            placeholder={institutionType === 'school' ? 'name@your-school-domain' : 'name@your-college-domain'}
                             value={signupDraft.email}
                             onChange={(e) => handleSignupDraftChange('email', e.target.value)}
                             required
