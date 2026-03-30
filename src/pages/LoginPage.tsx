@@ -67,7 +67,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
   const [adminError, setAdminError] = useState('');
   const [adminLoading, setAdminLoading] = useState(false);
   const [studentAuthMode, setStudentAuthMode] = useState<StudentAuthMode>('signin');
-  const [studentCredentials, setStudentCredentials] = useState({ email: '', password: '' });
+  const [signInDraft, setSignInDraft] = useState({ email: '', password: '' });
+  const [forgotDraft, setForgotDraft] = useState({ email: '', idCardNumber: '' });
   const [signupDraft, setSignupDraft] = useState({
     email: '',
     idCardNumber: '',
@@ -78,7 +79,6 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState('');
   const [authInfo, setAuthInfo] = useState('');
-  const [idCardForgot, setIdCardForgot] = useState('');
   const [forgotResetDraft, setForgotResetDraft] = useState({
     token: '',
     newPassword: '',
@@ -126,6 +126,15 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
     const institutions = getInstitutions();
     const institution = institutions.find(s => s.id === institutionId);
     if (institution) {
+      if (selectedSchool && selectedSchool !== institutionId) {
+        setSignInDraft({ email: '', password: '' });
+        setForgotDraft({ email: '', idCardNumber: '' });
+        setSignupDraft({ email: '', idCardNumber: '', verificationToken: '', newPassword: '', confirmNewPassword: '' });
+        setForgotResetDraft({ token: '', newPassword: '', confirmNewPassword: '' });
+        setStudentAuthMode('signin');
+        setAuthError('');
+        setAuthInfo('');
+      }
       setSelectedSchool(institutionId);
       setFormData(prev => ({
         ...prev,
@@ -161,16 +170,16 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
 
     try {
       if (studentAuthMode === 'signin') {
-        const email = studentCredentials.email.trim().toLowerCase();
-        if (!email || !studentCredentials.password) {
+        const email = signInDraft.email.trim().toLowerCase();
+        if (!email || !signInDraft.password) {
           throw new Error('Email and password are required.');
         }
-        await loginAndContinue(email, studentCredentials.password);
+        await loginAndContinue(email, signInDraft.password);
       }
 
       if (studentAuthMode === 'forgot') {
-        const email = studentCredentials.email.trim().toLowerCase();
-        const idCardNumber = idCardForgot.trim();
+        const email = forgotDraft.email.trim().toLowerCase();
+        const idCardNumber = forgotDraft.idCardNumber.trim();
         if (!email) {
           throw new Error('Email is required.');
         }
@@ -183,7 +192,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
       }
 
       if (studentAuthMode === 'forgotVerification') {
-        const email = studentCredentials.email.trim().toLowerCase();
+        const email = forgotDraft.email.trim().toLowerCase();
         if (!forgotResetDraft.token.trim()) {
           throw new Error('Verification token is required.');
         }
@@ -281,8 +290,14 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleStudentCredentialsChange = (field: 'email' | 'password', value: string) => {
-    setStudentCredentials(prev => ({ ...prev, [field]: value }));
+  const handleSignInDraftChange = (field: 'email' | 'password', value: string) => {
+    setSignInDraft(prev => ({ ...prev, [field]: value }));
+    setAuthError('');
+    setAuthInfo('');
+  };
+
+  const handleForgotDraftChange = (field: 'email' | 'idCardNumber', value: string) => {
+    setForgotDraft(prev => ({ ...prev, [field]: value }));
     setAuthError('');
     setAuthInfo('');
   };
@@ -300,6 +315,9 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
     setStudentAuthMode(mode);
     setAuthError('');
     setAuthInfo('');
+    if (mode !== 'forgot' && mode !== 'signin') {
+      setSignInDraft((prev) => ({ ...prev, password: '' }));
+    }
     if (mode !== 'forgot') {
       setForgotResetDraft({ token: '', newPassword: '', confirmNewPassword: '' });
     }
@@ -595,7 +613,19 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                 
                 <div className="space-y-3">
                   <button
-                    onClick={() => setInstitutionType('school')}
+                    onClick={() => {
+                      if (institutionType !== 'school') {
+                        setInstitutionType('school');
+                        setSelectedSchool('');
+                        setStudentAuthMode('signin');
+                        setSignInDraft({ email: '', password: '' });
+                        setForgotDraft({ email: '', idCardNumber: '' });
+                        setSignupDraft({ email: '', idCardNumber: '', verificationToken: '', newPassword: '', confirmNewPassword: '' });
+                        setForgotResetDraft({ token: '', newPassword: '', confirmNewPassword: '' });
+                        setAuthError('');
+                        setAuthInfo('');
+                      }
+                    }}
                     className={`w-full p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 text-left ${
                       institutionType === 'school'
                         ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
@@ -612,7 +642,19 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                   </button>
                   
                   <button
-                    onClick={() => setInstitutionType('college')}
+                    onClick={() => {
+                      if (institutionType !== 'college') {
+                        setInstitutionType('college');
+                        setSelectedSchool('');
+                        setStudentAuthMode('signin');
+                        setSignInDraft({ email: '', password: '' });
+                        setForgotDraft({ email: '', idCardNumber: '' });
+                        setSignupDraft({ email: '', idCardNumber: '', verificationToken: '', newPassword: '', confirmNewPassword: '' });
+                        setForgotResetDraft({ token: '', newPassword: '', confirmNewPassword: '' });
+                        setAuthError('');
+                        setAuthInfo('');
+                      }
+                    }}
                     className={`w-full p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 text-left ${
                       institutionType === 'college'
                         ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
@@ -746,8 +788,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                             id="studentEmailSignin"
                             type="email"
                             placeholder={institutionType === 'school' ? 'Enter your school email' : 'Enter your college email'}
-                            value={studentCredentials.email}
-                            onChange={(e) => handleStudentCredentialsChange('email', e.target.value)}
+                            value={signInDraft.email}
+                            onChange={(e) => handleSignInDraftChange('email', e.target.value)}
                             required
                             className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
                           />
@@ -759,8 +801,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                               id="studentPasswordSignin"
                               type={showStudentPassword ? 'text' : 'password'}
                               placeholder="Enter your password"
-                              value={studentCredentials.password}
-                              onChange={(e) => handleStudentCredentialsChange('password', e.target.value)}
+                              value={signInDraft.password}
+                              onChange={(e) => handleSignInDraftChange('password', e.target.value)}
                               required
                               className="bg-white/80 border-gray-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-10 sm:h-11 text-sm sm:text-base pr-10"
                             />
@@ -855,8 +897,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                             id="studentEmailForgot"
                             type="email"
                             placeholder="Enter your registered email"
-                            value={studentCredentials.email}
-                            onChange={(e) => handleStudentCredentialsChange('email', e.target.value)}
+                            value={forgotDraft.email}
+                            onChange={(e) => handleForgotDraftChange('email', e.target.value)}
                             required
                             className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
                           />
@@ -868,12 +910,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                             id="studentIdCardForgot"
                             type="text"
                             placeholder="Enter your registered ID card number"
-                            value={idCardForgot}
-                            onChange={(e) => {
-                              setIdCardForgot(e.target.value);
-                              setAuthError('');
-                              setAuthInfo('');
-                            }}
+                            value={forgotDraft.idCardNumber}
+                            onChange={(e) => handleForgotDraftChange('idCardNumber', e.target.value)}
                             required
                             className="bg-white/80 border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20 h-10 sm:h-11 text-sm sm:text-base"
                           />
@@ -891,7 +929,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
                           <Label htmlFor="forgotVerificationEmail" className="text-gray-700 font-medium text-sm sm:text-base wrap-break-word">Email</Label>
                           <Input
                             id="forgotVerificationEmail"
-                            value={studentCredentials.email}
+                            value={forgotDraft.email}
                             disabled
                             className="bg-gray-50 border-gray-200 text-gray-600 h-10 sm:h-11 text-sm sm:text-base"
                           />
