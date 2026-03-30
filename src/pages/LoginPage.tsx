@@ -1160,7 +1160,7 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
 
       {/* Institution Admin Flow */}
       {showInstitutionAdminFlow && (
-        <div className="fixed inset-0 z-50 bg-linear-to-br from-blue-50 via-white to-purple-50">
+        <div className="fixed inset-0 z-50 bg-linear-to-br from-blue-50 via-white to-purple-50 overflow-y-auto">
           <InstitutionAdminLogin
             onLogin={onInstitutionAdminLogin}
             onBack={() => setShowInstitutionAdminFlow(false)}

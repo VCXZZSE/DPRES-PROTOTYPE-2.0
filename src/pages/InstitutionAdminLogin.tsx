@@ -115,7 +115,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-y-auto">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -136,13 +136,13 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
         />
       </div>
 
-      <div className="relative min-h-screen flex flex-col items-center justify-center p-4">
+      <div className="relative min-h-screen flex flex-col items-center justify-start lg:justify-center p-4 py-6">
         {/* Logo & Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8"
+          className="text-center mb-5"
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -179,7 +179,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
               transition={{ duration: 0.4 }}
               className="w-full max-w-4xl"
             >
-              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-2xl p-6">
+              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-2xl p-6 max-h-[calc(100vh-3rem)] overflow-y-auto">
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-slate-900 mb-2">Select Institution Type</h2>
                   <p className="text-sm text-slate-600">Choose your institution category to continue</p>
@@ -280,7 +280,7 @@ export function InstitutionAdminLogin({ onLogin, onBack }: InstitutionAdminLogin
               transition={{ duration: 0.4 }}
               className="w-full max-w-md"
             >
-              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-2xl p-6">
+              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-2xl p-6 max-h-[calc(100vh-3rem)] overflow-y-auto">
                 {/* Selected Institution Banner */}
                 <div className="mb-6 p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
                   <div className="flex items-center gap-3">
