@@ -30,6 +30,8 @@ from app.schemas import (
     SignupInitiateResponse,
     RegisterResponse,
     ResetPasswordRequest,
+    SdmaAdminLoginRequest,
+    SdmaAdminLoginResponse,
     StudentLogin,
     StudentRegister,
     Token,
@@ -47,6 +49,22 @@ def _normalize_email(email: str) -> str:
 
 def _normalize_name(full_name: str) -> str:
     return ' '.join(full_name.strip().split())
+
+
+def _validate_institution_email_domain(email: str, institution: Institution) -> None:
+    if institution.institution_type != 'college':
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='Account creation is restricted to college email domains only',
+        )
+
+    email_domain = extract_email_domain(email)
+    allowed_domains = [domain.lower().strip() for domain in (institution.allowed_domains or [])]
+    if email_domain not in allowed_domains:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='Email domain is not allowed for this institution',
+        )
 
 
 def _get_current_user(
@@ -72,6 +90,12 @@ def _get_current_user(
     return user
 
 
+def get_current_sdma_admin(current_user: User = Depends(_get_current_user)) -> User:
+    if current_user.role != UserRole.SDMA_ADMIN:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='SDMA admin access required')
+    return current_user
+
+
 @router.get('/ping')
 def ping_auth() -> dict[str, str]:
     return {'status': 'auth-router-ready'}
@@ -89,19 +113,7 @@ def register_student(payload: StudentRegister, db: Session = Depends(get_db)) ->
     if not institution:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Institution not found')
 
-    if institution.institution_type != 'college':
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Account creation is restricted to college email domains only',
-        )
-
-    email_domain = extract_email_domain(email)
-    allowed_domains = [domain.lower().strip() for domain in (institution.allowed_domains or [])]
-    if email_domain not in allowed_domains:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Email domain is not allowed for this institution',
-        )
+    _validate_institution_email_domain(email, institution)
 
     user = User(
         email=email,
@@ -127,6 +139,8 @@ def signup_initiate(payload: SignupInitiateRequest, db: Session = Depends(get_db
     institution = db.get(Institution, payload.institution_id)
     if not institution:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Institution not found')
+
+    _validate_institution_email_domain(email, institution)
 
     existing_user = db.scalar(select(User).where(User.email == email))
     if existing_user:
@@ -209,6 +223,12 @@ def complete_signup(payload: CompleteSignupRequest, db: Session = Depends(get_db
     if verification.email_verified_at is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Email must be verified before signup completion')
 
+    institution = db.get(Institution, verification.institution_id)
+    if not institution:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Institution not found')
+
+    _validate_institution_email_domain(verification.email, institution)
+
     existing_user = db.scalar(select(User).where(User.email == verification.email))
     if existing_user:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Account already exists')
@@ -277,6 +297,26 @@ def login_student(payload: StudentLogin, db: Session = Depends(get_db)) -> Token
 
     access_token = create_access_token(subject=str(user.id))
     return Token(access_token=access_token)
+
+
+@router.post('/login-sdma-admin', response_model=SdmaAdminLoginResponse)
+def login_sdma_admin(payload: SdmaAdminLoginRequest, db: Session = Depends(get_db)) -> SdmaAdminLoginResponse:
+    email = _normalize_email(payload.email)
+
+    user = db.scalar(select(User).where(and_(User.email == email, User.role == UserRole.SDMA_ADMIN)))
+    if not user or not verify_password(payload.password, user.password_hash):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid email or password')
+
+    if not user.is_active:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Account is inactive')
+
+    access_token = create_access_token(subject=str(user.id))
+
+    return SdmaAdminLoginResponse(
+        access_token=access_token,
+        email=user.email,
+        display_name=user.full_name or 'SDMA Admin',
+    )
 
 
 @router.post('/forgot-password', response_model=ForgotPasswordResponse)
@@ -411,4 +451,16 @@ def me(current_user: User = Depends(_get_current_user)) -> UserOut:
         role=current_user.role.value,
         institution_id=current_user.institution_id,
         email_verified_at=current_user.email_verified_at,
+    )
+
+
+@router.get('/me-sdma-admin', response_model=UserOut)
+def me_sdma_admin(current_admin: User = Depends(get_current_sdma_admin)) -> UserOut:
+    return UserOut(
+        id=current_admin.id,
+        email=current_admin.email,
+        full_name=current_admin.full_name,
+        role=current_admin.role.value,
+        institution_id=current_admin.institution_id,
+        email_verified_at=current_admin.email_verified_at,
     )
