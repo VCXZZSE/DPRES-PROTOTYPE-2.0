@@ -165,6 +165,11 @@ function AppContent() {
 
   React.useEffect(() => {
     let isMounted = true;
+    const startupGuard = window.setTimeout(() => {
+      if (isMounted) {
+        setIsAuthChecking(false);
+      }
+    }, 7000);
 
     const restoreSession = async () => {
       const currentPath = window.location.pathname;
@@ -241,6 +246,7 @@ function AppContent() {
 
     return () => {
       isMounted = false;
+      window.clearTimeout(startupGuard);
     };
   }, []);
 
