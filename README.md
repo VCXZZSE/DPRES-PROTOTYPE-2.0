@@ -8,10 +8,10 @@
 ## 🖼️ **Preview**
 
 ### **SDMA Command Center — Live Interactive Map**
-
+<img width="666" height="375" alt="gg-removebg-preview" src="https://github.com/user-attachments/assets/9d253755-ea30-4f42-bb73-dbd167af707c" />
 
 ### **Student Portal — Live SOS Integration**
-
+<img width="1280" height="720" alt="HUSN-Photoroom" src="https://github.com/user-attachments/assets/5813a86e-4c0b-475b-ab5f-c160fa7172e6" />
 
 ---
 
