@@ -28,6 +28,8 @@ import {
   SelectValue,
 } from "./ui/select";
 import { useLanguage } from './LanguageContext';
+import { useAlerts } from './shared/AlertContext';
+import { triggerStudentSosAlert } from './shared/studentSos';
 
 interface UserData {
   schoolName: string;
@@ -54,7 +56,9 @@ export function Navigation({ userData, onLogout, isFirstLogin = false }: Navigat
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sosConfirmed, setSosConfirmed] = useState(false);
+  const [sosError, setSosError] = useState<string | null>(null);
   const { language, setLanguage, t } = useLanguage();
+  const { addAlert } = useAlerts();
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -95,10 +99,24 @@ export function Navigation({ userData, onLogout, isFirstLogin = false }: Navigat
     { value: 'ur', label: 'Urdu', native: 'اردو' }
   ];
 
-  const handleSosConfirm = () => {
-    setSosConfirmed(true);
-    // Reset after 3 seconds
-    setTimeout(() => setSosConfirmed(false), 3000);
+  const handleSosConfirm = async () => {
+    try {
+      await triggerStudentSosAlert({
+        userData,
+        addAlert,
+        source: 'Header',
+      });
+
+      setSosError(null);
+      setSosConfirmed(true);
+      // Reset after 3 seconds
+      setTimeout(() => setSosConfirmed(false), 3000);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to send SOS right now. Please retry.';
+      setSosConfirmed(false);
+      setSosError(message);
+      setTimeout(() => setSosError(null), 4500);
+    }
   };
 
   return (
@@ -110,6 +128,17 @@ export function Navigation({ userData, onLogout, isFirstLogin = false }: Navigat
             <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
             <AlertDescription className="text-green-800 dark:text-green-200 font-medium">
               ✅ {t('dashboard.sos.success')}
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+
+      {sosError && (
+        <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-top-2 duration-300">
+          <Alert className="border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 shadow-lg">
+            <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
+            <AlertDescription className="text-red-800 dark:text-red-200 font-medium">
+              {sosError}
             </AlertDescription>
           </Alert>
         </div>

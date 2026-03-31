@@ -6,7 +6,7 @@ import { useLanguage } from '../LanguageContext';
 
 interface EmergencySOSProps {
   children: React.ReactNode;
-  onConfirm: () => void;
+  onConfirm: () => void | Promise<void>;
   variant?: 'navigation' | 'dashboard';
 }
 
@@ -16,6 +16,12 @@ export function EmergencySOS({ children, onConfirm, variant = 'navigation' }: Em
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [countdown, setCountdown] = useState(5);
   const [isCountingDown, setIsCountingDown] = useState(false);
+
+  const executeConfirm = () => {
+    Promise.resolve(onConfirm()).catch(() => {
+      // Error handling is managed by the caller so the modal flow can stay reusable.
+    });
+  };
 
   // Countdown effect
   useEffect(() => {
@@ -29,7 +35,7 @@ export function EmergencySOS({ children, onConfirm, variant = 'navigation' }: Em
             setShowModal(false);
             setCountdown(5);
             // Trigger the actual submission
-            onConfirm();
+            executeConfirm();
             return 5;
           }
           return prev - 1;
@@ -62,7 +68,7 @@ export function EmergencySOS({ children, onConfirm, variant = 'navigation' }: Em
     setShowConfirmDialog(false);
     setShowModal(false);
     setCountdown(5);
-    onConfirm();
+    executeConfirm();
   };
 
   return (

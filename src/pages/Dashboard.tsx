@@ -33,6 +33,7 @@ import {
 import { useLanguage } from '../components/LanguageContext';
 import { useAlerts } from '../components/shared/AlertContext';
 import { getInstitutionById } from '../components/shared/institutionsData';
+import { triggerStudentSosAlert } from '../components/shared/studentSos';
 
 interface DashboardProps {
   userData?: {
@@ -81,6 +82,7 @@ export function Dashboard({ userData }: DashboardProps) {
   const [contactsSheetOpen, setContactsSheetOpen] = useState(false);
   const [incidentModalOpen, setIncidentModalOpen] = useState(false);
   const [sosConfirmed, setSosConfirmed] = useState(false);
+  const [sosError, setSosError] = useState<string | null>(null);
   const [incidentSubmitted, setIncidentSubmitted] = useState(false);
 
   // Incident form state
@@ -98,30 +100,23 @@ export function Dashboard({ userData }: DashboardProps) {
     { name: t('dashboard.emergencyContacts.disaster'), number: '1070', icon: '🌊' }
   ];
 
-  const handleSosConfirm = () => {
-    // Find the institution details
-    const institution = getInstitutionById(userData?.schoolCode || '');
-    
-    if (institution && userData) {
-      // Add real SOS alert to AlertContext
-      addAlert({
-        institution: institution.name,
-        institutionId: institution.id,
-        district: institution.district,
-        state: institution.state,
-        studentName: userData.studentName,
-        type: 'General Emergency',
-        status: 'active',
-        location: 'Student Dashboard',
-        severity: 'high',
-        description: `Emergency SOS alert triggered by student ${userData.studentName}`,
-        coordinates: institution.coordinates
+  const handleSosConfirm = async () => {
+    try {
+      await triggerStudentSosAlert({
+        userData,
+        addAlert,
+        source: 'Dashboard',
       });
+      setSosError(null);
+      setSosConfirmed(true);
+      // Reset after 3 seconds
+      setTimeout(() => setSosConfirmed(false), 3000);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to send SOS right now. Please retry.';
+      setSosConfirmed(false);
+      setSosError(message);
+      setTimeout(() => setSosError(null), 4500);
     }
-    
-    setSosConfirmed(true);
-    // Reset after 3 seconds
-    setTimeout(() => setSosConfirmed(false), 3000);
   };
 
   const handleIncidentSubmit = (e: React.FormEvent) => {
@@ -236,6 +231,22 @@ export function Dashboard({ userData }: DashboardProps) {
               <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-500" />
               <AlertDescription className="text-green-800 dark:text-green-200">
                 {t('dashboard.sos.success')}
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
+
+        {sosError && (
+          <motion.div
+            className="mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <Alert className="border-red-500 bg-red-50 dark:bg-red-950/20">
+              <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-500" />
+              <AlertDescription className="text-red-800 dark:text-red-200">
+                {sosError}
               </AlertDescription>
             </Alert>
           </motion.div>

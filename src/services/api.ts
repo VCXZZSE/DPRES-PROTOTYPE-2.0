@@ -128,6 +128,19 @@ export interface MeResponse {
   email_verified_at: string | null;
 }
 
+export interface SOSTriggerPayload {
+  latitude: number;
+  longitude: number;
+  location_text?: string;
+  accuracy_meters?: number;
+}
+
+export interface SOSTriggerApiResponse {
+  message: string;
+  event_id: number;
+  created_at: string;
+}
+
 // ==================== Authentication Services ====================
 
 export const authService = {
@@ -276,6 +289,32 @@ export const emergencyService = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     }).then(res => res.json()),
+};
+
+export const sosService = {
+  trigger: async (payload: SOSTriggerPayload, token?: string): Promise<SOSTriggerApiResponse> => {
+    const accessToken = token || authService.getToken() || '';
+    if (!accessToken) {
+      throw new ApiError('Authentication required before sending SOS', 401);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/sos/trigger`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await parseJsonResponse<ApiErrorPayload & SOSTriggerApiResponse>(response);
+    if (!response.ok) {
+      const errorMessage = data?.detail || data?.message || 'Failed to send SOS';
+      throw new ApiError(errorMessage, response.status);
+    }
+
+    return data as SOSTriggerApiResponse;
+  },
 };
 
 // ==================== Learning Module Services ====================
