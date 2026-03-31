@@ -1,48 +1,79 @@
+[![CI](https://github.com/VCXZZSE/DPRES-PROTOTYPE/actions/workflows/ci.yml/badge.svg?branch=version-4-test)](https://github.com/VCXZZSE/DPRES-PROTOTYPE/actions/workflows/ci.yml)
+# **DPRES — Version 4.0** (Prototype)
 
-  # Disaster Preparedness Platform Design
+## **Building Resilient Communities Through Education & Active Response**
+*The evolution from interactive UI to a fully functional, highly secure, full-stack emergency management system.*
 
-  This is the Disaster Preparedness Platform Design frontend project.
+---
 
-  ## Running the code
+## 🖼️ **Preview**
 
-  Run `npm i` to install the dependencies.
+### **SDMA Command Center — Live Interactive Map**
+*(Insert V4 Map Screenshot Here)*
+<img width="1440" height="810" alt="VERSION 4 0 MAP" src="https://via.placeholder.com/1440x810.png?text=SDMA+Live+Map+Screenshot" />
 
-  Run `npm run dev` to start the development server.
+### **Student Portal — Live SOS Integration**
+*(Insert V4 Student Dashboard Screenshot Here)*
+<img width="1440" height="810" alt="VERSION 4 0 DASHBOARD" src="https://via.placeholder.com/1440x810.png?text=Student+Dashboard+SOS+Screenshot" />
 
-  ## Safe GitHub Push (Secrets)
+---
 
-  Before pushing, keep secrets in local env files only:
+## 🚀 **Overview**
 
-  - Do not commit `.env` files.
-  - Do not commit private keys, certs, or local database files.
-  - Commit only `.env.example` with placeholder values.
+**DPRES 4.0** marks the transition of the Disaster Preparedness Response System from a visual prototype into a **production-ready, full-stack application**. 
 
-  Quick check:
+This version introduces a live React frontend paired with a powerful Python FastAPI backend and a Neon PostgreSQL database. The core focus of Phase 4 is the **Live Emergency SOS Pipeline**, featuring real-time browser geolocation, interactive command center mapping, automated email dispatch, and enterprise-grade security hardening.
 
-  ```bash
-  git ls-files | grep -E "(.env|.pem|.key|.p12|.sqlite|.db)$"
-  ```
+### 🎯 **Core Focus Areas**
+- **Live SOS Pipeline**: End-to-end emergency triggering using live GPS coordinates.
+- **Interactive Command Center**: Real-time Leaflet map for SDMA admins to track and resolve active distress signals.
+- **Role-Based Authentication**: Secure JWT infrastructure separating Students, Institution Admins, and SDMA Admins.
+- **Enterprise Security**: Hardened APIs, brute-force protection, and strict data validation.
 
-  ## Vercel Deployment (Frontend)
+---
 
-  This repo is Vite-based and ready for Vercel frontend deployment.
+## 🧩 **What's New in Version 4.0**
 
-  Required Vercel Environment Variables:
+### 🚨 **The Emergency Response Pipeline**
+- **Live Geolocation Tracking**: Student SOS buttons now capture real-time browser GPS coordinates upon a 5-second countdown.
+- **Automated Dispatch Engine**: Backend SMTP integration instantly sends "Help is on the way" acknowledgment emails to distressed students.
+- **Event Resolution Workflow**: SDMA Admins can mark emergencies as "Resolved," generating exact `resolved_at` timestamps for post-disaster auditing.
 
-  - `VITE_AUTH_API_URL` = `https://<your-backend-domain>/api/auth`
-  - `VITE_API_URL` = `https://<your-backend-domain>/api` (or keep default if not used)
+### 🗺️ **SDMA Interactive Map (Leaflet)**
+- **Live Marker Plotting**: Active SOS alerts appear dynamically as red markers on an interactive map of India.
+- **Contextual Details Panel**: Clicking a map marker reveals the student's name, ID, exact timestamp, and geographical coordinates.
+- **Real-Time UI Updates**: Resolving an alert immediately clears the marker from the active board.
 
-  Build settings are already configured via `vercel.json`:
+### 🔐 **Enterprise-Grade Security Architecture**
+- **Rate Limiting (`slowapi`)**: Strict limits (5 requests/minute) on all authentication endpoints to prevent brute-force attacks.
+- **Cryptographic Tokens**: Weak numeric codes replaced with 32-character URL-safe tokens for email verification and password resets.
+- **Strict Data Validation**: Pydantic schemas enforce exact geographical boundaries (Latitude -90 to 90, Longitude -180 to 180) to reject forged API payloads.
+- **Frontend Shielding**: Implementation of strict `vercel.json` headers (X-Frame-Options: DENY, HSTS, nosniff) to completely prevent clickjacking and MIME exploits.
+- **Hardened CORS Policy**: API strictly limits allowed methods and headers, removing wildcard vulnerabilities.
 
-  - Build Command: `npm run build`
-  - Output Directory: `dist`
+---
 
-  ## Backend Hosting Requirement
+## 🏗️ **Tech Stack**
 
-  The current backend is a standalone FastAPI service (`dpres-backend`) and should be deployed as a separate service (for example Render/Railway/Fly.io) unless you explicitly refactor it to Vercel serverless functions.
+**Frontend:** React (TypeScript), Vite, Tailwind CSS, React-Leaflet, Vercel
+**Backend:** Python 3, FastAPI, SQLAlchemy (ORM), Alembic, passlib/bcrypt, Render
+**Database:** PostgreSQL (Neon Serverless)
 
-  After backend deployment, set:
+---
 
-  - `FRONTEND_ORIGINS` in backend env to include your Vercel domain(s)
-  - `VITE_AUTH_API_URL` in Vercel frontend env to your backend URL
-  
+## ⚙️ **Getting Started** (Full-Stack Setup)
+
+DPRES 4.0 now requires both the frontend and backend servers to run locally.
+
+### 1. **Backend Setup (FastAPI)**
+```bash
+cd dpres-backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Run database migrations
+alembic upgrade head
+
+# Start the API server
+uvicorn app.main:app --reload
