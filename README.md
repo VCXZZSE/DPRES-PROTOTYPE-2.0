@@ -77,3 +77,82 @@ alembic upgrade head
 
 # Start the API server
 uvicorn app.main:app --reload
+```
+*Backend runs on `http://localhost:8000`*
+
+### 2. **Frontend Setup (React/Vite)**
+```bash
+# In the root frontend directory
+npm install
+
+# Start the development server
+npm run dev
+```
+*Frontend runs on `http://localhost:5173`*
+
+---
+
+## 📈 **Changelog**
+
+### **v4.0**
+- ✨ Full FastAPI backend and PostgreSQL database integration
+- 🚨 End-to-end Live SOS Geolocation trigger with automated email confirmation
+- 🗺️ SDMA Command Center Map using `react-leaflet`
+- 🛡️ Massive Security Audit Sweep (Rate limiting, CORS hardening, Vercel headers)
+- ⚙️ Alembic database migration pipeline established
+- 🔐 Secure JWT Role-Based Access Control implementation
+
+---
+
+## 💡 **Contribution Guidelines**
+
+1. **Fork the repository**
+2. **Create a new branch**
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+3. **Commit with clear messages**
+   ```bash
+   git commit -m "Added new map filtering module"
+   ```
+4. **Push & Create a Pull Request**
+
+**Please include:**
+- Before-and-after screenshots for UI changes.
+- Ensure backend changes include corresponding Alembic migrations if database models are altered.
+
+---
+
+## 📜 **License**
+
+**Copyright © 2026 Team Oryza. All Rights Reserved.**
+
+This project is a proprietary prototype developed for educational, research, and competition purposes.
+
+### **Permitted Uses:**
+- ✅ Viewing and evaluating the codebase for educational purposes
+- ✅ Academic reference and citation
+- ✅ Portfolio demonstration and showcase
+
+### **Restrictions:**
+- ❌ No commercial use without explicit written permission
+- ❌ No redistribution or reproduction
+- ❌ No modification or derivative works
+- ❌ No public deployment without authorization
+
+**For licensing inquiries or collaboration opportunities, contact:** repomerm23@gmail.com
+
+---
+
+## 📬 **Contact / Feedback**
+
+💬 **Issues & Feedback**: Open a GitHub issue with screenshots or logs.  
+🧑‍🎨 **Technical Queries**: repomerm23@gmail.com  
+📅 **Next Milestone**: Digital Compliance Certificates & Bulk SMS/IVR Command Center.
+
+---
+
+## 🧠 **"Preparedness isn't a feature — it's a mindset."**
+
+— Team Oryza
+```
