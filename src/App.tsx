@@ -284,6 +284,21 @@ function AppContent() {
                             <AdminDashboard
                               adminData={adminData}
                               onLogout={handleLogout}
+                              initialTab="overview"
+                            />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/sdma-dashboard/alerts"
+                        element={
+                          isMobile ? (
+                            <DesktopOnlyScreen onBack={handleAdminLogout} />
+                          ) : (
+                            <AdminDashboard
+                              adminData={adminData}
+                              onLogout={handleLogout}
+                              initialTab="sos"
                             />
                           )
                         }

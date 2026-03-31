@@ -32,6 +32,8 @@ import { AdminSettings } from '../components/admin/AdminSettings';
 import { CertificateManager } from '../components/features/CertificateManager';
 import { SMSIVRManager } from '../components/features/SMSIVRManager';
 import { CommunityOversight } from '../components/admin/CommunityOversight';
+import { SOSAlertsPage } from '../components/admin/SOSAlertsPage';
+import { useNavigate } from 'react-router-dom';
 
 interface AdminDashboardProps {
   adminData?: {
@@ -40,12 +42,33 @@ interface AdminDashboardProps {
     displayName?: string;
   } | null;
   onLogout: () => void;
+  initialTab?: string;
 }
 
-export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
-  const [activeTab, setActiveTab] = useState('overview');
+export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }: AdminDashboardProps) {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
+
+  const navigateToTab = useCallback(
+    (tab: string, mobile = false) => {
+      setActiveTab(tab);
+      if (mobile) {
+        setSidebarOpen(false);
+      }
+      if (tab === 'sos') {
+        navigate('/sdma-dashboard/alerts');
+      } else {
+        navigate('/sdma-dashboard');
+      }
+    },
+    [navigate],
+  );
 
   // Always use dark mode for admin portal
   useEffect(() => {
@@ -123,7 +146,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
   // Handler to go back to overview/home
   const handleGoHome = () => {
-    setActiveTab('overview');
+    navigateToTab('overview');
   };
 
   // Memoized navigation component for better performance
@@ -132,8 +155,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
       <div className="space-y-1.5">
         <button
           onClick={() => {
-            setActiveTab('overview');
-            mobile && setSidebarOpen(false);
+            navigateToTab('overview', mobile);
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 group ${
             activeTab === 'overview'
@@ -150,8 +172,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
         <button
           onClick={() => {
-            setActiveTab('institutions');
-            mobile && setSidebarOpen(false);
+            navigateToTab('institutions', mobile);
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'institutions'
@@ -168,8 +189,22 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
         <button
           onClick={() => {
-            setActiveTab('alerts');
-            mobile && setSidebarOpen(false);
+            navigateToTab('sos', mobile);
+          }}
+          className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
+            activeTab === 'sos'
+              ? 'bg-linear-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/20'
+              : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+          }`}
+        >
+          <Bell className="h-5 w-5 mr-3" />
+          <span className="font-semibold text-base">Live SOS</span>
+          <Badge className="ml-auto bg-red-500 text-white border-0 text-sm">0</Badge>
+        </button>
+
+        <button
+          onClick={() => {
+            navigateToTab('alerts', mobile);
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'alerts'
@@ -188,8 +223,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
         <button
           onClick={() => {
-            setActiveTab('communications');
-            mobile && setSidebarOpen(false);
+            navigateToTab('communications', mobile);
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'communications'
@@ -203,8 +237,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
         <button
           onClick={() => {
-            setActiveTab('community');
-            mobile && setSidebarOpen(false);
+            navigateToTab('community', mobile);
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'community'
@@ -218,8 +251,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
         <button
           onClick={() => {
-            setActiveTab('certificates');
-            mobile && setSidebarOpen(false);
+            navigateToTab('certificates', mobile);
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'certificates'
@@ -233,8 +265,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
         <button
           onClick={() => {
-            setActiveTab('reports');
-            mobile && setSidebarOpen(false);
+            navigateToTab('reports', mobile);
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'reports'
@@ -248,8 +279,7 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
         <button
           onClick={() => {
-            setActiveTab('settings');
-            mobile && setSidebarOpen(false);
+            navigateToTab('settings', mobile);
           }}
           className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-150 ${
             activeTab === 'settings'
@@ -423,6 +453,10 @@ export function AdminDashboard({ adminData, onLogout }: AdminDashboardProps) {
 
             <TabsContent value="alerts" className="space-y-4 lg:space-y-6">
               <EmergencyAlertsManager />
+            </TabsContent>
+
+            <TabsContent value="sos" className="space-y-4 lg:space-y-6">
+              <SOSAlertsPage />
             </TabsContent>
 
             <TabsContent value="reports">
