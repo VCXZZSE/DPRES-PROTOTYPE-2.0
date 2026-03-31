@@ -141,12 +141,24 @@ export async function triggerStudentSosAlert({ userData, addAlert, source }: Tri
 
   const resolvedLocation = await resolveSosLocation(institution?.coordinates);
 
-  await sosService.trigger({
-    latitude: resolvedLocation.latitude,
-    longitude: resolvedLocation.longitude,
-    location_text: resolvedLocation.locationText,
-    accuracy_meters: resolvedLocation.accuracyMeters,
-  });
+  try {
+    await sosService.trigger({
+      latitude: resolvedLocation.latitude,
+      longitude: resolvedLocation.longitude,
+      location_text: resolvedLocation.locationText,
+      accuracy_meters: resolvedLocation.accuracyMeters,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message.toLowerCase() : '';
+    const maybeStatus = (error as { status?: number } | null)?.status;
+    const alreadyActive = maybeStatus === 429 || message.includes('already sent recently');
+    if (!alreadyActive) {
+      throw error;
+    }
+
+    // SOS was already active; keep UI flow consistent across all SOS entry points.
+    return;
+  }
 
   addAlert({
     institution: institutionName,

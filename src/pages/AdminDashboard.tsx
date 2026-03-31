@@ -93,7 +93,7 @@ export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }:
   // Navigation handler for quick actions
   const handleNavigation = (section: string) => {
     const sectionMap: { [key: string]: string } = {
-      'emergency-alerts': 'alerts',
+      'emergency-alerts': 'sos',
       'sms-ivr': 'communications',
       'institutions': 'institutions',
       'reports': 'reports'
@@ -335,7 +335,7 @@ export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }:
       </div>
     );
     return NavButtons;
-  }, [activeTab, activeAlerts.length, allInstitutions.length]);
+  }, [activeTab, activeAlerts.length, allInstitutions.length, liveSosCount]);
 
   return (
     <div className="min-h-screen bg-slate-950">
