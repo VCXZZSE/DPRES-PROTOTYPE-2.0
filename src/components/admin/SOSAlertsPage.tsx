@@ -140,7 +140,7 @@ export function SOSAlertsPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 lg:gap-6">
         <Card className="xl:col-span-8 bg-slate-900/90 border-slate-800 p-2 lg:p-3">
-          <div className="h-[420px] lg:h-[560px] rounded-lg overflow-hidden border border-slate-800">
+          <div className="h-105 lg:h-140 rounded-lg overflow-hidden border border-slate-800">
             <MapContainer
               center={INDIA_CENTER}
               zoom={5}
@@ -163,7 +163,7 @@ export function SOSAlertsPage() {
                   }}
                 >
                   <Popup>
-                    <div className="text-sm min-w-[200px]">
+                    <div className="text-sm min-w-50">
                       <div className="font-semibold text-slate-900">{event.student.full_name || 'Student'}</div>
                       <div className="text-slate-700">{event.student.email}</div>
                       <div className="mt-1 text-slate-700">{formatTimestamp(event.created_at)}</div>
@@ -209,7 +209,7 @@ export function SOSAlertsPage() {
           )}
 
           {!loading && !error && events.length > 0 && (
-            <div className="space-y-3 max-h-[250px] lg:max-h-[320px] overflow-auto pr-1">
+            <div className="space-y-3 max-h-62.5 lg:max-h-80 overflow-auto pr-1">
               {events.map((event) => {
                 const selected = selectedEvent?.event_id === event.event_id;
                 return (
