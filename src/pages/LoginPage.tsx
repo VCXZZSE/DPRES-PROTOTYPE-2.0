@@ -154,8 +154,8 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
   };
 
   const loginAndContinue = async (email: string, password: string) => {
-    await authService.loginStudent({ email, password });
-    const me = await authService.getMe();
+    const loginResponse = await authService.loginStudent({ email, password });
+    const me = await authService.getMe(loginResponse.access_token);
     onLogin({
       ...formData,
       studentName: me.full_name || formData.studentName,

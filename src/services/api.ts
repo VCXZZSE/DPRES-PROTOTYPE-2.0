@@ -21,6 +21,10 @@ interface ImportMeta {
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://dpres-backend.onrender.com/api';
 const AUTH_BASE_URL = import.meta.env.VITE_AUTH_API_URL || 'https://dpres-backend.onrender.com/api/auth';
 
+const STUDENT_TOKEN_KEY = 'dpres_student_access_token';
+const SDMA_TOKEN_KEY = 'dpres_sdma_access_token';
+const LEGACY_TOKEN_KEY = 'dpres_access_token';
+
 interface ApiErrorPayload {
   detail?: string;
   message?: string;
@@ -183,12 +187,13 @@ export const authService = {
 
   loginStudent: async (payload: StudentLoginPayload) => {
     const data = await authRequest<AuthTokenResponse>('/login-student', 'POST', payload);
-    localStorage.setItem('dpres_access_token', data.access_token);
+    localStorage.setItem(STUDENT_TOKEN_KEY, data.access_token);
+    localStorage.setItem(LEGACY_TOKEN_KEY, data.access_token);
     return data;
   },
 
   getMe: (token?: string) => {
-    const accessToken = token || localStorage.getItem('dpres_access_token') || '';
+    const accessToken = token || authService.getToken() || '';
     return authRequest<MeResponse>('/me', 'GET', undefined, accessToken);
   },
 
@@ -201,14 +206,28 @@ export const authService = {
   resetPassword: (token: string, newPassword: string) =>
     authRequest<{ message: string }>('/reset-password', 'POST', { token, new_password: newPassword }),
 
-  setToken: (token: string) => {
-    localStorage.setItem('dpres_access_token', token);
+  setToken: (token: string, role: 'student' | 'sdma' = 'student') => {
+    if (role === 'sdma') {
+      localStorage.setItem(SDMA_TOKEN_KEY, token);
+    } else {
+      localStorage.setItem(STUDENT_TOKEN_KEY, token);
+    }
+    localStorage.setItem(LEGACY_TOKEN_KEY, token);
   },
 
-  getToken: () => localStorage.getItem('dpres_access_token'),
+  getStudentToken: () => localStorage.getItem(STUDENT_TOKEN_KEY),
+
+  getSdmaToken: () => localStorage.getItem(SDMA_TOKEN_KEY),
+
+  getToken: () =>
+    localStorage.getItem(STUDENT_TOKEN_KEY) ||
+    localStorage.getItem(SDMA_TOKEN_KEY) ||
+    localStorage.getItem(LEGACY_TOKEN_KEY),
 
   clearToken: () => {
-    localStorage.removeItem('dpres_access_token');
+    localStorage.removeItem(STUDENT_TOKEN_KEY);
+    localStorage.removeItem(SDMA_TOKEN_KEY);
+    localStorage.removeItem(LEGACY_TOKEN_KEY);
   },
 
   // Backward compatible alias while login UI migration is in progress.
@@ -217,7 +236,8 @@ export const authService = {
 
   sdmaAdminLogin: (payload: SdmaAdminLoginPayload) =>
     authRequest<SdmaAdminLoginResponse>('/login-sdma-admin', 'POST', payload).then((data) => {
-      localStorage.setItem('dpres_access_token', data.access_token);
+      localStorage.setItem(SDMA_TOKEN_KEY, data.access_token);
+      localStorage.setItem(LEGACY_TOKEN_KEY, data.access_token);
       return data;
     }),
 
@@ -318,7 +338,7 @@ export const emergencyService = {
 
 export const sosService = {
   trigger: async (payload: SOSTriggerPayload, token?: string): Promise<SOSTriggerApiResponse> => {
-    const accessToken = token || authService.getToken() || '';
+    const accessToken = token || authService.getStudentToken() || authService.getToken() || '';
     if (!accessToken) {
       throw new ApiError('Authentication required before sending SOS', 401);
     }
@@ -334,7 +354,11 @@ export const sosService = {
 
     const data = await parseJsonResponse<ApiErrorPayload & SOSTriggerApiResponse>(response);
     if (!response.ok) {
-      const errorMessage = data?.detail || data?.message || 'Failed to send SOS';
+      const rawMessage = data?.detail || data?.message || 'Failed to send SOS';
+      const errorMessage =
+        rawMessage.toLowerCase().includes('invalid token') || rawMessage.toLowerCase().includes('not authenticated')
+          ? 'Your student session expired. Please sign in again.'
+          : rawMessage;
       throw new ApiError(errorMessage, response.status);
     }
 
@@ -342,7 +366,7 @@ export const sosService = {
   },
 
   getActiveAdmin: async (token?: string): Promise<ActiveSosEventsApiResponse> => {
-    const accessToken = token || authService.getToken() || '';
+    const accessToken = token || authService.getSdmaToken() || authService.getToken() || '';
     if (!accessToken) {
       throw new ApiError('Authentication required before fetching SOS events', 401);
     }
@@ -356,7 +380,11 @@ export const sosService = {
 
     const data = await parseJsonResponse<ApiErrorPayload & ActiveSosEventsApiResponse>(response);
     if (!response.ok) {
-      const errorMessage = data?.detail || data?.message || 'Failed to fetch active SOS events';
+      const rawMessage = data?.detail || data?.message || 'Failed to fetch active SOS events';
+      const errorMessage =
+        rawMessage.toLowerCase().includes('invalid token') || rawMessage.toLowerCase().includes('not authenticated')
+          ? 'Your SDMA session expired. Please log in again.'
+          : rawMessage;
       throw new ApiError(errorMessage, response.status);
     }
 
@@ -364,7 +392,7 @@ export const sosService = {
   },
 
   getResolvedAdmin: async (token?: string): Promise<ActiveSosEventsApiResponse> => {
-    const accessToken = token || authService.getToken() || '';
+    const accessToken = token || authService.getSdmaToken() || authService.getToken() || '';
     if (!accessToken) {
       throw new ApiError('Authentication required before fetching resolved SOS events', 401);
     }
@@ -378,7 +406,11 @@ export const sosService = {
 
     const data = await parseJsonResponse<ApiErrorPayload & ActiveSosEventsApiResponse>(response);
     if (!response.ok) {
-      const errorMessage = data?.detail || data?.message || 'Failed to fetch resolved SOS events';
+      const rawMessage = data?.detail || data?.message || 'Failed to fetch resolved SOS events';
+      const errorMessage =
+        rawMessage.toLowerCase().includes('invalid token') || rawMessage.toLowerCase().includes('not authenticated')
+          ? 'Your SDMA session expired. Please log in again.'
+          : rawMessage;
       throw new ApiError(errorMessage, response.status);
     }
 
@@ -386,7 +418,7 @@ export const sosService = {
   },
 
   resolveCase: async (eventId: number, token?: string): Promise<ResolveSosCaseApiResponse> => {
-    const accessToken = token || authService.getToken() || '';
+    const accessToken = token || authService.getSdmaToken() || authService.getToken() || '';
     if (!accessToken) {
       throw new ApiError('Authentication required before resolving SOS events', 401);
     }
@@ -400,7 +432,11 @@ export const sosService = {
 
     const data = await parseJsonResponse<ApiErrorPayload & ResolveSosCaseApiResponse>(response);
     if (!response.ok) {
-      const errorMessage = data?.detail || data?.message || 'Failed to resolve SOS case';
+      const rawMessage = data?.detail || data?.message || 'Failed to resolve SOS case';
+      const errorMessage =
+        rawMessage.toLowerCase().includes('invalid token') || rawMessage.toLowerCase().includes('not authenticated')
+          ? 'Your SDMA session expired. Please log in again.'
+          : rawMessage;
       throw new ApiError(errorMessage, response.status);
     }
 

@@ -167,52 +167,73 @@ function AppContent() {
     let isMounted = true;
 
     const restoreSession = async () => {
-      const token = authService.getToken();
-      if (!token) {
+      const currentPath = window.location.pathname;
+      const sdmaToken = authService.getSdmaToken();
+      const studentToken = authService.getStudentToken();
+
+      const tokenCandidates = currentPath.startsWith('/sdma-dashboard')
+        ? [sdmaToken, studentToken]
+        : [studentToken, sdmaToken];
+
+      const usableTokens = tokenCandidates.filter((candidate): candidate is string => Boolean(candidate));
+
+      if (!usableTokens.length) {
         if (isMounted) {
           setIsAuthChecking(false);
         }
         return;
       }
 
-      try {
-        const me = await authService.getMe(token);
-        if (!isMounted) {
-          return;
-        }
+      let restored = false;
 
-        if (me.role === 'sdma_admin') {
-          setAdminData({
-            email: me.email,
-            password: '',
-            displayName: me.full_name || 'SDMA Admin',
-          });
-          setIsAdminLoggedIn(true);
-          setIsLoggedIn(false);
-          setIsInstitutionAdminLoggedIn(false);
-          window.history.replaceState({}, '', '/sdma-dashboard');
-        } else {
-          setUserData({
-            schoolName: "Connected Institution",
-            schoolCode: String(me.institution_id),
-            studentName: me.full_name,
-            age: "",
-            institutionType: "college",
-          });
-          setIsLoggedIn(true);
-          setIsAdminLoggedIn(false);
-          setIsInstitutionAdminLoggedIn(false);
-        }
+      for (const token of usableTokens) {
+        try {
+          const me = await authService.getMe(token);
+          if (!isMounted) {
+            return;
+          }
 
-        setShowWelcomeAnimation(false);
-        setShowAdminWelcomeAnimation(false);
-        setIsFirstLogin(false);
-      } catch {
+          if (me.role === 'sdma_admin') {
+            setAdminData({
+              email: me.email,
+              password: '',
+              displayName: me.full_name || 'SDMA Admin',
+            });
+            setIsAdminLoggedIn(true);
+            setIsLoggedIn(false);
+            setIsInstitutionAdminLoggedIn(false);
+            authService.setToken(token, 'sdma');
+            window.history.replaceState({}, '', '/sdma-dashboard');
+          } else {
+            setUserData({
+              schoolName: "Connected Institution",
+              schoolCode: String(me.institution_id),
+              studentName: me.full_name,
+              age: "",
+              institutionType: "college",
+            });
+            setIsLoggedIn(true);
+            setIsAdminLoggedIn(false);
+            setIsInstitutionAdminLoggedIn(false);
+            authService.setToken(token, 'student');
+          }
+
+          setShowWelcomeAnimation(false);
+          setShowAdminWelcomeAnimation(false);
+          setIsFirstLogin(false);
+          restored = true;
+          break;
+        } catch {
+          // Try next available token candidate.
+        }
+      }
+
+      if (!restored) {
         authService.clearToken();
-      } finally {
-        if (isMounted) {
-          setIsAuthChecking(false);
-        }
+      }
+
+      if (isMounted) {
+        setIsAuthChecking(false);
       }
     };
 
