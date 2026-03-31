@@ -25,6 +25,14 @@ L.Icon.Default.mergeOptions({
   shadowUrl: '/leaflet/marker-shadow.png',
 });
 
+const ACTIVE_ALERT_MARKER_ICON = L.divIcon({
+  className: 'sos-active-marker',
+  html: '<span style="display:block;width:16px;height:16px;background:#ef4444;border:2px solid #ffffff;border-radius:9999px;box-shadow:0 0 0 6px rgba(239,68,68,0.28);"></span>',
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+  popupAnchor: [0, -10],
+});
+
 const INDIA_CENTER: LatLngExpression = [22.5937, 78.9629];
 const INDIA_BOUNDS: [[number, number], [number, number]] = [
   [6.4, 68.1],
@@ -216,6 +224,7 @@ export function SOSAlertsPage({ onCountsChange }: SOSAlertsPageProps) {
                 <Marker
                   key={event.event_id}
                   position={[event.latitude, event.longitude]}
+                  icon={ACTIVE_ALERT_MARKER_ICON}
                   eventHandlers={{
                     click: () => setSelectedEventId(event.event_id),
                   }}
