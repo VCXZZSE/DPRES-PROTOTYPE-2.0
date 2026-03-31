@@ -141,6 +141,26 @@ export interface SOSTriggerApiResponse {
   created_at: string;
 }
 
+export interface ActiveSosEvent {
+  event_id: number;
+  status: string;
+  latitude: number;
+  longitude: number;
+  location_text?: string | null;
+  accuracy_meters?: number | null;
+  created_at: string;
+  student: {
+    user_id: number;
+    full_name?: string | null;
+    email: string;
+    id_card_number?: string | null;
+  };
+}
+
+export interface ActiveSosEventsApiResponse {
+  events: ActiveSosEvent[];
+}
+
 // ==================== Authentication Services ====================
 
 export const authService = {
@@ -314,6 +334,28 @@ export const sosService = {
     }
 
     return data as SOSTriggerApiResponse;
+  },
+
+  getActiveAdmin: async (token?: string): Promise<ActiveSosEventsApiResponse> => {
+    const accessToken = token || authService.getToken() || '';
+    if (!accessToken) {
+      throw new ApiError('Authentication required before fetching SOS events', 401);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/admin/sos/active`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = await parseJsonResponse<ApiErrorPayload & ActiveSosEventsApiResponse>(response);
+    if (!response.ok) {
+      const errorMessage = data?.detail || data?.message || 'Failed to fetch active SOS events';
+      throw new ApiError(errorMessage, response.status);
+    }
+
+    return data as ActiveSosEventsApiResponse;
   },
 };
 
