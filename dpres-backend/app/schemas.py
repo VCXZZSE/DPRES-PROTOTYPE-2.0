@@ -119,6 +119,7 @@ class SOSActiveEventOut(BaseModel):
     location_text: Optional[str] = None
     accuracy_meters: Optional[float] = None
     created_at: datetime
+    resolved_at: Optional[datetime] = None
     student: SOSActiveStudentDetails
 
 

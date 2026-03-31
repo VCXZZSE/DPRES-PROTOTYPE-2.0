@@ -153,6 +153,7 @@ export interface ActiveSosEvent {
   location_text?: string | null;
   accuracy_meters?: number | null;
   created_at: string;
+  resolved_at?: string | null;
   student: {
     user_id: number;
     full_name?: string | null;
