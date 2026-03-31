@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { Button } from './ui/button';
 import { Switch } from './ui/switch';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from './ui/sheet';
@@ -200,14 +201,15 @@ export function Navigation({ userData, onLogout, isFirstLogin = false }: Navigat
             <div className="hidden md:flex items-center space-x-6">
               {/* Emergency Button - Separated */}
               <EmergencySOS onConfirm={handleSosConfirm} variant="navigation">
-                <Button 
-                  className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden group"
-                  size="sm"
-                >
-                  <div className="absolute inset-0 bg-red-400 opacity-20 group-hover:animate-pulse"></div>
-                  <AlertTriangle className="h-4 w-4 mr-1 relative z-10" />
-                  <span className="relative z-10 font-medium text-sm">{t('landing.emergency')}</span>
-                </Button>
+                <motion.div whileHover={{ y: -2, scale: 1.05 }} transition={{ duration: 0.2 }}>
+                  <Button 
+                    className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 relative group"
+                    size="sm"
+                  >
+                    <AlertTriangle className="h-4 w-4 mr-1 animate-pulse" />
+                    <span className="font-medium text-sm">{t('landing.emergency')}</span>
+                  </Button>
+                </motion.div>
               </EmergencySOS>
 
               <div className="flex items-center space-x-3">
