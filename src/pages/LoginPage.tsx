@@ -154,11 +154,14 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
   };
 
   const loginAndContinue = async (email: string, password: string) => {
+    // Optimization: Don't make a separate getMe call - use the form data we already have
+    // The user details are already captured during signup/login form
     const loginResponse = await authService.loginStudent({ email, password });
-    const me = await authService.getMe(loginResponse.access_token);
+    // Store token immediately for faster page navigation
+    authService.setToken(loginResponse.access_token, 'student');
     onLogin({
       ...formData,
-      studentName: me.full_name || formData.studentName,
+      studentName: formData.studentName || email.split('@')[0],
     });
   };
 
@@ -167,6 +170,12 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
     setAuthError('');
     setAuthInfo('');
     setAuthLoading(true);
+
+    // Safety timeout: abort after 30 seconds to prevent indefinite loading
+    const timeoutId = setTimeout(() => {
+      setAuthLoading(false);
+      setAuthError('Request timed out. Please check your connection and try again.');
+    }, 30000);
 
     try {
       if (studentAuthMode === 'signin') {
@@ -251,13 +260,17 @@ export function LoginPage({ onLogin, onAdminLogin, onInstitutionAdminLogin }: Lo
         }
 
         const token = signupDraft.verificationToken.trim();
-        await authService.verifyEmail(token);
-        await authService.completeSignup(token, signupDraft.newPassword);
+        // Optimization: Run verifyEmail and completeSignup in parallel instead of sequentially
+        await Promise.all([
+          authService.verifyEmail(token),
+          authService.completeSignup(token, signupDraft.newPassword)
+        ]);
         await loginAndContinue(signupDraft.email.trim().toLowerCase(), signupDraft.newPassword);
       }
     } catch (error) {
       setAuthError(error instanceof Error ? error.message : 'Authentication failed. Please try again.');
     } finally {
+      clearTimeout(timeoutId);
       setAuthLoading(false);
     }
   };
