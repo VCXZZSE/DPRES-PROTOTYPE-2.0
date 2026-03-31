@@ -45,7 +45,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
       {/* Hero Stats - Command Center Style */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Institutions */}
-        <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 shadow-xl">
+        <Card className="bg-linear-to-br from-slate-900 to-slate-800 border-slate-700 shadow-xl">
           <CardContent className="p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center border border-blue-500/30">
@@ -73,7 +73,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
         </Card>
 
         {/* Total Students */}
-        <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 shadow-xl">
+        <Card className="bg-linear-to-br from-slate-900 to-slate-800 border-slate-700 shadow-xl">
           <CardContent className="p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="w-12 h-12 bg-emerald-500/20 rounded-lg flex items-center justify-center border border-emerald-500/30">
@@ -92,7 +92,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
         </Card>
 
         {/* Training Progress */}
-        <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 shadow-xl">
+        <Card className="bg-linear-to-br from-slate-900 to-slate-800 border-slate-700 shadow-xl">
           <CardContent className="p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center border border-orange-500/30">
@@ -108,7 +108,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
             <div className="text-sm text-slate-400">Avg Completion Rate</div>
             <div className="mt-2 w-full bg-slate-700 rounded-full h-1.5">
               <div 
-                className="bg-gradient-to-r from-orange-500 to-orange-400 h-1.5 rounded-full transition-all duration-500"
+                className="bg-linear-to-r from-orange-500 to-orange-400 h-1.5 rounded-full transition-all duration-500"
                 style={{ width: `${overviewStats.avgCompletion}%` }}
               />
             </div>
@@ -116,7 +116,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
         </Card>
 
         {/* Active Alerts */}
-        <Card className={`bg-gradient-to-br border-slate-700 shadow-xl ${
+        <Card className={`bg-linear-to-br border-slate-700 shadow-xl ${
           overviewStats.activeSosAlerts > 0 
             ? 'from-red-950 to-red-900 border-red-700' 
             : 'from-slate-900 to-slate-800'
@@ -178,7 +178,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
           <CardContent className="pt-6 space-y-6">
             {/* System Status Grid */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-gradient-to-br from-green-600/10 to-green-700/5 p-4 rounded-xl border border-green-600/20">
+              <div className="bg-linear-to-br from-green-600/10 to-green-700/5 p-4 rounded-xl border border-green-600/20">
                 <div className="flex items-center justify-between mb-2">
                   <Shield className="h-5 w-5 text-green-400" />
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
@@ -187,7 +187,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
                 <div className="text-sm font-semibold text-white">Online</div>
               </div>
 
-              <div className="bg-gradient-to-br from-blue-600/10 to-blue-700/5 p-4 rounded-xl border border-blue-600/20">
+              <div className="bg-linear-to-br from-blue-600/10 to-blue-700/5 p-4 rounded-xl border border-blue-600/20">
                 <div className="flex items-center justify-between mb-2">
                   <Radio className="h-5 w-5 text-blue-400" />
                   <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
@@ -196,7 +196,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
                 <div className="text-sm font-semibold text-white">Active</div>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-600/10 to-orange-700/5 p-4 rounded-xl border border-orange-600/20">
+              <div className="bg-linear-to-br from-orange-600/10 to-orange-700/5 p-4 rounded-xl border border-orange-600/20">
                 <div className="flex items-center justify-between mb-2">
                   <Bell className="h-5 w-5 text-orange-400" />
                   <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
@@ -205,7 +205,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
                 <div className="text-sm font-semibold text-white">Ready</div>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-600/10 to-purple-700/5 p-4 rounded-xl border border-purple-600/20">
+              <div className="bg-linear-to-br from-purple-600/10 to-purple-700/5 p-4 rounded-xl border border-purple-600/20">
                 <div className="flex items-center justify-between mb-2">
                   <Database className="h-5 w-5 text-purple-400" />
                   <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
@@ -224,7 +224,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 <button 
                   onClick={() => onNavigation('emergency-alerts')}
-                  className="group relative overflow-hidden bg-gradient-to-br from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 rounded-lg p-4 border border-red-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-red-500/20"
+                  className="group relative overflow-hidden bg-linear-to-br from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 rounded-lg p-4 border border-red-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-red-500/20"
                 >
                   <div className="relative z-10">
                     <AlertTriangle className="h-5 w-5 text-white mb-2" />
@@ -235,7 +235,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
                 
                 <button 
                   onClick={() => onNavigation('sms-ivr')}
-                  className="group relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-lg p-4 border border-blue-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-blue-500/20"
+                  className="group relative overflow-hidden bg-linear-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-lg p-4 border border-blue-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-blue-500/20"
                 >
                   <div className="relative z-10">
                     <Radio className="h-5 w-5 text-white mb-2" />
@@ -246,7 +246,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
                 
                 <button 
                   onClick={() => onNavigation('institutions')}
-                  className="group relative overflow-hidden bg-gradient-to-br from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 rounded-lg p-4 border border-green-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-green-500/20"
+                  className="group relative overflow-hidden bg-linear-to-br from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 rounded-lg p-4 border border-green-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-green-500/20"
                 >
                   <div className="relative z-10">
                     <Building2 className="h-5 w-5 text-white mb-2" />
@@ -257,7 +257,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
                 
                 <button 
                   onClick={() => onNavigation('reports')}
-                  className="group relative overflow-hidden bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 rounded-lg p-4 border border-purple-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/20"
+                  className="group relative overflow-hidden bg-linear-to-br from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 rounded-lg p-4 border border-purple-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/20"
                 >
                   <div className="relative z-10">
                     <TrendingUp className="h-5 w-5 text-white mb-2" />
@@ -279,7 +279,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="space-y-3 max-h-[400px] overflow-y-auto">
+            <div className="space-y-3 max-h-100 overflow-y-auto">
               {sosAlerts.length > 0 ? (
                 sosAlerts.slice(0, 5).map((alert, index) => {
                   const institution = allInstitutions.find(inst => inst.id === alert.institutionId);
@@ -298,7 +298,7 @@ export function DashboardOverview({ overviewStats, onNavigation }: DashboardOver
                         </Badge>
                       </div>
                       <div className="text-sm text-white font-medium mb-1">{institution?.name}</div>
-                      <div className="text-xs text-slate-400">{alert.message}</div>
+                      <div className="text-xs text-slate-400">{alert.description}</div>
                       <div className="flex items-center mt-2 text-xs text-slate-500">
                         <MapPin className="h-3 w-3 mr-1" />
                         {institution?.district}, Kolkata
