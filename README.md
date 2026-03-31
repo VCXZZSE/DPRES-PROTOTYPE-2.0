@@ -1,4 +1,3 @@
-[![CI](https://github.com/VCXZZSE/DPRES-PROTOTYPE/actions/workflows/ci.yml/badge.svg?branch=version-4-test)](https://github.com/VCXZZSE/DPRES-PROTOTYPE/actions/workflows/ci.yml)
 # **DPRES — Version 4.0** (Prototype)
 
 ## **Building Resilient Communities Through Education & Active Response**
@@ -9,12 +8,10 @@
 ## 🖼️ **Preview**
 
 ### **SDMA Command Center — Live Interactive Map**
-*(Insert V4 Map Screenshot Here)*
-<img width="1440" height="810" alt="VERSION 4 0 MAP" src="https://via.placeholder.com/1440x810.png?text=SDMA+Live+Map+Screenshot" />
+
 
 ### **Student Portal — Live SOS Integration**
-*(Insert V4 Student Dashboard Screenshot Here)*
-<img width="1440" height="810" alt="VERSION 4 0 DASHBOARD" src="https://via.placeholder.com/1440x810.png?text=Student+Dashboard+SOS+Screenshot" />
+
 
 ---
 
