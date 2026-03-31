@@ -46,3 +46,4 @@ dpres-backend/.pytest_cache/
 dpres-backend/.mypy_cache/
 dpres-backend/*.db
 dpres-backend/*.sqlite
+.vercel.env.pull
