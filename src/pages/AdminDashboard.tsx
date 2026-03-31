@@ -255,7 +255,7 @@ export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }:
           }`}
         >
           <AlertTriangle className="h-5 w-5 mr-3" />
-          <span className="font-semibold text-base">Emergency Alerts</span>
+          <span className="font-semibold text-base whitespace-nowrap">Alerts</span>
           {activeAlerts.length > 0 && (
             <Badge className="ml-auto bg-red-500 text-white border-0 text-sm animate-pulse">
               {activeAlerts.length}

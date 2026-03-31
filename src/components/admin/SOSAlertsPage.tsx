@@ -48,6 +48,27 @@ function FlyToAlert({ alert }: { alert: ActiveSosEvent | null }) {
   return null;
 }
 
+function MapResizeFix({ watchKey }: { watchKey: number }) {
+  const map = useMap();
+
+  useEffect(() => {
+    const resize = () => {
+      map.invalidateSize();
+    };
+
+    // Ensure map fully occupies container when tab becomes visible.
+    const timer = window.setTimeout(resize, 60);
+    window.addEventListener('resize', resize);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('resize', resize);
+    };
+  }, [map, watchKey]);
+
+  return null;
+}
+
 function formatTimestamp(value: string): string {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -181,14 +202,14 @@ export function SOSAlertsPage({ onCountsChange }: SOSAlertsPageProps) {
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 lg:gap-6">
         <Card className="xl:col-span-8 bg-slate-900/90 border-slate-800 p-2 lg:p-3">
-          <div className="h-105 lg:h-140 rounded-lg overflow-hidden border border-slate-800">
+          <div className="relative h-105 lg:h-140 rounded-lg overflow-hidden border border-slate-800">
             <MapContainer
               center={INDIA_CENTER}
               zoom={5}
               minZoom={4}
               maxZoom={16}
               maxBounds={INDIA_BOUNDS}
-              className="h-full w-full"
+              className="sos-live-map absolute inset-0 h-full w-full"
             >
               <TileLayer
                 attribution='&copy; OpenStreetMap contributors'
@@ -217,6 +238,7 @@ export function SOSAlertsPage({ onCountsChange }: SOSAlertsPageProps) {
               ))}
 
               <FlyToAlert alert={selectedEvent} />
+              <MapResizeFix watchKey={events.length} />
             </MapContainer>
           </div>
         </Card>

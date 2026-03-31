@@ -101,3 +101,20 @@
 html {
   font-size: var(--font-size);
 }
+
+/* Keep Live SOS map layers below sticky header and overlays in admin dashboard. */
+.sos-live-map,
+.sos-live-map .leaflet-pane,
+.sos-live-map .leaflet-tile,
+.sos-live-map .leaflet-marker-pane,
+.sos-live-map .leaflet-overlay-pane,
+.sos-live-map .leaflet-shadow-pane,
+.sos-live-map .leaflet-popup-pane {
+  z-index: 1 !important;
+}
+
+.sos-live-map .leaflet-top,
+.sos-live-map .leaflet-bottom,
+.sos-live-map .leaflet-control {
+  z-index: 2 !important;
+}
