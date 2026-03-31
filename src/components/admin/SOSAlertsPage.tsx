@@ -9,6 +9,7 @@ import {
   MapPin,
   Radio,
   RefreshCcw,
+  CheckCircle2,
   User,
 } from 'lucide-react';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
@@ -67,10 +68,17 @@ function formatCoord(value: number): string {
   return value.toFixed(6);
 }
 
-export function SOSAlertsPage() {
+interface SOSAlertsPageProps {
+  onCountsChange?: (counts: { active: number; resolved: number }) => void;
+}
+
+export function SOSAlertsPage({ onCountsChange }: SOSAlertsPageProps) {
   const [events, setEvents] = useState<ActiveSosEvent[]>([]);
+  const [resolvedEvents, setResolvedEvents] = useState<ActiveSosEvent[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [resolvingEventId, setResolvingEventId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const selectedEvent = useMemo(
@@ -78,33 +86,65 @@ export function SOSAlertsPage() {
     [events, selectedEventId],
   );
 
-  const loadEvents = async () => {
+  const loadEvents = async (withLoading = false) => {
     try {
+      if (withLoading) {
+        setLoading(true);
+      }
+      setRefreshing(true);
       setError(null);
-      const response = await sosService.getActiveAdmin();
-      setEvents(response.events || []);
+      const [activeResponse, resolvedResponse] = await Promise.all([
+        sosService.getActiveAdmin(),
+        sosService.getResolvedAdmin(),
+      ]);
+
+      setEvents(activeResponse.events || []);
+      setResolvedEvents(resolvedResponse.events || []);
       setSelectedEventId((currentSelectedId) => {
-        if (!response.events.length) {
+        if (!activeResponse.events.length) {
           return null;
         }
-        if (currentSelectedId && response.events.some((event) => event.event_id === currentSelectedId)) {
+        if (currentSelectedId && activeResponse.events.some((event) => event.event_id === currentSelectedId)) {
           return currentSelectedId;
         }
-        return response.events[0].event_id;
+        return activeResponse.events[0].event_id;
+      });
+
+      onCountsChange?.({
+        active: activeResponse.events.length,
+        resolved: resolvedResponse.events.length,
       });
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch active SOS events.';
       setError(message);
     } finally {
+      setRefreshing(false);
       setLoading(false);
     }
   };
 
+  const handleResolveCase = async () => {
+    if (!selectedEvent) {
+      return;
+    }
+
+    try {
+      setResolvingEventId(selectedEvent.event_id);
+      await sosService.resolveCase(selectedEvent.event_id);
+      await loadEvents(false);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to resolve SOS case.';
+      setError(message);
+    } finally {
+      setResolvingEventId(null);
+    }
+  };
+
   useEffect(() => {
-    loadEvents();
+    loadEvents(true);
 
     const intervalId = window.setInterval(() => {
-      loadEvents();
+      loadEvents(false);
     }, 15000);
 
     return () => {
@@ -129,11 +169,12 @@ export function SOSAlertsPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={loadEvents}
+            onClick={() => loadEvents(true)}
             className="border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800"
+            disabled={refreshing}
           >
-            <RefreshCcw className="h-4 w-4 mr-2" />
-            Refresh
+            <RefreshCcw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            {refreshing ? 'Refreshing...' : 'Refresh'}
           </Button>
         </div>
       </div>
@@ -271,6 +312,31 @@ export function SOSAlertsPage() {
                   <AlertTriangle className="h-4 w-4 mr-2 mt-0.5 text-red-400" />
                   <span className="text-red-300 uppercase">{selectedEvent.status}</span>
                 </div>
+
+                <Button
+                  onClick={handleResolveCase}
+                  disabled={resolvingEventId === selectedEvent.event_id}
+                  className="w-full mt-2 bg-green-600 hover:bg-green-700 text-white"
+                >
+                  <CheckCircle2 className="h-4 w-4 mr-2" />
+                  {resolvingEventId === selectedEvent.event_id ? 'Resolving...' : 'Mark Resolved'}
+                </Button>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-4 rounded-lg border border-slate-800 bg-slate-950/60 p-4">
+            <h4 className="text-white font-semibold mb-3">Completed / Resolved Cases</h4>
+            {resolvedEvents.length === 0 ? (
+              <div className="text-slate-400 text-sm">No resolved cases yet.</div>
+            ) : (
+              <div className="space-y-2 max-h-44 overflow-auto pr-1">
+                {resolvedEvents.slice(0, 8).map((resolvedEvent) => (
+                  <div key={resolvedEvent.event_id} className="rounded-md border border-slate-800 p-2.5 bg-slate-900/50">
+                    <div className="text-sm text-white font-medium">{resolvedEvent.student.full_name || 'Student'}</div>
+                    <div className="text-xs text-slate-400">{formatTimestamp(resolvedEvent.created_at)}</div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -290,10 +356,10 @@ export function SOSAlertsPage() {
           <div className="text-white font-semibold">{events.length} events</div>
         </div>
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-4 text-left">
-          <div className="text-slate-500 text-xs mb-1">Latest Location</div>
+          <div className="text-slate-500 text-xs mb-1">Resolved Cases</div>
           <div className="text-white font-semibold flex items-center">
-            <MapPin className="h-4 w-4 mr-2 text-slate-400" />
-            {selectedEvent ? `${formatCoord(selectedEvent.latitude)}, ${formatCoord(selectedEvent.longitude)}` : 'N/A'}
+            <CheckCircle2 className="h-4 w-4 mr-2 text-green-400" />
+            {resolvedEvents.length}
           </div>
         </div>
       </div>

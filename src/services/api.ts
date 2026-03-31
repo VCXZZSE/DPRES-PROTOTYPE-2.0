@@ -161,6 +161,11 @@ export interface ActiveSosEventsApiResponse {
   events: ActiveSosEvent[];
 }
 
+export interface ResolveSosCaseApiResponse {
+  message: string;
+  event: ActiveSosEvent;
+}
+
 // ==================== Authentication Services ====================
 
 export const authService = {
@@ -356,6 +361,50 @@ export const sosService = {
     }
 
     return data as ActiveSosEventsApiResponse;
+  },
+
+  getResolvedAdmin: async (token?: string): Promise<ActiveSosEventsApiResponse> => {
+    const accessToken = token || authService.getToken() || '';
+    if (!accessToken) {
+      throw new ApiError('Authentication required before fetching resolved SOS events', 401);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/admin/sos/resolved`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = await parseJsonResponse<ApiErrorPayload & ActiveSosEventsApiResponse>(response);
+    if (!response.ok) {
+      const errorMessage = data?.detail || data?.message || 'Failed to fetch resolved SOS events';
+      throw new ApiError(errorMessage, response.status);
+    }
+
+    return data as ActiveSosEventsApiResponse;
+  },
+
+  resolveCase: async (eventId: number, token?: string): Promise<ResolveSosCaseApiResponse> => {
+    const accessToken = token || authService.getToken() || '';
+    if (!accessToken) {
+      throw new ApiError('Authentication required before resolving SOS events', 401);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/admin/sos/${eventId}/resolve`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = await parseJsonResponse<ApiErrorPayload & ResolveSosCaseApiResponse>(response);
+    if (!response.ok) {
+      const errorMessage = data?.detail || data?.message || 'Failed to resolve SOS case';
+      throw new ApiError(errorMessage, response.status);
+    }
+
+    return data as ResolveSosCaseApiResponse;
   },
 };
 

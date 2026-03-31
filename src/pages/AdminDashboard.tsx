@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { 
   Shield, 
   BarChart3,
@@ -34,6 +34,7 @@ import { SMSIVRManager } from '../components/features/SMSIVRManager';
 import { CommunityOversight } from '../components/admin/CommunityOversight';
 import { SOSAlertsPage } from '../components/admin/SOSAlertsPage';
 import { useNavigate } from 'react-router-dom';
+import { sosService } from '../services/api';
 
 interface AdminDashboardProps {
   adminData?: {
@@ -50,6 +51,9 @@ export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }:
   const [activeTab, setActiveTab] = useState(initialTab);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [liveSosCount, setLiveSosCount] = useState(0);
+  const [dashboardNotification, setDashboardNotification] = useState<string | null>(null);
+  const previousLiveCountRef = useRef<number>(0);
 
   useEffect(() => {
     setActiveTab(initialTab);
@@ -104,14 +108,52 @@ export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }:
   const { getActiveAlerts } = useAlerts();
   const activeAlerts = getActiveAlerts();
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchLiveSosCount = async () => {
+      try {
+        const response = await sosService.getActiveAdmin();
+        if (!isMounted) {
+          return;
+        }
+
+        const newCount = response.events.length;
+        setLiveSosCount(newCount);
+
+        if (newCount > previousLiveCountRef.current && activeTab !== 'sos') {
+          const incoming = newCount - previousLiveCountRef.current;
+          setDashboardNotification(
+            `${incoming} new SOS alert${incoming > 1 ? 's' : ''} received. Open Live SOS panel now.`,
+          );
+          setTimeout(() => {
+            setDashboardNotification(null);
+          }, 6000);
+        }
+
+        previousLiveCountRef.current = newCount;
+      } catch {
+        // Keep previous value if polling fails temporarily.
+      }
+    };
+
+    fetchLiveSosCount();
+    const intervalId = setInterval(fetchLiveSosCount, 15000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+    };
+  }, [activeTab]);
+
   // Memoize stats calculation for better performance
   const overviewStats = useMemo(() => ({
     totalSchools: schools.length,
     totalColleges: colleges.length,
     totalStudents: allInstitutions.reduce((sum, inst) => sum + inst.students, 0),
     avgCompletion: Math.round(allInstitutions.reduce((sum, inst) => sum + inst.avgProgress, 0) / allInstitutions.length),
-    activeSosAlerts: activeAlerts.length
-  }), [activeAlerts.length]);
+    activeSosAlerts: liveSosCount
+  }), [activeAlerts.length, liveSosCount]);
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString('en-IN', { 
@@ -199,7 +241,7 @@ export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }:
         >
           <Bell className="h-5 w-5 mr-3" />
           <span className="font-semibold text-base">Live SOS</span>
-          <Badge className="ml-auto bg-red-500 text-white border-0 text-sm">0</Badge>
+          <Badge className="ml-auto bg-red-500 text-white border-0 text-sm">{liveSosCount}</Badge>
         </button>
 
         <button
@@ -297,6 +339,15 @@ export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }:
 
   return (
     <div className="min-h-screen bg-slate-950">
+      {dashboardNotification && (
+        <div className="fixed top-4 right-4 z-70 max-w-md rounded-lg border border-red-500/40 bg-red-950/90 text-red-100 px-4 py-3 shadow-xl">
+          <div className="flex items-start gap-2">
+            <Bell className="h-4 w-4 mt-0.5 text-red-300" />
+            <div className="text-sm font-medium">{dashboardNotification}</div>
+          </div>
+        </div>
+      )}
+
       {/* Sophisticated Header */}
       <div className="border-b border-slate-800 bg-linear-to-r from-slate-900 via-slate-900 to-slate-900 sticky top-0 z-40 backdrop-blur-xl bg-opacity-90">
         <div className="px-4 lg:px-6 py-3">
@@ -456,7 +507,12 @@ export function AdminDashboard({ adminData, onLogout, initialTab = 'overview' }:
             </TabsContent>
 
             <TabsContent value="sos" className="space-y-4 lg:space-y-6">
-              <SOSAlertsPage />
+              <SOSAlertsPage
+                onCountsChange={({ active }) => {
+                  setLiveSosCount(active);
+                  previousLiveCountRef.current = active;
+                }}
+              />
             </TabsContent>
 
             <TabsContent value="reports">
